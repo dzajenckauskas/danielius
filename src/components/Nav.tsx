@@ -86,8 +86,8 @@ export function Nav() {
             <Mail className="h-[18px] w-[18px]" />
           </a>
           <a
-            href="/api/resume"
-            download
+            href="/api/resume/Danielius-Zajenckauskas-CV.pdf"
+            download="Danielius-Zajenckauskas-CV.pdf"
             aria-label="Download CV"
             className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
           >
@@ -150,8 +150,8 @@ export function Nav() {
                 <Mail className="h-[18px] w-[18px]" />
               </a>
               <a
-                href="/api/resume"
-                download
+                href="/api/resume/Danielius-Zajenckauskas-CV.pdf"
+                download="Danielius-Zajenckauskas-CV.pdf"
                 aria-label="Download CV"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
               >

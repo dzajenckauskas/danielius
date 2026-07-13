@@ -60,7 +60,11 @@ export function Hero() {
                 Explore selected work
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
-              <a href="/api/resume" download className="secondary-button">
+              <a
+                href="/api/resume/Danielius-Zajenckauskas-CV.pdf"
+                download="Danielius-Zajenckauskas-CV.pdf"
+                className="secondary-button"
+              >
                 <Download className="h-4 w-4" />
                 Download CV
               </a>
