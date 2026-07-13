@@ -31,10 +31,11 @@ export function DoodleLayer() {
   }, []);
 
   useEffect(() => {
+    if (!active) return;
     prepareCanvas();
     window.addEventListener("resize", prepareCanvas);
     return () => window.removeEventListener("resize", prepareCanvas);
-  }, [prepareCanvas]);
+  }, [active, prepareCanvas]);
 
   useEffect(() => {
     if (!active) return;

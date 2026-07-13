@@ -5,35 +5,35 @@
 /* Neris — the typeface used by the original CV. */
 @font-face {
   font-family: "Neris";
-  src: url("/fonts/neris/Neris-Light.otf") format("opentype");
+  src: url("/fonts/neris/Neris-Light.woff2") format("woff2");
   font-weight: 300;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Neris";
-  src: url("/fonts/neris/Neris-LightItalic.otf") format("opentype");
+  src: url("/fonts/neris/Neris-LightItalic.woff2") format("woff2");
   font-weight: 300;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Neris";
-  src: url("/fonts/neris/Neris-SemiBold.otf") format("opentype");
+  src: url("/fonts/neris/Neris-SemiBold.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: "Neris";
-  src: url("/fonts/neris/Neris-SemiBoldItalic.otf") format("opentype");
+  src: url("/fonts/neris/Neris-SemiBoldItalic.woff2") format("woff2");
   font-weight: 600;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: "Neris";
-  src: url("/fonts/neris/Neris-Black.otf") format("opentype");
+  src: url("/fonts/neris/Neris-Black.woff2") format("woff2");
   font-weight: 900;
   font-style: normal;
   font-display: swap;
@@ -417,18 +417,6 @@ body {
   background: var(--hero-blob-rose);
   opacity: 0.76;
   transform: rotate(-18deg);
-}
-.hero-photo-blob-front {
-  right: -2.2rem;
-  bottom: -2.5rem;
-  z-index: 3;
-  width: 8.5rem;
-  height: 9.4rem;
-  border-radius: 48% 52% 42% 58% / 56% 38% 62% 44%;
-  background: var(--hero-blob-sage);
-  filter: blur(18px);
-  opacity: 0.94;
-  transform: rotate(-12deg);
 }
 .hero-photo-blob-front-accent {
   left: 17%;
@@ -1272,13 +1260,18 @@ body {
   justify-content: space-between;
   gap: 1rem;
   margin-top: 0.8rem;
-  border-bottom: 1px solid color-mix(in srgb, var(--ink) 55%, var(--border));
-  padding-bottom: 0.75rem;
+  border: 0;
+  padding-bottom: 0;
+  background-image: none;
+  box-shadow: none;
   color: var(--text);
   font-size: clamp(0.85rem, 1.3vw, 1rem);
   font-weight: 600;
-  transition: color 0.25s ease, border-color 0.25s ease;
+  text-decoration: none;
+  transition: color 0.25s ease;
 }
+.cta-email-link::before,
+.cta-email-link::after { display: none; content: none; }
 .cta-email-link svg {
   flex: none;
   width: 1rem;
@@ -1286,7 +1279,7 @@ body {
   color: var(--ink-strong);
   transition: transform 0.25s ease;
 }
-.cta-email-link:hover { color: var(--ink-strong); border-color: var(--ink); }
+.cta-email-link:hover { color: var(--ink-strong); }
 .cta-email-link:hover svg { transform: translate(0.2rem, -0.2rem); }
 
 /* Full project index — sticky editorial navigator with case-study evidence. */

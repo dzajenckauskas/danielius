@@ -62,7 +62,6 @@ export function ScrollThread() {
   const svgRef = useRef<SVGSVGElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
   const frameRef = useRef<number | null>(null);
-  const introStartedRef = useRef(0);
   const variationRef = useRef<number[]>([]);
   const pointerRef = useRef({ x: 0, y: 0 });
   const interactionRef = useRef(0);
@@ -150,7 +149,6 @@ export function ScrollThread() {
     frameRef.current = null;
     const path = pathRef.current;
     if (!path) return;
-    const introElapsed = performance.now() - introStartedRef.current;
 
     const svg = svgRef.current;
     if (svg) {
@@ -173,7 +171,7 @@ export function ScrollThread() {
       blob.style.setProperty("--parallax-rotate", `${rotation.toFixed(2)}deg`);
     });
     interactionRef.current *= 0.9;
-    if (introElapsed < 1800 || interactionRef.current > 0.015) {
+    if (interactionRef.current > 0.015) {
       frameRef.current = requestAnimationFrame(update);
     }
   }, []);
@@ -199,7 +197,6 @@ export function ScrollThread() {
       schedule();
     });
 
-    introStartedRef.current = performance.now();
     measure();
     update();
     const pageShell = document.querySelector<HTMLElement>("[data-page-shell]");

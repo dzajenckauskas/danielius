@@ -92,7 +92,6 @@ export function Hero() {
                   style={{ filter: "var(--photo-filter)" }}
                 />
               </div>
-              <span aria-hidden className="hero-photo-blob hero-photo-blob-front" />
               <span aria-hidden className="hero-photo-blob hero-photo-blob-front-accent" />
             </div>
 

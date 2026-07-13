@@ -150,7 +150,7 @@ export default function Home() {
               <p className="eyebrow">Available for selected work</p>
               <h2>Let’s make complex products feel clear.</h2>
               <p>
-                Open to thoughtful frontend work where product quality and maintainability matter.
+                Open to thoughtful front-end work where product quality and maintainability matter.
               </p>
             </div>
 

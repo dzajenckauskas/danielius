@@ -23,11 +23,11 @@ export const metadata: Metadata = {
   publisher: profile.name,
   keywords: [
     "Danielius Zajenčkauskas",
-    "Frontend Engineer",
+    "Front-end Engineer",
     "React Developer",
     "Next.js Developer",
     "TypeScript",
-    "Frontend Architecture",
+    "Front-end Architecture",
     "Vilnius",
   ],
   alternates: { canonical: "/" },
