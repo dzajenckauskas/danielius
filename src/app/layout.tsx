@@ -6,6 +6,8 @@ import { Providers } from "./providers";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { profile } from "@/data/profile";
+import { DoodleLayer } from "@/components/DoodleLayer";
+import { ScrollThread } from "@/components/ScrollThread";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://danielius.dev"),
@@ -36,11 +38,14 @@ export default function RootLayout({
     >
       <body className="min-h-screen font-sans">
         <Providers>
+          <div className="page-wash" aria-hidden="true" />
           <div className="flex min-h-screen flex-col">
             <Nav />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
+          <ScrollThread />
+          <DoodleLayer />
         </Providers>
       </body>
     </html>

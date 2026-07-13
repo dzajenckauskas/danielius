@@ -3,9 +3,9 @@ import type { TimelineEntry } from "@/data/profile";
 
 export function TimelineItem({ entry }: { entry: TimelineEntry }) {
   return (
-    <div className="relative pl-8">
+    <article className="timeline-item group relative pl-8">
       {/* dot + connecting line */}
-      <span className="absolute left-0 top-1.5 h-3 w-3 -translate-x-[5px] rounded-full border-2 border-accent bg-bg" />
+      <span className="timeline-dot absolute left-0 top-1.5 h-3 w-3 -translate-x-[5px] rounded-full border-2 border-ink bg-bg transition-[transform,background-color,box-shadow] duration-300 group-hover:scale-125 group-hover:bg-ink group-hover:shadow-[0_0_0_6px_color-mix(in_srgb,var(--ink)_12%,transparent)]" />
       <div className="absolute left-0 top-4 h-full w-px bg-border" aria-hidden />
 
       <div className="pb-8">
@@ -29,6 +29,6 @@ export function TimelineItem({ entry }: { entry: TimelineEntry }) {
           </div>
         )}
       </div>
-    </div>
+    </article>
   );
 }

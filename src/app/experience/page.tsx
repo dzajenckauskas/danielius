@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { TimelineItem } from "@/components/TimelineItem";
 import { Reveal } from "@/components/Reveal";
 import { experience, education } from "@/data/profile";
+import { SectionDoodle } from "@/components/SectionDoodle";
 
 export const metadata: Metadata = {
   title: "Experience",
@@ -12,7 +13,8 @@ export default function ExperiencePage() {
   return (
     <div className="mx-auto max-w-4xl px-5 py-14 sm:py-20">
       <Reveal>
-        <h1 className="text-3xl font-extrabold tracking-tight text-text sm:text-4xl">
+        <p className="eyebrow mb-3">Professional record</p>
+        <h1 className="text-4xl font-black tracking-tight text-text sm:text-5xl">
           Experience
         </h1>
         <p className="mt-3 max-w-2xl text-muted">
@@ -22,15 +24,21 @@ export default function ExperiencePage() {
       </Reveal>
 
       {/* Work */}
-      <section className="mt-12">
+      <section className="relative mt-12" data-thread-anchor>
+        <span aria-hidden className="section-blob section-blob-career parallax-blob" />
+        <SectionDoodle type="career" className="doodle-career" />
         <Reveal>
-          <h2 className="mb-6 text-xs font-semibold uppercase tracking-wider text-subtle">
+          <h2 className="eyebrow mb-6">
             Work
           </h2>
         </Reveal>
         <div>
           {experience.map((entry, i) => (
-            <Reveal key={entry.title} delay={i * 0.05}>
+            <Reveal
+              key={entry.title}
+              delay={i * 0.05}
+              className={i % 2 === 0 ? "thread-over" : "thread-under"}
+            >
               <TimelineItem entry={entry} />
             </Reveal>
           ))}
@@ -38,15 +46,21 @@ export default function ExperiencePage() {
       </section>
 
       {/* Education */}
-      <section className="mt-8">
+      <section className="relative mt-8" data-thread-anchor>
+        <span aria-hidden className="section-blob section-blob-education parallax-blob" />
+        <SectionDoodle type="education" className="doodle-education" />
         <Reveal>
-          <h2 className="mb-6 text-xs font-semibold uppercase tracking-wider text-subtle">
+          <h2 className="eyebrow mb-6">
             Education
           </h2>
         </Reveal>
         <div>
           {education.map((entry, i) => (
-            <Reveal key={entry.title} delay={i * 0.05}>
+            <Reveal
+              key={entry.title}
+              delay={i * 0.05}
+              className={i % 2 === 0 ? "thread-under" : "thread-over"}
+            >
               <TimelineItem entry={entry} />
             </Reveal>
           ))}

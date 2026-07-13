@@ -2,22 +2,21 @@
 // Tweak copy here — components read from these constants.
 
 export const profile = {
-  name: "Danielius Zajenckauskas",
+  name: "Danielius Zajenčkauskas",
   firstName: "Danielius",
   role: "Front-End Developer",
   tagline:
-    "Front-End Developer building clean, scalable web apps with React, Next.js & TypeScript — with a visual-design background.",
+    "Front-End Developer delivering scalable, maintainable digital products with React, Next.js and TypeScript.",
   location: "Vilnius, Lithuania",
-  availability: "Open to front-end opportunities",
+  availability: "Open to selected front-end opportunities",
   email: "d.zajenckauskas@gmail.com",
   github: "https://github.com/dzajenckauskas",
-  // No LinkedIn in the CV — fill in to show the icon, or leave empty to hide it.
-  linkedin: "",
+  linkedin: "https://www.linkedin.com/in/danielius-zajenckauskas/",
 
   about: [
-    "My path as a front-end developer began during the COVID-19 lockdowns — starting with simple HTML/CSS courses and quickly turning into a deep passion for building for the web. I sharpened that foundation on the Front-End Developer program at the Baltic Institute of Technology, covering HTML, CSS/SCSS, JavaScript, Angular, Node.js and both SQL and NoSQL data handling.",
-    "That dedication, paired with a keen eye for detail and a background in visual design, paid off when I joined Ideaformus as a front-end developer. There I dove deep into functional programming with TypeScript, React and Next.js, and data handling with REST and GraphQL — shipping everything from representative websites to custom e-commerce apps and complex management systems (CMS, ERP, CRM).",
-    "I care about writing clean, reusable code and following best practices — and I can take a project all the way to production, deploying on Linux (Ubuntu) VPS with NGINX and PM2. I'm looking to keep growing on exciting projects alongside a strong team.",
+    "Front-End Developer with commercial experience delivering responsive, scalable web applications and business-critical interfaces. I work primarily with TypeScript, React and Next.js, translating product requirements and complex workflows into reliable, accessible user experiences.",
+    "My experience spans e-commerce platforms, internal administration tools, CMS, ERP and CRM solutions, supported by REST and GraphQL integrations, structured state management and automated testing. I contribute across the delivery lifecycle—from technical planning and reusable component architecture to performance, quality assurance and production deployment.",
+    "A professional background in visual design complements my engineering practice with strong attention to information hierarchy, consistency and usability. I value pragmatic technical decisions, maintainable code and clear collaboration with product, design and engineering stakeholders.",
   ],
 } as const;
 
@@ -27,37 +26,35 @@ export type SkillGroupData = {
 };
 
 export const skillGroups: SkillGroupData[] = [
-  { label: "Languages", items: ["HTML5", "JavaScript", "TypeScript"] },
+  { label: "Core", items: ["TypeScript", "JavaScript", "HTML5", "CSS / SCSS"] },
   {
     label: "Front-End",
     items: [
       "React",
       "Next.js",
       "Redux",
+      "React Hook Form",
       "Material-UI",
+      "Tailwind CSS",
       "Styled Components",
-      "CSS / SCSS",
-      "Bootstrap",
+      "Emotion",
     ],
   },
-  { label: "APIs", items: ["GraphQL", "RESTful"] },
   {
-    label: "Additional",
-    items: ["Node.js", "SQL", "Strapi", "Shopify", "WordPress", "NGINX", "PM2"],
+    label: "Data & Integration",
+    items: ["REST APIs", "GraphQL", "SWR", "Axios", "Stripe", "next-intl"],
   },
   {
-    label: "UI / UX Design",
-    items: ["Figma", "Adobe XD", "Illustrator", "Photoshop"],
+    label: "Full-Stack",
+    items: ["Node.js", "Next.js API Routes", "Strapi", "Prisma", "PostgreSQL", "NextAuth.js"],
   },
   {
-    label: "Practices",
-    items: [
-      "Problem Solving & Debugging",
-      "Git",
-      "Agile",
-      "Web Performance",
-      "Cross-Browser Compatibility",
-    ],
+    label: "Quality & Delivery",
+    items: ["Jest", "Vitest", "Playwright", "React Testing Library", "Docker", "Git", "CI/CD", "NGINX"],
+  },
+  {
+    label: "Product & Design",
+    items: ["Responsive Design", "Accessibility", "Web Performance", "Figma", "Adobe Creative Suite", "Agile Delivery"],
   },
 ];
 
@@ -72,12 +69,28 @@ export type TimelineEntry = {
 
 export const experience: TimelineEntry[] = [
   {
+    title: "Frontend Engineer",
+    org: "Lobasoft",
+    period: "Mar 2024 – Present · Hybrid",
+    year: "2024",
+    description:
+      "Developing and maintaining production web applications with an emphasis on scalable front-end architecture, dependable integrations and high-quality user experiences. Contributing to technical delivery across implementation, testing, performance and ongoing product improvement.",
+    tags: [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Material-UI",
+      "REST APIs",
+      "Testing",
+    ],
+  },
+  {
     title: "Front-End Developer",
     org: "Ideaformus",
-    period: "Nov 2021 – Present",
+    period: "Nov 2021 – Mar 2024 · Vilnius",
     year: "2021",
     description:
-      "Crafting clean, scalable code across projects ranging from representative websites to complex e-commerce and management systems. Deep functional-programming work with React & Next.js, plus RESTful and GraphQL data handling.",
+      "Delivered customer-facing websites, bespoke e-commerce applications and complex CMS, ERP and CRM interfaces. Built reusable TypeScript and React components, integrated REST and GraphQL services, and supported applications through deployment and production maintenance.",
     tags: [
       "React",
       "Next.js",

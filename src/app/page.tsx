@@ -2,6 +2,7 @@ import { Hero } from "@/components/Hero";
 import { SkillGroup } from "@/components/SkillGroup";
 import { Reveal } from "@/components/Reveal";
 import { Tag } from "@/components/Tag";
+import { SectionDoodle } from "@/components/SectionDoodle";
 import {
   profile,
   skillGroups,
@@ -15,9 +16,11 @@ export default function Home() {
       <Hero />
 
       {/* About */}
-      <section className="mx-auto max-w-4xl px-5 py-12">
+      <section className="relative mx-auto max-w-4xl px-5 py-12" data-thread-anchor>
+        <span aria-hidden className="section-blob section-blob-about parallax-blob" />
+        <SectionDoodle type="pencil" className="doodle-about" />
         <Reveal>
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-subtle">
+          <h2 className="eyebrow">
             About
           </h2>
         </Reveal>
@@ -33,15 +36,21 @@ export default function Home() {
       </section>
 
       {/* Skills */}
-      <section className="mx-auto max-w-4xl px-5 py-12">
+      <section className="relative mx-auto max-w-4xl px-5 py-12" data-thread-anchor>
+        <span aria-hidden className="section-blob section-blob-skills parallax-blob" />
+        <SectionDoodle type="code" className="doodle-skills" />
         <Reveal>
-          <h2 className="text-xs font-semibold uppercase tracking-wider text-subtle">
+          <h2 className="eyebrow">
             Skills &amp; Tools
           </h2>
         </Reveal>
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {skillGroups.map((group, i) => (
-            <Reveal key={group.label} delay={i * 0.05}>
+            <Reveal
+              key={group.label}
+              delay={i * 0.05}
+              className={i % 3 === 1 ? "thread-under" : "thread-over"}
+            >
               <SkillGroup group={group} />
             </Reveal>
           ))}
@@ -49,10 +58,13 @@ export default function Home() {
       </section>
 
       {/* Languages + Interests */}
-      <section className="mx-auto max-w-4xl px-5 py-12">
+      <section className="relative mx-auto max-w-4xl px-5 py-12" data-thread-anchor>
+        <span aria-hidden className="section-blob section-blob-languages parallax-blob" />
+        <SectionDoodle type="speech" className="doodle-languages" />
+        <SectionDoodle type="bike" className="doodle-interests" />
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-          <Reveal>
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-subtle">
+          <Reveal className="thread-over">
+            <h2 className="eyebrow">
               Languages
             </h2>
             <ul className="mt-4 space-y-2">
@@ -67,8 +79,8 @@ export default function Home() {
               ))}
             </ul>
           </Reveal>
-          <Reveal delay={0.05}>
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-subtle">
+          <Reveal delay={0.05} className="thread-under">
+            <h2 className="eyebrow">
               Beyond Code
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
@@ -81,17 +93,20 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="mx-auto max-w-4xl px-5 py-16">
-        <Reveal>
-          <div className="rounded-2xl border border-border bg-surface/40 px-6 py-10 text-center">
-            <h2 className="text-2xl font-bold text-text">Let&apos;s build something.</h2>
+      <section className="relative mx-auto max-w-4xl px-5 py-16" data-thread-anchor>
+        <span aria-hidden className="section-blob section-blob-cta parallax-blob" />
+        <SectionDoodle type="contact" className="doodle-contact" />
+        <Reveal className="thread-over">
+          <div className="cta-panel relative overflow-hidden rounded-3xl border border-border bg-surface/60 px-6 py-12 text-center sm:px-10">
+            <div aria-hidden className="absolute -right-16 -top-20 h-44 w-44 rounded-full bg-[var(--blob-1)] blur-3xl" />
+            <h2 className="relative text-2xl font-black text-text">Building products that perform.</h2>
             <p className="mx-auto mt-2 max-w-md text-muted">
-              I&apos;m currently open to new front-end opportunities. Feel free to
-              reach out.
+              Available for selected opportunities where product quality,
+              thoughtful engineering and long-term maintainability matter.
             </p>
             <a
               href={`mailto:${profile.email}`}
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
+              className="primary-button relative mt-6"
             >
               {profile.email}
             </a>

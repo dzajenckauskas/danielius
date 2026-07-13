@@ -21,9 +21,9 @@ export function ThemeToggle() {
     >
       {/* Render a stable icon until mounted to avoid hydration mismatch */}
       {mounted && !isDark ? (
-        <Sun className="h-[18px] w-[18px]" />
+        <Sun className="h-[18px] w-[18px] animate-[icon-in_.35s_ease-out]" />
       ) : (
-        <Moon className="h-[18px] w-[18px]" />
+        <Moon className="h-[18px] w-[18px] animate-[icon-in_.35s_ease-out]" />
       )}
     </button>
   );
