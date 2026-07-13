@@ -9,6 +9,7 @@ import { profile } from "@/data/profile";
 
 const links = [
   // { href: "/", label: "Home" },
+  { href: "/projects", label: "Projects" },
   { href: "/experience", label: "Experience" },
 ];
 
@@ -51,8 +52,8 @@ export function Nav() {
             <Link
               key={l.href}
               href={l.href}
-              aria-current={pathname === l.href ? "page" : undefined}
-              className={`nav-link ${pathname === l.href ? "nav-link-active" : ""}`}
+              aria-current={pathname.startsWith(l.href) ? "page" : undefined}
+              className={`nav-link ${pathname.startsWith(l.href) ? "nav-link-active" : ""}`}
             >
               {l.label}
             </Link>
@@ -111,8 +112,8 @@ export function Nav() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                aria-current={pathname === l.href ? "page" : undefined}
-                className={`nav-link ${pathname === l.href ? "nav-link-active" : ""}`}
+                aria-current={pathname.startsWith(l.href) ? "page" : undefined}
+                className={`nav-link ${pathname.startsWith(l.href) ? "nav-link-active" : ""}`}
               >
                 {l.label}
               </Link>
