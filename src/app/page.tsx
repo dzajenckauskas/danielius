@@ -86,44 +86,48 @@ export default function Home() {
               delay={i * 0.05}
               className={i % 3 === 1 ? "thread-under" : "thread-over"}
             >
-              <SkillGroup group={group} />
+              <SkillGroup group={group} index={i} />
             </Reveal>
           ))}
         </div>
       </section>
 
       {/* Languages + Interests */}
-      <section className="home-dual-section relative mx-auto max-w-6xl px-5 py-16" data-thread-anchor>
+      <section className="home-info-editorial relative mx-auto max-w-6xl px-5 py-16" data-thread-anchor>
         <span aria-hidden className="section-blob section-blob-languages parallax-blob" />
         <SectionDoodle type="speech" className="doodle-languages" />
         <SectionDoodle type="bike" className="doodle-interests" />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Reveal className="home-info-panel thread-over">
-            <span className="home-info-number">02</span>
-            <h2 className="eyebrow">
-              Languages
-            </h2>
-            <ul className="mt-4 space-y-2">
-              {languages.map((l) => (
-                <li
-                  key={l.name}
-                  className="flex items-center justify-between border-b border-border/60 pb-2 text-[15px]"
-                >
-                  <span className="text-text">{l.name}</span>
-                  <span className="text-subtle">{l.level}</span>
-                </li>
-              ))}
-            </ul>
+        <Reveal className="home-info-heading thread-over">
+          <p className="eyebrow">Perspective</p>
+          <h2>Language in work, curiosity beyond it.</h2>
+          <p>Clear communication across teams, with interests that keep the work grounded and observant.</p>
+        </Reveal>
+        <div className="home-info-card-grid">
+          <Reveal className="home-info-card thread-over">
+            <span className="home-info-number">01</span>
+            <div className="home-info-content">
+              <small>Communication</small>
+              <h3>Languages</h3>
+              <ul>
+                {languages.map((l) => (
+                  <li key={l.name}>
+                    <span>{l.name}</span>
+                    <small>{l.level}</small>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </Reveal>
-          <Reveal delay={0.05} className="home-info-panel thread-under">
-            <span className="home-info-number">08</span>
-            <h2 className="eyebrow">
-              Beyond Code
-            </h2>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {interests.map((i) => (
-                <Tag key={i}>{i}</Tag>
-              ))}
+          <Reveal delay={0.05} className="home-info-card thread-under">
+            <span className="home-info-number">02</span>
+            <div className="home-info-content">
+              <small>Outside the screen</small>
+              <h3>Beyond Code</h3>
+              <div className="home-interest-list">
+                {interests.map((interest) => (
+                  <Tag key={interest}>{interest}</Tag>
+                ))}
+              </div>
             </div>
           </Reveal>
         </div>

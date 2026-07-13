@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Github, Linkedin, Mail, ArrowRight, Download, MapPin } from "lucide-react";
+import { ArrowDownRight, ArrowRight, Download, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { profile } from "@/data/profile";
 
@@ -35,135 +35,92 @@ function NameLine({ children, offset = 0 }: { children: string; offset?: number 
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      {/* Soft colour fields echo the abstract shapes used in the printed CV. */}
-      <div
-        aria-hidden
-        className="blob parallax-blob -left-20 top-4 -z-10 h-[24rem] w-[24rem] opacity-45 sm:h-[34rem] sm:w-[34rem]"
-        style={{ background: "var(--blob-1)" }}
-      />
-      <div
-        aria-hidden
-        className="blob parallax-blob right-[8%] top-40 -z-10 h-28 w-28 opacity-55 sm:h-40 sm:w-40"
-        style={{ background: "var(--blob-2)" }}
-      />
-      <div aria-hidden className="hero-shape hero-shape-one parallax-blob" />
-      <div aria-hidden className="hero-shape hero-shape-two parallax-blob" />
-      <div aria-hidden className="hero-shape hero-shape-three parallax-blob" />
+    <section className="hero-editorial">
+      <div className="hero-editorial-layout">
+        <div className="hero-intro">
+          <Reveal>
+            <p className="eyebrow">Frontend engineer · Product systems</p>
+          </Reveal>
 
-      <div className="relative mx-auto flex max-w-6xl flex-col items-center px-5 pb-14 pt-16 text-center sm:pt-24">
-        <Reveal>
-          <div
-            className="group relative h-32 w-32 sm:h-36 sm:w-36"
-            data-thread-anchor
-            data-thread-x="430"
-            data-thread-loops="1"
-            data-thread-radius="64"
-            data-thread-center="true"
-          >
-            <Image
-              src="/avatar.jpg"
-              alt={profile.name}
-              width={144}
-              height={144}
-              priority
-              className="h-full w-full rounded-full object-cover shadow-[0_18px_45px_-24px_rgba(20,30,35,0.55)] transition-transform duration-700 group-hover:scale-[1.018]"
-              style={{ filter: "var(--photo-filter)" }}
-            />
-          </div>
-        </Reveal>
+          <Reveal delay={0.06}>
+            <h1 className="sr-only">{profile.name}</h1>
+            <div className="hero-name" aria-hidden="true" data-thread-anchor data-thread-x="310">
+              <NameLine>DANIELIUS</NameLine>
+              <NameLine offset={9}>ZAJENČKAUSKAS</NameLine>
+            </div>
+          </Reveal>
 
-        <Reveal delay={0.08}>
-          <h1 className="sr-only">{profile.name}</h1>
-          <div
-            className="hero-name mx-auto mt-7"
-            aria-hidden="true"
-            data-thread-anchor
-            data-thread-x="330"
-            data-thread-loops="0"
-            data-thread-radius="68"
-            data-thread-center="true"
-          >
-            <NameLine>DANIELIUS</NameLine>
-            <NameLine offset={9}>ZAJENČKAUSKAS</NameLine>
-          </div>
-        </Reveal>
+          <Reveal delay={0.13}>
+            <p className="hero-intro-copy">{profile.tagline}</p>
+          </Reveal>
 
-        <Reveal delay={0.16}>
-          <p className="hero-tagline mx-auto mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-            {profile.tagline}
-          </p>
-        </Reveal>
+          <Reveal delay={0.2}>
+            <div className="hero-actions">
+              <Link href="/projects" className="primary-button group">
+                Explore selected work
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+              <a href="/api/resume" download className="secondary-button">
+                <Download className="h-4 w-4" />
+                Download CV
+              </a>
+            </div>
+          </Reveal>
 
-        <Reveal delay={0.22}>
-          <div className="mt-4 flex items-center justify-center gap-1.5 text-sm text-subtle">
-            <MapPin className="h-4 w-4" />
-            {profile.location}
-          </div>
-        </Reveal>
+          <Reveal delay={0.26}>
+            <div className="hero-intro-footer">
+              <span className="hero-availability-dot" aria-hidden="true" />
+              <span>{profile.availability}</span>
+              <a href={`mailto:${profile.email}`}>Start a conversation</a>
+            </div>
+          </Reveal>
+        </div>
 
-        <Reveal delay={0.28}>
-          <div className="mt-6 flex items-center justify-center gap-2">
-            <a
-              href={profile.github}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="GitHub"
-              className="social-button"
-            >
-              <Github className="h-5 w-5" />
-            </a>
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="LinkedIn"
-              className="social-button"
-            >
-              <Linkedin className="h-5 w-5" />
-            </a>
-            <a
-              href={`mailto:${profile.email}`}
-              aria-label="Email"
-              className="social-button"
-            >
-              <Mail className="h-5 w-5" />
-            </a>
-          </div>
-        </Reveal>
+        <Reveal delay={0.12} className="hero-portrait-wrap">
+          <div className="hero-portrait-stage" data-thread-anchor data-thread-x="490" data-thread-loops="1">
+            <div className="hero-portrait-meta">
+              <span>Profile / 01</span>
+              <span><MapPin aria-hidden="true" />{profile.location}</span>
+            </div>
 
-        <Reveal delay={0.34}>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              href="/experience"
-              className="primary-button group"
-            >
-              View my experience
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
-            <a href="/api/resume" download className="secondary-button">
-              <Download className="h-4 w-4" />
-              Download CV
-            </a>
-            <a
-              href={`mailto:${profile.email}`}
-              className="secondary-button"
-            >
-              Get in touch
-            </a>
-          </div>
-        </Reveal>
+            <div className="hero-portrait-frame">
+              <Image
+                src="/avatar.jpg"
+                alt={profile.name}
+                width={720}
+                height={820}
+                priority
+                sizes="(max-width: 900px) 100vw, 44vw"
+                style={{ filter: "var(--photo-filter)" }}
+              />
+            </div>
 
-        <Reveal delay={0.4}>
-          <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-border bg-surface/50 px-4 py-1.5 text-sm text-muted">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-70" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-            </span>
-            {profile.availability}
+            <div className="hero-portrait-footer">
+              <div className="hero-portrait-caption">
+                <small>Product engineering</small>
+                <h2>{profile.role}</h2>
+                <p>Enterprise platforms, marketplaces and customer-facing products.</p>
+              </div>
+              <div className="hero-socials" aria-label="Profile links">
+                <a href={profile.github} target="_blank" rel="noreferrer noopener" aria-label="GitHub">
+                  <Github aria-hidden="true" />
+                </a>
+                <a href={profile.linkedin} target="_blank" rel="noreferrer noopener" aria-label="LinkedIn">
+                  <Linkedin aria-hidden="true" />
+                </a>
+                <a href={`mailto:${profile.email}`} aria-label="Email">
+                  <Mail aria-hidden="true" />
+                </a>
+              </div>
+            </div>
           </div>
         </Reveal>
       </div>
+
+      <a className="hero-scroll-cue" href="#selected-work">
+        Scroll through the work
+        <ArrowDownRight aria-hidden="true" />
+      </a>
     </section>
   );
 }

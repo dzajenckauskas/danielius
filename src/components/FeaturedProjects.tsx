@@ -31,7 +31,7 @@ export function FeaturedProjects() {
   }, []);
 
   return (
-    <section className="featured-work" data-thread-anchor>
+    <section id="selected-work" className="featured-work" data-thread-anchor>
       <div className="featured-work-layout">
         <div className="featured-work-rail">
           <p className="eyebrow">Selected work</p>

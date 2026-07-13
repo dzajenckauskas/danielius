@@ -15,9 +15,9 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      aria-label="Toggle color theme"
+      aria-label={mounted && isDark ? "Switch to light theme" : "Switch to dark theme"}
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors duration-200 hover:bg-surface hover:text-text"
+      className="doodle-tool doodle-theme-toggle"
     >
       {/* Render a stable icon until mounted to avoid hydration mismatch */}
       {mounted && !isDark ? (

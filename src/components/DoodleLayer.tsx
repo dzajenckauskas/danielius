@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Eraser, Pencil, X } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function DoodleLayer() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -88,7 +89,8 @@ export function DoodleLayer() {
         onPointerUp={() => (drawingRef.current = false)}
         onPointerCancel={() => (drawingRef.current = false)}
       />
-      <div className="doodle-tools" aria-label="Drawing tools">
+      <div className="doodle-tools" aria-label="Page tools">
+        <ThemeToggle />
         {active && (
           <button type="button" onClick={clear} className="doodle-tool" aria-label="Clear drawing">
             <Eraser className="h-4 w-4" />

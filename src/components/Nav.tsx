@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { FileDown, Github, Mail, Linkedin, Menu, X } from "lucide-react";
-import { ThemeToggle } from "./ThemeToggle";
 import { profile } from "@/data/profile";
 
 const links = [
@@ -94,12 +93,10 @@ export function Nav() {
           >
             <FileDown className="h-[18px] w-[18px]" />
           </a>
-          <ThemeToggle />
         </div>
 
         {/* Mobile */}
         <div className="flex items-center gap-1 sm:hidden">
-          <ThemeToggle />
           <button
             type="button"
             aria-label="Toggle menu"
