@@ -26,8 +26,8 @@ export default function ProjectsPage() {
         <p className="eyebrow mb-3">Selected work</p>
         <h1 className="text-4xl font-black tracking-tight text-text sm:text-5xl">Projects</h1>
         <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-muted">
-          Commercial platforms and independent products spanning e-commerce,
-          healthcare, real estate and international relocation.
+          Enterprise software, commercial platforms and independent products
+          spanning ERP, e-commerce, healthcare, real estate and logistics.
         </p>
       </Reveal>
 
@@ -78,4 +78,3 @@ export default function ProjectsPage() {
     </div>
   );
 }
-

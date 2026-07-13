@@ -359,7 +359,11 @@ export function ResumeDocument() {
             <View style={styles.projectGrid}>
               {projects.map((project) => (
                 <View key={project.slug} style={styles.projectCard}>
-                  <Link style={styles.projectName} src={project.url}>{project.name}</Link>
+                  {project.url ? (
+                    <Link style={styles.projectName} src={project.url}>{project.name}</Link>
+                  ) : (
+                    <Text style={styles.projectName}>{project.name}</Text>
+                  )}
                   <Text style={styles.projectDomain}>{project.domain}</Text>
                   <Text style={styles.projectStack}>{project.stack.slice(0, 3).join(" · ")}</Text>
                 </View>

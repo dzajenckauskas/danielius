@@ -4,9 +4,9 @@
 export const profile = {
   name: "Danielius Zajenčkauskas",
   firstName: "Danielius",
-  role: "Front-End Developer",
+  role: "Frontend Engineer",
   tagline:
-    "Front-End Developer delivering scalable, maintainable digital products with React, Next.js and TypeScript.",
+    "Frontend Engineer building maintainable enterprise platforms and customer-facing products with React, Next.js and TypeScript.",
   location: "Vilnius, Lithuania",
   availability: "Open to selected front-end opportunities",
   email: "d.zajenckauskas@gmail.com",
@@ -14,9 +14,9 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/danielius-zajenckauskas/",
 
   about: [
-    "Front-End Developer with commercial experience delivering responsive, scalable web applications and business-critical interfaces. I work primarily with TypeScript, React and Next.js, translating product requirements and complex workflows into reliable, accessible user experiences.",
-    "My experience spans e-commerce platforms, internal administration tools, CMS, ERP and CRM solutions, supported by REST and GraphQL integrations, structured state management and automated testing. I contribute across the delivery lifecycle—from technical planning and reusable component architecture to performance, quality assurance and production deployment.",
-    "A professional background in visual design complements my engineering practice with strong attention to information hierarchy, consistency and usability. I value pragmatic technical decisions, maintainable code and clear collaboration with product, design and engineering stakeholders.",
+    "Frontend Engineer with commercial experience across enterprise ERP, finance, payroll and HR software, alongside e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces with TypeScript, React and Next.js.",
+    "I work beyond individual screens: designing shared component packages, config-driven forms and data tables, Strapi content models, REST and GraphQL integrations, PDF reports, transactional email templates and automated test coverage. Recent work spans a 35-app enterprise monorepo and an independently developed multi-application marketplace.",
+    "My background in visual design brings strong product judgement to information hierarchy, responsive behaviour and interaction details. I favour pragmatic architecture, explicit types and reusable patterns that help teams ship confidently and maintain products over time.",
   ],
 } as const;
 
@@ -36,21 +36,21 @@ export const skillGroups: SkillGroupData[] = [
       "React Hook Form",
       "Material-UI",
       "Tailwind CSS",
-      "Styled Components",
       "Emotion",
+      "Framer Motion",
     ],
   },
   {
     label: "Data & Integration",
-    items: ["REST APIs", "GraphQL", "SWR", "Axios", "Stripe", "next-intl"],
+    items: ["REST APIs", "OData", "GraphQL", "SWR", "Axios", "Stripe", "Firebase"],
   },
   {
-    label: "Full-Stack",
-    items: ["Node.js", "Next.js API Routes", "Strapi", "PostgreSQL"],
+    label: "Platforms & Content",
+    items: ["Node.js", "Strapi", "PostgreSQL", "React PDF", "React Email", "Nodemailer"],
   },
   {
     label: "Quality & Delivery",
-    items: ["Jest", "Vitest", "Playwright", "React Testing Library", "Docker", "Git", "CI/CD", "NGINX"],
+    items: ["Vitest", "Playwright", "React Testing Library", "Turborepo", "Docker", "Git", "CI/CD", "NGINX"],
   },
   {
     label: "Product & Design",
@@ -74,14 +74,16 @@ export const experience: TimelineEntry[] = [
     period: "Mar 2024 – Present · Hybrid",
     year: "2024",
     description:
-      "Developing and maintaining production web applications with an emphasis on scalable front-end architecture, dependable integrations and high-quality user experiences. Contributing to technical delivery across implementation, testing, performance and ongoing product improvement.",
+      "Building and modernising a 35-application enterprise platform spanning ERP, financials, payroll, HR and audit. Develop shared TypeScript packages and config-driven form/list architecture; deliver PDF reporting, React Email notifications, document upload and signing workflows; and improve accessibility, error handling and automated coverage.",
     tags: [
       "React",
-      "Next.js",
       "TypeScript",
       "Material-UI",
-      "REST APIs",
-      "Testing",
+      "Vite",
+      "React PDF",
+      "React Email",
+      "REST / OData",
+      "Playwright",
     ],
   },
   {
@@ -90,17 +92,17 @@ export const experience: TimelineEntry[] = [
     period: "Nov 2021 – Mar 2024 · Vilnius",
     year: "2021",
     description:
-      "Delivered customer-facing websites, bespoke e-commerce applications and complex CMS, ERP and CRM interfaces. Built reusable TypeScript and React components, integrated REST and GraphQL services, and supported applications through deployment and production maintenance.",
+      "Delivered customer-facing websites, bespoke e-commerce applications and CMS, ERP and CRM interfaces. Built reusable TypeScript and React systems, modelled content in Strapi, integrated REST and GraphQL services, and shipped multilingual lead-generation, checkout, PDF catalogue and transactional-email workflows.",
     tags: [
       "React",
       "Next.js",
       "TypeScript",
       "Redux",
       "Material-UI",
+      "Strapi",
       "GraphQL",
       "REST",
-      "Node.js",
-      "SQL",
+      "React PDF",
     ],
   },
   {

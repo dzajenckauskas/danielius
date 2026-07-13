@@ -57,10 +57,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </div>
 
           <div className="mt-7 flex flex-wrap gap-3">
-            <a className="primary-button" href={project.url} target="_blank" rel="noreferrer noopener">
-              Visit {project.domain}
-              <ArrowUpRight className="h-4 w-4" aria-hidden />
-            </a>
+            {project.url && (
+              <a className="primary-button" href={project.url} target="_blank" rel="noreferrer noopener">
+                Visit {project.domain}
+                <ArrowUpRight className="h-4 w-4" aria-hidden />
+              </a>
+            )}
             {project.repository && (
               <a className="secondary-button" href={project.repository} target="_blank" rel="noreferrer noopener">
                 <Github className="h-4 w-4" aria-hidden />
@@ -145,4 +147,3 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     </article>
   );
 }
-
