@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Github, Linkedin, Mail, ArrowRight, MapPin } from "lucide-react";
+import { Github, Linkedin, Mail, ArrowRight, Download, MapPin } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { profile } from "@/data/profile";
 
@@ -141,6 +141,10 @@ export function Hero() {
               View my experience
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
+            <a href="/api/resume" download className="secondary-button">
+              <Download className="h-4 w-4" />
+              Download CV
+            </a>
             <a
               href={`mailto:${profile.email}`}
               className="secondary-button"

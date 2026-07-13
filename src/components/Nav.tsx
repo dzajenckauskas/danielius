@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { Github, Mail, Linkedin, Menu, X } from "lucide-react";
+import { FileDown, Github, Mail, Linkedin, Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { profile } from "@/data/profile";
 
@@ -86,6 +86,14 @@ export function Nav() {
           >
             <Mail className="h-[18px] w-[18px]" />
           </a>
+          <a
+            href="/api/resume"
+            download
+            aria-label="Download CV"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
+          >
+            <FileDown className="h-[18px] w-[18px]" />
+          </a>
           <ThemeToggle />
         </div>
 
@@ -143,6 +151,14 @@ export function Nav() {
                 className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
               >
                 <Mail className="h-[18px] w-[18px]" />
+              </a>
+              <a
+                href="/api/resume"
+                download
+                aria-label="Download CV"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
+              >
+                <FileDown className="h-[18px] w-[18px]" />
               </a>
             </div>
           </div>
