@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, LockKeyhole } from "lucide-react";
+import { SectionDoodle } from "@/components/SectionDoodle";
 import { projects } from "@/data/projects";
 
 export function ProjectsExplorer() {
@@ -29,6 +30,8 @@ export function ProjectsExplorer() {
   return (
     <div className="projects-explorer">
       <aside className="projects-explorer-rail">
+        <span aria-hidden className="doodle-accent doodle-accent-projects" />
+        <SectionDoodle type="document" className="doodle-projects" />
         <p className="eyebrow">Selected work</p>
         <h1>Products built around real workflows.</h1>
         <p className="projects-explorer-summary">{activeProject?.summary}</p>
@@ -64,7 +67,7 @@ export function ProjectsExplorer() {
               cardRefs.current[index] = card;
             }}
             data-index={String(index + 1).padStart(2, "0")}
-            className={`projects-explorer-card project-accent-${project.accent}`}
+            className={`projects-explorer-card project-accent-${project.accent} ${index % 2 === 0 ? "thread-over" : "thread-under"}`}
             data-thread-anchor
           >
             <header>

@@ -4,7 +4,7 @@
 
 - Create a public repository named exactly `dzajenckauskas` and copy the adjacent `README.md` into its root.
 - Bio: `Frontend Engineer · React, Next.js & TypeScript · Enterprise platforms, Strapi and product systems`
-- Website: `https://danielius.dev`
+- Website: `https://zajenckauskas.lt`
 - Company: `Lobasoft`
 - Keep location as `Vilnius, Lithuania` and add the existing LinkedIn profile.
 - Enable private contribution counts without exposing private repository names.

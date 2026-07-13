@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, LockKeyhole } from "lucide-react";
+import { SectionDoodle } from "@/components/SectionDoodle";
 import { projects } from "@/data/projects";
 
 const featuredProjects = projects.slice(0, 4);
@@ -34,6 +35,8 @@ export function FeaturedProjects() {
     <section id="selected-work" className="featured-work" data-thread-anchor>
       <div className="featured-work-layout">
         <div className="featured-work-rail">
+          <span aria-hidden className="doodle-accent doodle-accent-featured" />
+          <SectionDoodle type="system" className="doodle-featured" />
           <p className="eyebrow">Selected work</p>
           <h2>Complex products, clearly engineered.</h2>
           <p className="featured-work-summary">{activeProject?.summary}</p>
@@ -74,7 +77,7 @@ export function FeaturedProjects() {
                 cardRefs.current[index] = card;
               }}
               data-index={String(index + 1).padStart(2, "0")}
-              className={`featured-work-card project-accent-${project.accent}`}
+              className={`featured-work-card project-accent-${project.accent} ${index % 2 === 0 ? "thread-over" : "thread-under"}`}
             >
               <div>
                 <p className="featured-work-meta">

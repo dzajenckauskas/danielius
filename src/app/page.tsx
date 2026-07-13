@@ -44,20 +44,25 @@ export default function Home() {
       {/* About */}
       <section className="home-editorial-section relative mx-auto max-w-6xl px-5 py-16" data-thread-anchor>
         <span aria-hidden className="section-blob section-blob-about parallax-blob" />
+        <span aria-hidden className="doodle-accent doodle-accent-about" />
         <SectionDoodle type="pencil" className="doodle-about" />
         <div className="home-section-rail">
           <Reveal>
             <p className="eyebrow">About</p>
             <h2>Product thinking, platform discipline.</h2>
             <p>
-              I combine frontend engineering with a visual-design background to
+              I combine frontend engineering with a graphic communication design background to
               make complex product workflows easier to understand and maintain.
             </p>
           </Reveal>
         </div>
         <div className="home-editorial-cards">
           {profile.about.map((para, i) => (
-            <Reveal key={para} delay={i * 0.05} className="home-editorial-card">
+            <Reveal
+              key={para}
+              delay={i * 0.05}
+              className={`home-editorial-card ${i % 2 === 0 ? "thread-over" : "thread-under"}`}
+            >
               <span>{String(i + 1).padStart(2, "0")}</span>
               <p>{para}</p>
             </Reveal>
@@ -95,8 +100,8 @@ export default function Home() {
       {/* Languages + Interests */}
       <section className="home-info-editorial relative mx-auto max-w-6xl px-5 py-16" data-thread-anchor>
         <span aria-hidden className="section-blob section-blob-languages parallax-blob" />
+        <span aria-hidden className="doodle-accent doodle-accent-languages" />
         <SectionDoodle type="speech" className="doodle-languages" />
-        <SectionDoodle type="bike" className="doodle-interests" />
         <Reveal className="home-info-heading thread-over">
           <p className="eyebrow">Perspective</p>
           <h2>Language in work, curiosity beyond it.</h2>
@@ -136,6 +141,7 @@ export default function Home() {
       {/* CTA */}
       <section className="relative mx-auto max-w-6xl px-5 py-20" data-thread-anchor>
         <span aria-hidden className="section-blob section-blob-cta parallax-blob" />
+        <span aria-hidden className="doodle-accent doodle-accent-contact" />
         <SectionDoodle type="contact" className="doodle-contact" />
         <Reveal className="thread-over">
           <div className="cta-panel relative overflow-hidden rounded-3xl border border-border bg-surface/60 px-6 py-12 text-center sm:px-10">

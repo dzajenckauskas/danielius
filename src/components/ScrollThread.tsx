@@ -13,20 +13,21 @@ function connect(path: string, from: Point, to: Point, character: number) {
 }
 
 function addOrbit(path: string, center: Point, radius: number, character: number) {
-  // Four continuous cubic curves produce a softly imperfect, hand-drawn orbit.
-  // Starting at the left edge gives both the incoming and outgoing line the
-  // same downward tangent, so the join never pinches into a sharp point.
-  const k = 0.5522848;
-  const horizontal = radius * (0.94 + character * 0.1);
-  const vertical = radius * (0.76 + character * 0.08);
+  // An intentionally uneven gesture rather than a geometric ellipse. Unequal
+  // lobes, a tilted axis and an off-centre return create a loose hand motion.
+  const lean = (character - 0.5) * radius * 0.5;
+  const horizontal = radius * (0.82 + character * 0.3);
+  const vertical = radius * (0.62 + (1 - character) * 0.28);
   const x = center.x;
   const y = center.y;
+  const startX = x - radius * (0.94 + character * 0.1);
+  const startY = y;
 
   return path
-    + ` C ${x - horizontal} ${y + vertical * k}, ${x - horizontal * k} ${y + vertical}, ${x} ${y + vertical}`
-    + ` C ${x + horizontal * k} ${y + vertical}, ${x + horizontal} ${y + vertical * k}, ${x + horizontal} ${y}`
-    + ` C ${x + horizontal} ${y - vertical * k}, ${x + horizontal * k} ${y - vertical}, ${x} ${y - vertical}`
-    + ` C ${x - horizontal * k} ${y - vertical}, ${x - horizontal} ${y - vertical * k}, ${x - horizontal} ${y}`;
+    + ` C ${x - horizontal * 1.08} ${y + vertical * 0.48}, ${x - horizontal * 0.42 + lean} ${y + vertical * 1.08}, ${x + horizontal * 0.12 + lean} ${y + vertical * 0.86}`
+    + ` C ${x + horizontal * 0.72} ${y + vertical * 0.7}, ${x + horizontal * 1.06} ${y + vertical * 0.12}, ${x + horizontal * 0.82} ${y - vertical * 0.34}`
+    + ` C ${x + horizontal * 0.58 - lean} ${y - vertical * 0.94}, ${x - horizontal * 0.12 - lean} ${y - vertical * 1.02}, ${x - horizontal * 0.66} ${y - vertical * 0.62}`
+    + ` C ${x - horizontal * 1.04} ${y - vertical * 0.38}, ${x - horizontal * 1.12} ${y + vertical * 0.02}, ${startX} ${startY}`;
 }
 
 function buildPath(points: Point[], variation: number[]) {
@@ -67,7 +68,6 @@ export function ScrollThread() {
   const interactionRef = useRef(0);
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const displacementRef = useRef<SVGFEDisplacementMapElement>(null);
-  const pageHeightRef = useRef(0);
   const pathname = usePathname();
 
   const measure = useCallback(() => {
@@ -76,72 +76,81 @@ export function ScrollThread() {
     const pageShell = document.querySelector<HTMLElement>("[data-page-shell]");
     if (!svg || !path || !pageShell) return;
 
-    // Measure only real page content. Measuring document.scrollHeight here would
-    // include this absolute SVG, causing it to make itself taller forever.
+    // Measure only real page content. document.scrollHeight also includes this
+    // absolute SVG, which would allow the thread to make itself taller forever.
+    const shellRect = pageShell.getBoundingClientRect();
+    const footer = pageShell.querySelector<HTMLElement>("footer");
+    const footerRect = footer?.getBoundingClientRect();
+    const shellTop = shellRect.top + window.scrollY;
     const documentHeight = Math.max(
-      Math.ceil(pageShell.getBoundingClientRect().bottom + window.scrollY),
+      Math.ceil(shellRect.bottom + window.scrollY),
+      Math.ceil(shellTop + pageShell.scrollHeight),
+      footerRect ? Math.ceil(footerRect.bottom + window.scrollY) : 0,
       window.innerHeight,
     );
-    pageHeightRef.current = documentHeight;
     const anchors = Array.from(document.querySelectorAll<HTMLElement>("[data-thread-anchor]"));
     if (variationRef.current.length === 0) {
-      variationRef.current = Array.from({ length: 18 }, () => 0.18 + Math.random() * 0.64);
+      variationRef.current = Array.from({ length: 64 }, () => 0.08 + Math.random() * 0.84);
       turbulenceRef.current?.setAttribute("seed", `${Math.floor(Math.random() * 900) + 100}`);
+      turbulenceRef.current?.setAttribute(
+        "baseFrequency",
+        `${(0.004 + Math.random() * 0.004).toFixed(4)} ${(0.014 + Math.random() * 0.01).toFixed(4)}`,
+      );
     }
     const variation = variationRef.current;
-    const xPattern = [820, 835, 860, 145, 120, 845, 820, 155].map((x, index) => {
-      const direction = x > 500 ? -1 : 1;
-      return x + direction * variation[index % variation.length] * 48;
-    });
-    const points: Point[] = [{ x: 820, y: 0 }];
+    const randomAt = (index: number) => variation[index % variation.length] ?? 0.5;
+    const points: Point[] = [{ x: 700 + randomAt(0) * 210, y: 0 }];
 
     anchors.forEach((anchor, index) => {
       const rect = anchor.getBoundingClientRect();
       const explicitX = Number(anchor.dataset.threadX);
-      const loops = anchor.dataset.threadLoops
+      const isEndAnchor = anchor.dataset.threadEnd === "true";
+      const hasExplicitLoops = anchor.dataset.threadLoops !== undefined;
+      const generatedLoop = !isEndAnchor && randomAt(index * 5 + 17) > 0.86 ? 1 : undefined;
+      const loops = hasExplicitLoops
         ? Number(anchor.dataset.threadLoops)
-        : undefined;
+        : generatedLoop;
       const radius = Number(anchor.dataset.threadRadius || 0);
+      const normallyRight = index % 2 === 0;
+      const flipSide = randomAt(index * 3 + 9) > 0.72;
+      const useRightSide = flipSide ? !normallyRight : normallyRight;
+      const generatedX = useRightSide
+        ? 710 + randomAt(index * 4 + 21) * 190
+        : 90 + randomAt(index * 4 + 21) * 200;
+      const anchorX = Number.isFinite(explicitX) && explicitX > 0
+        ? Math.max(70, Math.min(930, explicitX + (randomAt(index + 31) - 0.5) * 64))
+        : generatedX;
       points.push({
-        x: Number.isFinite(explicitX) && explicitX > 0
-          ? explicitX
-          : xPattern[(index + 1) % xPattern.length],
+        x: anchorX,
         y: Math.round(
           rect.top
           + window.scrollY
-          + (anchor.dataset.threadCenter === "true" ? rect.height / 2 : Math.min(rect.height * 0.18, 90)),
+          + (isEndAnchor
+            ? rect.height / 2
+            : anchor.dataset.threadCenter === "true"
+              ? rect.height / 2
+              : Math.min(rect.height * (0.12 + randomAt(index + 41) * 0.14), 110)),
         ),
         loops,
-        radius: radius || undefined,
+        radius: radius || (loops ? 28 + randomAt(index * 2 + 27) * 44 : undefined),
       });
     });
-    points.push({ x: xPattern[(anchors.length + 1) % xPattern.length], y: documentHeight - 40 });
+    points.push({
+      x: 120 + randomAt(anchors.length * 3 + 5) * 760,
+      y: Math.max(documentHeight - 1, 0),
+    });
 
     svg.setAttribute("viewBox", `0 0 1000 ${documentHeight}`);
     svg.style.height = `${documentHeight}px`;
-    path.setAttribute("d", buildPath(points, variation));
-
-    const length = path.getTotalLength();
-    path.style.strokeDasharray = `${length}`;
-    path.dataset.length = `${length}`;
+    const pathData = buildPath(points, variation);
+    path.setAttribute("d", pathData);
   }, []);
 
   const update = useCallback(() => {
     frameRef.current = null;
     const path = pathRef.current;
     if (!path) return;
-    const length = Number(path.dataset.length || 0);
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      path.style.strokeDashoffset = "0";
-      return;
-    }
-    const scrollRange = Math.max(pageHeightRef.current - window.innerHeight, 1);
-    const progress = Math.min(Math.max(window.scrollY / scrollRange, 0), 1);
     const introElapsed = performance.now() - introStartedRef.current;
-    const introProgress = Math.min(0.42, (introElapsed / 1800) * 0.42);
-    const scrollDrawProgress = 0.1 + Math.sqrt(progress) * 0.9;
-    const visibleProgress = Math.max(introProgress, scrollDrawProgress);
-    path.style.strokeDashoffset = `${length * (1 - visibleProgress)}`;
 
     const svg = svgRef.current;
     if (svg) {

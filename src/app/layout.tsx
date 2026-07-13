@@ -11,7 +11,7 @@ import { ScrollThread } from "@/components/ScrollThread";
 import { ScrollProgress } from "@/components/ScrollProgress";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://danielius.dev"),
+  metadataBase: new URL("https://zajenckauskas.lt"),
   title: {
     default: `${profile.name} — ${profile.role}`,
     template: `%s — ${profile.name}`,

@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { BriefcaseBusiness, GraduationCap } from "lucide-react";
+import { BriefcaseBusiness } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { SectionDoodle } from "@/components/SectionDoodle";
 import { Tag } from "@/components/Tag";
 import { education, experience } from "@/data/profile";
 
@@ -31,8 +32,10 @@ export function ExperienceExplorer() {
     <>
       <section className="experience-explorer" data-thread-anchor>
         <aside className="experience-explorer-rail">
+          <span aria-hidden className="doodle-accent doodle-accent-career" />
+          <SectionDoodle type="nodes" className="doodle-career" />
           <p className="eyebrow">Professional record</p>
-          <h1>From visual systems to product engineering.</h1>
+          <h1>From design systems to product engineering.</h1>
           <p>{activeEntry?.description}</p>
 
           <div className="experience-active-role">
@@ -63,7 +66,7 @@ export function ExperienceExplorer() {
               ref={(card) => {
                 cardRefs.current[index] = card;
               }}
-              className="experience-card"
+              className={`experience-card ${index % 2 === 0 ? "thread-over" : "thread-under"}`}
               data-year={entry.year}
             >
               <BriefcaseBusiness aria-hidden="true" />
@@ -83,13 +86,18 @@ export function ExperienceExplorer() {
 
       <section className="education-editorial" data-thread-anchor>
         <Reveal className="education-editorial-heading">
-          <GraduationCap aria-hidden="true" />
+          <span aria-hidden className="doodle-accent doodle-accent-education" />
+          <SectionDoodle type="document" className="doodle-education" />
           <p className="eyebrow">Education</p>
           <h2>Design foundations, engineering practice.</h2>
         </Reveal>
         <div className="education-card-grid">
           {education.map((entry, index) => (
-            <Reveal key={`${entry.title}-${entry.year}`} delay={index * 0.04} className="education-card">
+            <Reveal
+              key={`${entry.title}-${entry.year}`}
+              delay={index * 0.04}
+              className={`education-card ${index % 2 === 0 ? "thread-over" : "thread-under"}`}
+            >
               <span>{String(index + 1).padStart(2, "0")}</span>
               <small>{entry.period}</small>
               <h3>{entry.org || entry.title}</h3>

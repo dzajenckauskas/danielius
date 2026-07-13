@@ -39,7 +39,7 @@ export function Hero() {
       <div className="hero-editorial-layout">
         <div className="hero-intro">
           <Reveal>
-            <p className="eyebrow">Frontend engineer · Product systems</p>
+            <p className="eyebrow">Product engineering · Frontend systems</p>
           </Reveal>
 
           <Reveal delay={0.06}>
@@ -71,35 +71,34 @@ export function Hero() {
             <div className="hero-intro-footer">
               <span className="hero-availability-dot" aria-hidden="true" />
               <span>{profile.availability}</span>
-              <a href={`mailto:${profile.email}`}>Start a conversation</a>
             </div>
           </Reveal>
         </div>
 
         <Reveal delay={0.12} className="hero-portrait-wrap">
-          <div className="hero-portrait-stage" data-thread-anchor data-thread-x="490" data-thread-loops="1">
-            <div className="hero-portrait-meta">
-              <span>Profile / 01</span>
-              <span><MapPin aria-hidden="true" />{profile.location}</span>
-            </div>
-
-            <div className="hero-portrait-frame">
-              <Image
-                src="/avatar.jpg"
-                alt={profile.name}
-                width={720}
-                height={820}
-                priority
-                sizes="(max-width: 900px) 100vw, 44vw"
-                style={{ filter: "var(--photo-filter)" }}
-              />
+          <div className="hero-portrait-stage" data-thread-anchor data-thread-x="490">
+            <div className="hero-photo-composition">
+              <span aria-hidden className="hero-photo-blob hero-photo-blob-back" />
+              <span aria-hidden className="hero-photo-blob hero-photo-blob-side" />
+              <span aria-hidden className="hero-photo-blob hero-photo-blob-back-accent" />
+              <div className="hero-portrait-frame">
+                <Image
+                  src="/avatar.jpg"
+                  alt={profile.name}
+                  width={720}
+                  height={820}
+                  priority
+                  sizes="(max-width: 900px) 100vw, 44vw"
+                  style={{ filter: "var(--photo-filter)" }}
+                />
+              </div>
+              <span aria-hidden className="hero-photo-blob hero-photo-blob-front" />
+              <span aria-hidden className="hero-photo-blob hero-photo-blob-front-accent" />
             </div>
 
             <div className="hero-portrait-footer">
               <div className="hero-portrait-caption">
-                <small>Product engineering</small>
-                <h2>{profile.role}</h2>
-                <p>Enterprise platforms, marketplaces and customer-facing products.</p>
+                <p><MapPin aria-hidden="true" />{profile.location.toUpperCase()}</p>
               </div>
               <div className="hero-socials" aria-label="Profile links">
                 <a href={profile.github} target="_blank" rel="noreferrer noopener" aria-label="GitHub">

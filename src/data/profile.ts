@@ -9,14 +9,14 @@ export const profile = {
     "Frontend Engineer building maintainable enterprise platforms and customer-facing products with React, Next.js and TypeScript.",
   location: "Vilnius, Lithuania",
   availability: "Open to selected front-end opportunities",
-  email: "d.zajenckauskas@gmail.com",
+  email: "danielius@zajenckauskas.lt",
   github: "https://github.com/dzajenckauskas",
   linkedin: "https://www.linkedin.com/in/danielius-zajenckauskas/",
 
   about: [
     "Frontend Engineer with commercial experience across enterprise ERP, finance, payroll and HR software, alongside e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces with TypeScript, React and Next.js.",
     "I work beyond individual screens: designing shared component packages, config-driven forms and data tables, Strapi content models, REST and GraphQL integrations, PDF reports, transactional email templates and automated test coverage. Recent work spans a 35-app enterprise monorepo and an independently developed multi-application marketplace.",
-    "My background in visual design brings strong product judgement to information hierarchy, responsive behaviour and interaction details. I favour pragmatic architecture, explicit types and reusable patterns that help teams ship confidently and maintain products over time.",
+    "My background in graphic design brings strong product judgement to information hierarchy, responsive behaviour and interaction details. I favour pragmatic architecture, explicit types and reusable patterns that help teams ship confidently and maintain products over time.",
   ],
 } as const;
 
@@ -106,7 +106,7 @@ export const experience: TimelineEntry[] = [
     ],
   },
   {
-    title: "Freelance Visual Designer",
+    title: "Freelance Graphic Designer",
     period: "2016 – Present",
     year: "2016",
     description:

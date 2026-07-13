@@ -1,4 +1,4 @@
-# danielius.dev
+# zajenckauskas.lt
 
 Personal website / portfolio for **Danielius Zajenckauskas** — Front-End Developer.
 

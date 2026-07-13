@@ -6,9 +6,9 @@
 
 I build maintainable enterprise platforms and customer-facing products—from complex ERP workflows to multi-application marketplaces.
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-danielius.dev-111111?style=for-the-badge)](https://danielius.dev)
+[![Portfolio](https://img.shields.io/badge/Portfolio-zajenckauskas.lt-111111?style=for-the-badge)](https://zajenckauskas.lt)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/danielius-zajenckauskas/)
-[![Email](https://img.shields.io/badge/Email-Say%20hello-6B7280?style=for-the-badge)](mailto:d.zajenckauskas@gmail.com)
+[![Email](https://img.shields.io/badge/Email-Say%20hello-6B7280?style=for-the-badge)](mailto:danielius@zajenckauskas.lt)
 
 </div>
 
@@ -40,7 +40,7 @@ A multi-application marketplace with customer, seller, support and administratio
 
 `Multi-seller commerce` · `Payments` · `Seller finance` · `2FA` · `Shared packages`
 
-### [Lobasoft Enterprise Platform](https://danielius.dev/projects/lobasoft-enterprise-platform)
+### [Lobasoft Enterprise Platform](https://zajenckauskas.lt/projects/lobasoft-enterprise-platform)
 
 A 35-application enterprise ecosystem spanning ERP, financials, payroll, HR, audit and employee self-service workflows.
 
@@ -74,12 +74,12 @@ Most commercial source code is private because it belongs to clients or contains
 
 For a relevant role, I can provide a guided architecture walkthrough or a focused, sanitised code sample where the applicable client agreement allows it.
 
-**[Request a private walkthrough](mailto:d.zajenckauskas@gmail.com?subject=Private%20code%20walkthrough)**
+**[Request a private walkthrough](mailto:danielius@zajenckauskas.lt?subject=Private%20code%20walkthrough)**
 
 <div align="center">
 
 Open to selected frontend opportunities where product quality and maintainable engineering matter.
 
-**[View portfolio](https://danielius.dev) · [Connect on LinkedIn](https://www.linkedin.com/in/danielius-zajenckauskas/)**
+**[View portfolio](https://zajenckauskas.lt) · [Connect on LinkedIn](https://www.linkedin.com/in/danielius-zajenckauskas/)**
 
 </div>
