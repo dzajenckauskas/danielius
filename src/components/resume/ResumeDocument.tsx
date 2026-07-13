@@ -387,6 +387,8 @@ function PageOne() {
               <Circle cx="39" cy="52" r="38" fill="url(#portrait-sage)" />
               <Circle cx="104" cy="82" r="27" fill="url(#portrait-green)" />
             </Svg>
+            {/* react-pdf's Image is not a DOM image and does not support alt. */}
+            {/* eslint-disable-next-line jsx-a11y/alt-text */}
             <Image style={styles.photo} src={publicPath("avatar.jpg")} />
             <Svg style={styles.portraitHighlight} viewBox="0 0 24 24">
               <Defs>
