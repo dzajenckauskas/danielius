@@ -3,6 +3,7 @@ import { SkillGroup } from "@/components/SkillGroup";
 import { Reveal } from "@/components/Reveal";
 import { Tag } from "@/components/Tag";
 import { SectionDoodle } from "@/components/SectionDoodle";
+import { FeaturedProjects } from "@/components/FeaturedProjects";
 import {
   profile,
   skillGroups,
@@ -14,6 +15,31 @@ export default function Home() {
   return (
     <>
       <Hero />
+
+      <section className="proof-strip" aria-label="Engineering scope" data-thread-anchor>
+        <Reveal>
+          <dl>
+            <div>
+              <dt>35</dt>
+              <dd>enterprise applications</dd>
+            </div>
+            <div>
+              <dt>12</dt>
+              <dd>shared platform packages</dd>
+            </div>
+            <div>
+              <dt>11</dt>
+              <dd>marketplace workspaces</dd>
+            </div>
+            <div>
+              <dt>5</dt>
+              <dd>selected case studies</dd>
+            </div>
+          </dl>
+        </Reveal>
+      </section>
+
+      <FeaturedProjects />
 
       {/* About */}
       <section className="relative mx-auto max-w-4xl px-5 py-12" data-thread-anchor>

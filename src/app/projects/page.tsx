@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, LockKeyhole } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { projects } from "@/data/projects";
 
@@ -59,6 +59,12 @@ export default function ProjectsPage() {
                       <span className="project-card-heading">
                         <strong>{project.name}</strong>
                         <small>{project.domain}</small>
+                        {project.sourceAccess && (
+                          <small className="project-card-access">
+                            <LockKeyhole aria-hidden="true" />
+                            Private source
+                          </small>
+                        )}
                       </span>
                       <span className="project-card-summary">{project.summary}</span>
                       <span className="project-card-tags">

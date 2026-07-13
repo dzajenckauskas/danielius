@@ -9,10 +9,12 @@ import {
   CalendarDays,
   Clock3,
   Github,
+  LockKeyhole,
   MapPin,
 } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { getProject, projects } from "@/data/projects";
+import { profile } from "@/data/profile";
 
 type ProjectPageProps = { params: Promise<{ slug: string }> };
 
@@ -70,6 +72,22 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               </a>
             )}
           </div>
+
+          {project.sourceAccess && (
+            <div className="private-source-note">
+              <LockKeyhole aria-hidden="true" />
+              <div>
+                <strong>Private codebase</strong>
+                <p>{project.sourceAccess.note}</p>
+              </div>
+              <a
+                href={`mailto:${profile.email}?subject=${encodeURIComponent(`Private code walkthrough — ${project.name}`)}`}
+              >
+                Request walkthrough
+                <ArrowUpRight aria-hidden="true" />
+              </a>
+            </div>
+          )}
         </Reveal>
 
         <Reveal delay={0.08} className="thread-over">
@@ -107,6 +125,42 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 <p>{paragraph}</p>
               </Reveal>
             ))}
+          </div>
+        </section>
+
+        <section className="project-proof-section" data-thread-anchor>
+          <Reveal>
+            <p className="eyebrow">Engineering proof</p>
+            <h2>What was hard, what I chose, and how I checked it.</h2>
+          </Reveal>
+
+          <div className="project-proof-grid">
+            <Reveal className="project-proof-card thread-over">
+              <span>01</span>
+              <h3>Challenge</h3>
+              <p>{project.caseStudy.challenge}</p>
+            </Reveal>
+
+            <Reveal delay={0.05} className="project-proof-card thread-under">
+              <span>02</span>
+              <h3>Frontend decisions</h3>
+              <ul>
+                {project.caseStudy.decisions.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </Reveal>
+
+            <Reveal delay={0.1} className="project-proof-card thread-over">
+              <span>03</span>
+              <h3>Quality &amp; outcome</h3>
+              <ul>
+                {project.caseStudy.quality.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p className="project-proof-outcome">{project.caseStudy.outcome}</p>
+            </Reveal>
           </div>
         </section>
 

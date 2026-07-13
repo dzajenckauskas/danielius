@@ -12,6 +12,16 @@ export type Project = {
   summary: string;
   about: string[];
   contribution: string[];
+  caseStudy: {
+    challenge: string;
+    decisions: string[];
+    quality: string[];
+    outcome: string;
+  };
+  sourceAccess?: {
+    visibility: "private";
+    note: string;
+  };
   stack: string[];
   accent: "lilac" | "sage" | "rose" | "sand" | "blue";
 };
@@ -39,6 +49,24 @@ export const projects: Project[] = [
       "Implemented document upload, qualified-signing and process-driven interfaces with detailed validation and backend error handling.",
       "Strengthened shared TypeScript packages, responsive behaviour and focused Playwright coverage across a large npm-workspaces codebase.",
     ],
+    caseStudy: {
+      challenge:
+        "Modernise data-heavy business workflows across dozens of applications without fragmenting interaction patterns or breaking compatibility with established backend contracts.",
+      decisions: [
+        "Moved repeated form, list, filter and action behaviour into shared TypeScript packages and configuration-driven resource definitions.",
+        "Kept specialised document, signing and financial workflows composable instead of forcing every product into one generic screen model.",
+      ],
+      quality: [
+        "Used strict typing and targeted application builds to control the blast radius of shared-package changes.",
+        "Added focused Playwright checks and explicit loading, validation and structured backend-error states for business-critical flows.",
+      ],
+      outcome:
+        "Teams can extend related ERP, payroll and financial workflows through consistent patterns while preserving the domain-specific behaviour each product requires.",
+    },
+    sourceAccess: {
+      visibility: "private",
+      note: "Commercial source code is confidential. I can provide an architecture walkthrough and discuss selected implementation decisions where client agreements allow.",
+    },
     stack: [
       "React 18",
       "TypeScript",
@@ -58,7 +86,6 @@ export const projects: Project[] = [
     name: "Musės - Fly Tying Market",
     domain: "muses.lt",
     url: "https://muses.lt",
-    repository: "https://github.com/dzajenckauskas/muses-shop",
     year: "2025",
     period: "October 2025 – Present",
     engagement: "Independent product",
@@ -77,6 +104,24 @@ export const projects: Project[] = [
       "Developed seller onboarding, wallets, payouts, statements, reconciliation and dispute-management workflows.",
       "Added OTP/2FA authentication, rate-limited public support flows, editable notification templates and automated Vitest/Playwright coverage.",
     ],
+    caseStudy: {
+      challenge:
+        "Build a multi-seller marketplace as one coherent product while keeping storefront, seller, support and administration concerns independently maintainable.",
+      decisions: [
+        "Separated five applications around user roles while sharing authentication, domain types, forms, localisation and UI foundations through six packages.",
+        "Modelled payment, stock and seller-finance transitions explicitly so Stripe retries and failed checkout paths could be handled safely.",
+      ],
+      quality: [
+        "Covered domain services and payment edge cases with Vitest, then used Playwright for high-value customer and operational journeys.",
+        "Added webhook deduplication, stock restoration, rate limiting and visible action-level error states rather than treating failure paths as secondary UI.",
+      ],
+      outcome:
+        "The product can evolve across customer and operational surfaces without duplicating core business rules or compromising checkout and inventory integrity.",
+    },
+    sourceAccess: {
+      visibility: "private",
+      note: "The product repository is private. A guided walkthrough or focused, sanitised code sample can be shared for a relevant technical review.",
+    },
     stack: [
       "Next.js 16",
       "React 19",
@@ -96,7 +141,6 @@ export const projects: Project[] = [
     name: "Deliver1",
     domain: "deliver1.co.uk",
     url: "https://deliver1.co.uk",
-    repository: "https://github.com/dzajenckauskas/deliver1",
     year: "2024",
     period: "March 2024 – Present",
     engagement: "Commercial client project",
@@ -115,6 +159,24 @@ export const projects: Project[] = [
       "Built an issue-tracking flow with secure customer tokens, attachments, assignment, status updates and branded notifications.",
       "Improved media performance with touch-friendly galleries, progressive loading and adjacent-image preloading.",
     ],
+    caseStudy: {
+      challenge:
+        "Simplify a high-friction international moving journey while incrementally improving a live, conversion-focused product with existing content and service integrations.",
+      decisions: [
+        "Split quotation and booking into validated steps that keep location, inventory, date, identity and payment concerns understandable.",
+        "Used Strapi for editable service content while keeping payment, phone verification and customer issue tracking in explicit application workflows.",
+      ],
+      quality: [
+        "Designed retry, cooldown, loading and actionable error states around verification, email and payment operations.",
+        "Reduced media cost with progressive loading, adjacent-image preloading and touch-friendly navigation rather than loading full galleries eagerly.",
+      ],
+      outcome:
+        "Customers receive a clearer path from initial estimate to structured booking, while the frontend is easier to extend across service and support journeys.",
+    },
+    sourceAccess: {
+      visibility: "private",
+      note: "Client source code is private. I can discuss the architecture and demonstrate public workflows; repository access requires the client's permission.",
+    },
     stack: [
       "Next.js 14",
       "React 18",
@@ -136,7 +198,6 @@ export const projects: Project[] = [
     name: "Noreikis",
     domain: "noreikis.com",
     url: "https://www.noreikis.com",
-    repository: "https://github.com/dzajenckauskas/noreikis",
     year: "2023",
     period: "December 2023 – Present",
     engagement: "Commercial client project",
@@ -154,6 +215,24 @@ export const projects: Project[] = [
       "Built validated contact and property-price enquiry flows with branded transactional email templates.",
       "Implemented multilingual content, property sorting and filtering, motion details, technical SEO and automated VPS deployment.",
     ],
+    caseStudy: {
+      challenge:
+        "Balance a distinctive personal brand with fast property discovery, editable content and reliable lead capture for buyers and sellers.",
+      decisions: [
+        "Structured property, editorial, testimonial and SEO content in Strapi so the broker could update the site without frontend releases.",
+        "Kept valuation and contact journeys contextual to the content that triggered them, with reusable validated form primitives.",
+      ],
+      quality: [
+        "Added multilingual routing and metadata, predictable property sorting and careful motion that does not obscure primary actions.",
+        "Automated deployment and kept form submission failures visible and recoverable for prospective clients.",
+      ],
+      outcome:
+        "The platform supports both organic discovery and qualified enquiries while remaining maintainable by a small content and development workflow.",
+    },
+    sourceAccess: {
+      visibility: "private",
+      note: "Client source code is private. Product decisions and implementation patterns can be discussed without exposing proprietary content or credentials.",
+    },
     stack: [
       "Next.js 14",
       "React 18",
@@ -173,7 +252,6 @@ export const projects: Project[] = [
     name: "Ortopedijos Paslaugų Klinika",
     domain: "opklinika.lt",
     url: "https://www.opklinika.lt",
-    repository: "https://github.com/dzajenckauskas/opklinika-front",
     year: "2023",
     period: "March 2023 – Present",
     engagement: "Commercial client project",
@@ -191,6 +269,24 @@ export const projects: Project[] = [
       "Generated branded, data-driven product catalogues on demand with React PDF, including diagnosis and reimbursement tables.",
       "Delivered validated enquiry forms and SendGrid email handling, then added component tests and performance-focused data loading.",
     ],
+    caseStudy: {
+      challenge:
+        "Make a large healthcare service and technical-aid catalogue understandable to patients while preserving detailed diagnosis and reimbursement information.",
+      decisions: [
+        "Modelled services, products, categories, diagnoses and pricing as structured Strapi content rather than embedding medical catalogue data in page components.",
+        "Generated the printable catalogue from the same data model with React PDF so web and document outputs stay aligned.",
+      ],
+      quality: [
+        "Tested enquiry behaviour and PDF-oriented components while reducing payloads and prioritising content needed for the first render.",
+        "Handled custom fonts, long tables and multi-page layout explicitly so generated catalogues remain usable outside the browser.",
+      ],
+      outcome:
+        "Clinic staff can maintain one structured catalogue while patients receive consistent product information online and in a branded downloadable document.",
+    },
+    sourceAccess: {
+      visibility: "private",
+      note: "Client source code is private. I can demonstrate the public product and explain the React PDF and Strapi architecture in a technical walkthrough.",
+    },
     stack: [
       "Next.js 13",
       "React 18",

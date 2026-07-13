@@ -8,6 +8,7 @@ import { Footer } from "@/components/Footer";
 import { profile } from "@/data/profile";
 import { DoodleLayer } from "@/components/DoodleLayer";
 import { ScrollThread } from "@/components/ScrollThread";
+import { ScrollProgress } from "@/components/ScrollProgress";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://danielius.dev"),
@@ -38,6 +39,7 @@ export default function RootLayout({
     >
       <body className="min-h-screen font-sans">
         <Providers>
+          <ScrollProgress />
           <div className="page-wash" aria-hidden="true" />
           <div data-page-shell className="flex min-h-screen flex-col">
             <Nav />
