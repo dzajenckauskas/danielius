@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { FileText, Github, Mail, Linkedin, Menu, X } from "lucide-react";
 import { profile } from "@/data/profile";
@@ -12,16 +12,124 @@ const links = [
   { href: "/experience", label: "Experience" },
 ];
 
+// The dot drops from the top of the screen onto the "D", bounces with real
+// physics, rolls across the letter tops (each letter bobs on contact),
+// tumbles off the "S" and out of the header, then fires "nav-ball-exit" so
+// the scroll-thread ball can take over.
+const DOT_SIZE = 7;
+const DOT_R = DOT_SIZE / 2;
+const GRAVITY = 2600; // px/s²
+const RESTITUTION = 0.55;
+const ROLL_ACCEL = 50; // gentle imaginary downhill so the roll keeps going
+const MIN_BOUNCE_SPEED = 130; // below this the ball settles into rolling
+const DROP_DELAY_MS = 1600;
+
 export function Nav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const nameRef = useRef<HTMLAnchorElement>(null);
+  const dotRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const link = nameRef.current;
+    const dot = dotRef.current;
+    if (!link || !dot) return;
+
+    let raf = 0;
+    const timer = window.setTimeout(async () => {
+      await document.fonts?.ready;
+      const shells = Array.from(link.querySelectorAll<HTMLElement>(".nav-name-letter-shell"));
+      if (shells.length === 0) return;
+      const h = shells[0].offsetHeight;
+      const groundY = shells[0].offsetTop + h * 0.16; // cap-height line of the letters
+      const nameLeft = shells[0].offsetLeft;
+      const lastShell = shells[shells.length - 1];
+      const nameRight = lastShell.offsetLeft + lastShell.offsetWidth;
+      // The header is sticky at the top, so viewport coords are stable.
+      const linkTop = link.getBoundingClientRect().top;
+      const headerBottom = link.closest("header")?.getBoundingClientRect().bottom ?? 64;
+      const exitY = headerBottom - linkTop;
+      const centers = shells.map((shell) => shell.offsetLeft + shell.offsetWidth / 2);
+
+      const boop = (index: number) => {
+        const shell = shells[index];
+        if (!shell) return;
+        shell.classList.add("nav-letter-boop-on");
+        window.setTimeout(() => shell.classList.remove("nav-letter-boop-on"), 460);
+      };
+
+      let cx = centers[0] - 26;
+      let cy = -(linkTop + DOT_R + 2); // just above the viewport's top edge
+      let vx = 85;
+      let vy = 0;
+      let rot = 0;
+      let squash = 0;
+      let grounded = false;
+      let nextBoop = 0;
+      let lastT = performance.now();
+
+      const step = (now: number) => {
+        const dt = Math.min((now - lastT) / 1000, 0.032);
+        lastT = now;
+        const overName = cx >= nameLeft - 2 && cx <= nameRight + 2;
+
+        if (grounded) {
+          vx += ROLL_ACCEL * dt;
+          cx += vx * dt;
+          while (nextBoop < centers.length && centers[nextBoop] <= cx) boop(nextBoop++);
+          if (!overName) grounded = false; // rolled off the "S"
+        } else {
+          vy += GRAVITY * dt;
+          cx += vx * dt;
+          cy += vy * dt;
+          if (overName && vy > 0 && cy + DOT_R >= groundY) {
+            cy = groundY - DOT_R;
+            while (nextBoop < centers.length && centers[nextBoop] < cx - DOT_R * 2) nextBoop++;
+            if (nextBoop < centers.length && Math.abs(centers[nextBoop] - cx) < 14) boop(nextBoop++);
+            if (Math.abs(vy) > MIN_BOUNCE_SPEED) {
+              vy = -vy * RESTITUTION;
+              vx *= 0.99;
+              squash = 0.5;
+            } else {
+              vy = 0;
+              grounded = true;
+              squash = 0.3;
+            }
+          }
+        }
+        rot += (vx / DOT_R) * dt * (180 / Math.PI); // roll without slipping
+        squash *= Math.exp(-dt * 12);
+
+        const opacity = Math.max(0, Math.min(1, 1 - (cy - exitY) / 26));
+        dot.style.opacity = opacity.toFixed(2);
+        dot.style.transform =
+          `translate(${(cx - DOT_R).toFixed(1)}px, ${(cy - DOT_R).toFixed(1)}px)`
+          + ` rotate(${rot.toFixed(1)}deg)`
+          + ` scale(${(1 + squash * 0.55).toFixed(3)}, ${(1 - squash * 0.55).toFixed(3)})`;
+
+        if (opacity <= 0) {
+          window.dispatchEvent(new Event("nav-ball-exit"));
+          return;
+        }
+        raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    }, DROP_DELAY_MS);
+
+    return () => {
+      window.clearTimeout(timer);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-bg/70 backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Link
           href="/"
-          className="nav-name"
+          ref={nameRef}
+          className="nav-name relative"
           aria-label={`${profile.firstName} — Home`}
         >
           {Array.from(profile.firstName.toUpperCase()).map((letter, index) => {
@@ -43,6 +151,7 @@ export function Nav() {
               </span>
             );
           })}
+          <span ref={dotRef} className="nav-dot" aria-hidden="true" />
         </Link>
 
         {/* Desktop */}

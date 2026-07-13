@@ -218,6 +218,46 @@ body {
   to { opacity: 1; transform: none; }
 }
 
+/* Nav logo ball: driven frame-by-frame by the physics sim in Nav.tsx
+   (gravity, bounce restitution, rolling). It drops from the viewport top,
+   bounces on the letter caps, rolls across the name and tumbles out of the
+   header. */
+.nav-dot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--ink);
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+}
+.nav-name:hover .nav-dot { background: var(--ink-strong); }
+/* Off-centre notch that makes the ball's rolling visible. */
+.nav-dot::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  margin-left: -1px;
+  border-radius: 999px;
+  background: var(--bg);
+  opacity: 0.9;
+}
+/* Contact reaction, toggled by the sim when the ball touches a letter. */
+.nav-name-letter-shell.nav-letter-boop-on > .nav-name-letter {
+  animation: nav-letter-boop 0.45s cubic-bezier(0.3, 1.4, 0.5, 1);
+}
+@keyframes nav-letter-boop {
+  0%, 100% { transform: none; }
+  35% { transform: translateY(0.07em) scaleY(0.88) scaleX(1.1); }
+  70% { transform: translateY(-0.04em) scaleY(1.05); }
+}
+
 .social-button {
   display: inline-flex;
   width: 2.5rem;
@@ -752,6 +792,34 @@ body {
   stroke-linecap: round;
   stroke-linejoin: round;
   opacity: 0.24;
+}
+/* The ball that rides the tip of the thread, drawing it as you scroll.
+   Positioned by ScrollThread.tsx in document coordinates. */
+.scroll-thread-ball {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--ink-strong);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  will-change: transform;
+}
+.scroll-thread-ball::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 50%;
+  width: 2.5px;
+  height: 2.5px;
+  margin-left: -1.25px;
+  border-radius: 999px;
+  background: var(--bg);
+  opacity: 0.9;
 }
 .thread-under { position: relative; z-index: 0; }
 .thread-over { position: relative; z-index: 2; }
@@ -2434,6 +2502,8 @@ body {
   .doodle-theme-toggle:hover .theme-toggle-moon { animation: none; }
   .hero-letter-shell { opacity: 1; transform: none; }
   .nav-name-letter-shell, .nav-name-letter { opacity: 1; transform: none; }
+  .nav-dot { display: none; }
+  .scroll-thread-ball { display: none; }
   .featured-work-progress span { transition: none; }
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.001ms !important; }
 }

@@ -5,6 +5,15 @@ import { usePathname } from "next/navigation";
 
 type Point = { x: number; y: number; loops?: number; radius?: number };
 
+// The nav ball fires "nav-ball-exit" when it tumbles out of the header; the
+// thread ball takes over here, riding the tip of the thread and drawing it
+// as the page scrolls. The timeout is a fallback in case the nav sim never
+// runs (e.g. the logo failed to mount).
+const BALL_HANDOFF_FALLBACK_MS = 9000;
+const BALL_CATCHUP_MS = 1400;
+const SAMPLE_STEP = 8;
+const BALL_R = 4;
+
 function connect(path: string, from: Point, to: Point, character: number) {
   const distance = Math.max(to.y - from.y, 80);
   const sway = (character - 0.5) * 32;
@@ -67,7 +76,59 @@ export function ScrollThread() {
   const interactionRef = useRef(0);
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const displacementRef = useRef<SVGFEDisplacementMapElement>(null);
+  const ballRef = useRef<HTMLDivElement>(null);
+  const maskRef = useRef<SVGMaskElement>(null);
+  const maskPathRef = useRef<SVGPathElement>(null);
+  const samplesRef = useRef<{ x: number; y: number }[]>([]);
+  const totalRef = useRef(0);
+  const ballModeRef = useRef<"hidden" | "catchup" | "live">("hidden");
+  const drawnRef = useRef(0);
+  const reducedMotionRef = useRef(false);
   const pathname = usePathname();
+
+  // Length along the path whose point sits at the "pen tip" for the current
+  // scroll position. Scanning to the first sample below the tip line makes
+  // the ball race around orbit loops as the tip sweeps their y-range.
+  const tipLength = useCallback(() => {
+    const samples = samplesRef.current;
+    if (samples.length === 0) return 0;
+    // The tip sits at 80% of the viewport, easing down to the viewport bottom
+    // as scrolling completes, so the ball reaches the thread's end at the
+    // footer instead of stalling a fifth of a screen above it.
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = maxScroll <= 0 ? 1 : Math.min(1, window.scrollY / maxScroll);
+    const tipY = window.scrollY + window.innerHeight * (0.8 + 0.2 * progress);
+    let i = 0;
+    while (i < samples.length - 1 && samples[i].y < tipY) i += 1;
+    return Math.min(i * SAMPLE_STEP, totalRef.current);
+  }, []);
+
+  const drawThread = useCallback(() => {
+    const maskPath = maskPathRef.current;
+    const ball = ballRef.current;
+    const samples = samplesRef.current;
+    if (!maskPath || !ball || samples.length === 0) return;
+    if (reducedMotionRef.current) {
+      maskPath.style.strokeDasharray = "";
+      return;
+    }
+    const gap = Math.ceil(totalRef.current) + 10;
+    if (ballModeRef.current === "hidden") {
+      maskPath.style.strokeDasharray = `0 ${gap}`;
+      ball.style.opacity = "0";
+      return;
+    }
+    if (ballModeRef.current === "live") drawnRef.current = tipLength();
+    const drawn = Math.max(0, Math.min(drawnRef.current, totalRef.current));
+    maskPath.style.strokeDasharray = `${drawn} ${gap}`;
+    const point = samples[Math.min(Math.round(drawn / SAMPLE_STEP), samples.length - 1)];
+    const svgWidth = svgRef.current?.clientWidth || window.innerWidth;
+    const x = (point.x / 1000) * svgWidth - BALL_R;
+    const y = point.y - BALL_R;
+    const roll = (drawn / (2 * Math.PI * BALL_R)) * 360;
+    ball.style.opacity = "1";
+    ball.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${roll.toFixed(0)}deg)`;
+  }, [tipLength]);
 
   const measure = useCallback(() => {
     const svg = svgRef.current;
@@ -98,7 +159,21 @@ export function ScrollThread() {
     }
     const variation = variationRef.current;
     const randomAt = (index: number) => variation[index % variation.length] ?? 0.5;
-    const points: Point[] = [{ x: 700 + randomAt(0) * 210, y: 0 }];
+
+    // Start the thread right under the logo's last letter — the nav ball
+    // rolls off it and the thread ball continues from the same spot.
+    const logoShells = document.querySelectorAll<HTMLElement>(".nav-name .nav-name-letter-shell");
+    const logoLetter = logoShells[logoShells.length - 1];
+    let start: Point = { x: 700 + randomAt(0) * 210, y: 0 };
+    if (logoLetter) {
+      const letterRect = logoLetter.getBoundingClientRect();
+      const svgWidth = Math.max(svg.clientWidth, 1);
+      start = {
+        x: Math.max(30, Math.min(970, ((letterRect.left + letterRect.width) / svgWidth) * 1000)),
+        y: 72,
+      };
+    }
+    const points: Point[] = [start];
 
     anchors.forEach((anchor, index) => {
       const rect = anchor.getBoundingClientRect();
@@ -143,7 +218,39 @@ export function ScrollThread() {
     svg.style.height = `${documentHeight}px`;
     const pathData = buildPath(points, variation);
     path.setAttribute("d", pathData);
-  }, []);
+    maskPathRef.current?.setAttribute("d", pathData);
+    if (maskRef.current) {
+      maskRef.current.setAttribute("x", "0");
+      maskRef.current.setAttribute("y", "0");
+      maskRef.current.setAttribute("width", "1000");
+      maskRef.current.setAttribute("height", `${documentHeight}`);
+    }
+
+    totalRef.current = path.getTotalLength();
+
+    // Hand-drawn line quality: random alternation of solid runs and dashed
+    // stretches along the whole thread. The reveal is done by the mask path,
+    // so this pattern can live on the visible path permanently.
+    const pattern: number[] = [];
+    let used = 0;
+    let segment = 0;
+    while (used < totalRef.current) {
+      const solid = 160 + randomAt(segment * 7 + 3) * 320;
+      pattern.push(solid, 0);
+      used += solid;
+      const dashes = 5 + Math.round(randomAt(segment * 11 + 5) * 14);
+      for (let i = 0; i < dashes; i += 1) pattern.push(8, 6);
+      used += dashes * 14;
+      segment += 1;
+    }
+    path.style.strokeDasharray = pattern.map((n) => n.toFixed(1)).join(" ");
+    const count = Math.max(1, Math.ceil(totalRef.current / SAMPLE_STEP));
+    samplesRef.current = Array.from({ length: count + 1 }, (_, index) => {
+      const p = path.getPointAtLength(Math.min(index * SAMPLE_STEP, totalRef.current));
+      return { x: p.x, y: p.y };
+    });
+    drawThread();
+  }, [drawThread]);
 
   const update = useCallback(() => {
     frameRef.current = null;
@@ -157,6 +264,7 @@ export function ScrollThread() {
     if (displacementRef.current) {
       displacementRef.current.setAttribute("scale", `${(0.25 + interactionRef.current * 1.1).toFixed(2)}`);
     }
+    drawThread();
 
     document.querySelectorAll<HTMLElement>(".parallax-blob").forEach((blob, index) => {
       const rect = blob.getBoundingClientRect();
@@ -174,7 +282,7 @@ export function ScrollThread() {
     if (interactionRef.current > 0.015) {
       frameRef.current = requestAnimationFrame(update);
     }
-  }, []);
+  }, [drawThread]);
 
   useEffect(() => {
     const schedule = () => {
@@ -197,6 +305,7 @@ export function ScrollThread() {
       schedule();
     });
 
+    reducedMotionRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     measure();
     update();
     const pageShell = document.querySelector<HTMLElement>("[data-page-shell]");
@@ -205,16 +314,38 @@ export function ScrollThread() {
     window.addEventListener("pointermove", onPointerMove, { passive: true });
     window.addEventListener("resize", measure);
 
+    // One-time handoff: when the nav ball tumbles out of the header, sweep
+    // the thread from the logo down to the current tip, then follow scroll.
+    const startBall = () => {
+      if (reducedMotionRef.current || ballModeRef.current !== "hidden") return;
+      ballModeRef.current = "catchup";
+      const startTime = performance.now();
+      const tick = (now: number) => {
+        if (ballModeRef.current !== "catchup") return;
+        const k = Math.min(1, (now - startTime) / BALL_CATCHUP_MS);
+        drawnRef.current = tipLength() * (1 - (1 - k) ** 3);
+        drawThread();
+        if (k < 1) requestAnimationFrame(tick);
+        else ballModeRef.current = "live";
+      };
+      requestAnimationFrame(tick);
+    };
+    window.addEventListener("nav-ball-exit", startBall);
+    const ballTimer = window.setTimeout(startBall, BALL_HANDOFF_FALLBACK_MS);
+
     return () => {
       resizeObserver.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("resize", measure);
+      window.removeEventListener("nav-ball-exit", startBall);
+      window.clearTimeout(ballTimer);
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
     };
-  }, [measure, pathname, update]);
+  }, [measure, pathname, update, drawThread, tipLength]);
 
   return (
+    <>
     <svg ref={svgRef} className="scroll-thread" aria-hidden="true" preserveAspectRatio="none">
       <defs>
         <filter id="living-thread" x="-12%" y="-4%" width="124%" height="108%">
@@ -235,6 +366,15 @@ export function ScrollThread() {
             yChannelSelector="G"
           />
         </filter>
+        <mask ref={maskRef} id="thread-reveal" maskUnits="userSpaceOnUse">
+          <path
+            ref={maskPathRef}
+            fill="none"
+            stroke="#fff"
+            strokeWidth="8"
+            vectorEffect="non-scaling-stroke"
+          />
+        </mask>
       </defs>
       <path
         ref={pathRef}
@@ -242,7 +382,10 @@ export function ScrollThread() {
         fill="none"
         vectorEffect="non-scaling-stroke"
         filter="url(#living-thread)"
+        mask="url(#thread-reveal)"
       />
     </svg>
+    <div ref={ballRef} className="scroll-thread-ball" aria-hidden="true" />
+    </>
   );
 }
