@@ -1,6 +1,5 @@
 import path from "node:path";
 import {
-  Circle,
   Document,
   Font,
   Image,
@@ -35,237 +34,359 @@ Font.register({
       fontWeight: 300,
       fontStyle: "italic",
     },
+    {
+      src: publicPath("fonts", "neris", "Neris-SemiBoldItalic.otf"),
+      fontWeight: 600,
+      fontStyle: "italic",
+    },
   ],
 });
 Font.registerHyphenationCallback((word) => [word]);
 
 const colors = {
-  paper: "#f8f6f3",
-  text: "#191a1c",
-  muted: "#5b5e62",
-  subtle: "#8b8e92",
-  ink: "#4f736e",
-  border: "#ddd9d2",
-  lilac: "#eee6f2",
+  paper: "#fbfbfa",
+  text: "#101113",
+  muted: "#4e5155",
+  subtle: "#777b80",
+  ink: "#547b76",
+  paleInk: "#9ebbb6",
   sage: "#e8eee4",
-  rose: "#f1e5ea",
+  lilac: "#f0eaf3",
+  surface: "#ffffff",
+  border: "#e4e0d9",
 };
 
 const styles = StyleSheet.create({
   page: {
     position: "relative",
-    paddingTop: 38,
-    paddingRight: 42,
-    paddingBottom: 32,
-    paddingLeft: 42,
+    width: 595.28,
+    height: 841.89,
     backgroundColor: colors.paper,
     color: colors.text,
     fontFamily: "Neris",
     fontSize: 9,
     fontWeight: 300,
-    lineHeight: 1.45,
+    lineHeight: 1.34,
   },
-  blobTop: {
+  edgeWash: {
     position: "absolute",
-    top: -70,
-    right: -50,
-    width: 245,
-    height: 185,
-    borderRadius: 90,
+    top: -85,
+    right: -70,
+    width: 250,
+    height: 240,
+    borderRadius: 120,
     backgroundColor: colors.sage,
-    opacity: 0.72,
+    opacity: 0.5,
   },
-  blobLeft: {
+  edgeWashLilac: {
     position: "absolute",
-    top: 116,
-    left: -90,
-    width: 190,
-    height: 150,
-    borderRadius: 75,
+    right: -90,
+    bottom: -95,
+    width: 260,
+    height: 240,
+    borderRadius: 120,
     backgroundColor: colors.lilac,
-    opacity: 0.72,
+    opacity: 0.36,
   },
-  header: {
-    position: "relative",
-    height: 164,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  photoWrap: { width: 132, height: 132, marginRight: 30 },
-  photo: { width: 132, height: 132, objectFit: "cover" },
-  identity: { flexGrow: 1, paddingTop: 5 },
-  contactRow: {
-    marginBottom: 18,
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-  contactLink: {
-    marginRight: 13,
-    marginBottom: 3,
-    color: colors.muted,
-    fontSize: 7.5,
-    textDecoration: "none",
-  },
-  name: {
-    fontSize: 25,
+  sectionTitle: {
+    marginBottom: 9,
+    fontSize: 13.5,
     fontWeight: 900,
     letterSpacing: 4.2,
-    lineHeight: 1.05,
-  },
-  role: {
-    marginTop: 9,
-    color: colors.muted,
-    fontSize: 10.5,
-    letterSpacing: 0.4,
-  },
-  section: { position: "relative", marginTop: 18 },
-  sectionLabel: {
-    marginBottom: 9,
-    fontSize: 8.5,
-    fontWeight: 900,
-    letterSpacing: 2.5,
+    lineHeight: 1,
     textTransform: "uppercase",
   },
-  summary: { width: "88%", color: colors.muted, fontSize: 9.2, lineHeight: 1.58 },
-  columns: { marginTop: 22, flexDirection: "row" },
-  sidebar: { width: "35%", paddingRight: 24 },
-  mainColumn: {
-    width: "65%",
-    paddingLeft: 26,
-    borderLeftWidth: 0.7,
-    borderLeftColor: colors.border,
+  miniTitle: {
+    marginBottom: 2,
+    fontSize: 8.3,
+    fontWeight: 600,
   },
-  skillGroup: { marginBottom: 9 },
-  smallLabel: {
+  meta: {
     marginBottom: 3,
-    color: colors.subtle,
-    fontSize: 6.5,
+    color: colors.muted,
+    fontSize: 6.8,
+    fontStyle: "italic",
+  },
+  body: { color: colors.text, fontSize: 8.65, lineHeight: 1.38 },
+  bodyMuted: { color: colors.muted, fontSize: 8.2, lineHeight: 1.4 },
+  photo: {
+    position: "absolute",
+    top: 51,
+    left: 49,
+    width: 145,
+    height: 145,
+    objectFit: "cover",
+  },
+  photoBlob: {
+    position: "absolute",
+    top: 170,
+    left: 143,
+    width: 42,
+    height: 52,
+    borderRadius: 20,
+    backgroundColor: colors.ink,
+    opacity: 0.72,
+  },
+  topContact: {
+    position: "absolute",
+    top: 52,
+    right: 51,
+    alignItems: "flex-start",
+  },
+  topLink: {
+    marginBottom: 3,
+    color: colors.text,
+    fontSize: 7.1,
+    fontStyle: "italic",
+    textDecoration: "none",
+  },
+  identity: { position: "absolute", top: 137, left: 216, width: 334 },
+  name: {
+    fontSize: 25.5,
     fontWeight: 900,
-    letterSpacing: 1.4,
-    textTransform: "uppercase",
+    letterSpacing: 4.8,
+    lineHeight: 1.06,
   },
-  skillText: { color: colors.muted, fontSize: 7.7, lineHeight: 1.45 },
-  languageRow: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderBottomWidth: 0.5,
-    borderBottomColor: colors.border,
+  role: { marginTop: 8, color: colors.muted, fontSize: 8.5, letterSpacing: 0.5 },
+  sidebar: { position: "absolute", top: 225, left: 49, width: 142 },
+  main: { position: "absolute", top: 225, left: 216, width: 334 },
+  skillsPanel: {
+    position: "absolute",
+    top: 214,
+    left: 39,
+    width: 162,
+    height: 575,
+    borderWidth: 0.55,
+    borderColor: colors.border,
+    borderRadius: 13,
+    backgroundColor: colors.surface,
+    opacity: 0.72,
   },
-  languageLevel: { color: colors.subtle },
-  timelineItem: { position: "relative", paddingLeft: 18, paddingBottom: 14 },
-  timelineLine: {
+  skillBlock: { marginBottom: 8 },
+  skillLabel: { fontSize: 7.7, fontWeight: 600 },
+  skillItems: { color: colors.text, fontSize: 7.8, lineHeight: 1.28 },
+  statement: { marginBottom: 18 },
+  statementParagraph: { marginBottom: 8, color: colors.text, fontSize: 8.55, lineHeight: 1.42 },
+  experienceTitle: { marginTop: 1, fontSize: 9.1, fontWeight: 600 },
+  experienceEntry: { position: "relative", marginBottom: 10, paddingLeft: 14 },
+  experienceLine: {
     position: "absolute",
     top: 4,
-    bottom: -4,
+    bottom: -11,
     left: 3,
-    width: 0.7,
+    width: 0.55,
     backgroundColor: colors.border,
   },
-  timelineDot: {
+  experienceDot: {
     position: "absolute",
     top: 3,
     left: 0,
     width: 7,
     height: 7,
     borderRadius: 4,
-    borderWidth: 1.3,
+    borderWidth: 1.2,
     borderColor: colors.ink,
     backgroundColor: colors.paper,
   },
-  period: {
-    color: colors.subtle,
-    fontSize: 6.7,
-    fontWeight: 600,
-    letterSpacing: 0.8,
-    textTransform: "uppercase",
+  experienceText: { marginTop: 4, color: colors.text, fontSize: 7.8, lineHeight: 1.38 },
+  pageNumber: {
+    position: "absolute",
+    right: 52,
+    bottom: 35,
+    fontSize: 7,
   },
-  itemTitle: { marginTop: 2, fontSize: 10.5, fontWeight: 600 },
-  itemOrg: { marginTop: 1, color: colors.ink, fontSize: 8.5, fontWeight: 600 },
-  itemDescription: { marginTop: 4, color: colors.muted, fontSize: 7.6, lineHeight: 1.45 },
-  pageTitle: { marginTop: 16, fontSize: 25, fontWeight: 900, letterSpacing: 2.7, lineHeight: 1 },
-  pageIntro: { marginTop: 14, width: "70%", color: colors.muted, fontSize: 9, lineHeight: 1.45 },
-  projectList: { marginTop: 24 },
-  project: {
-    position: "relative",
-    paddingTop: 13,
-    paddingRight: 14,
-    paddingBottom: 13,
-    paddingLeft: 14,
-    borderTopWidth: 0.7,
-    borderTopColor: colors.border,
-  },
-  projectTop: { flexDirection: "row", alignItems: "baseline", justifyContent: "space-between" },
-  projectName: { fontSize: 11, fontWeight: 600 },
-  projectPeriod: { color: colors.subtle, fontSize: 6.7, letterSpacing: 0.5 },
-  projectSummary: { width: "82%", marginTop: 4, color: colors.muted, fontSize: 7.6 },
-  tags: { marginTop: 6, flexDirection: "row", flexWrap: "wrap" },
-  tag: {
-    marginRight: 4,
-    marginBottom: 3,
-    paddingTop: 2.2,
-    paddingRight: 5,
-    paddingBottom: 2.2,
-    paddingLeft: 5,
+  pageTwoLeft: { position: "absolute", top: 51, left: 49, width: 145 },
+  pageTwoRight: { position: "absolute", top: 51, left: 216, width: 334 },
+  educationEntry: { marginBottom: 13 },
+  otherEntry: { marginBottom: 18 },
+  otherDescription: { marginTop: 4, fontSize: 8.15, lineHeight: 1.38 },
+  educationPanel: {
+    position: "absolute",
+    top: 40,
+    left: 39,
+    width: 165,
+    height: 245,
     borderWidth: 0.55,
     borderColor: colors.border,
-    borderRadius: 8,
-    color: colors.muted,
-    fontSize: 5.8,
+    borderRadius: 13,
+    backgroundColor: colors.surface,
+    opacity: 0.75,
   },
-  lowerColumns: { marginTop: 20, flexDirection: "row" },
-  lowerLeft: { width: "58%", paddingRight: 28 },
-  lowerRight: { width: "42%", paddingLeft: 25, borderLeftWidth: 0.7, borderLeftColor: colors.border },
-  educationItem: { marginBottom: 8 },
-  educationTitle: { fontSize: 8.5, fontWeight: 600 },
-  educationMeta: { color: colors.subtle, fontSize: 6.8 },
-  interestText: { color: colors.muted, fontSize: 7.8, lineHeight: 1.6 },
-  footer: {
+  otherExperiencePanel: {
     position: "absolute",
-    right: 42,
-    bottom: 19,
-    left: 42,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    color: colors.subtle,
+    top: 40,
+    left: 206,
+    width: 349,
+    height: 205,
+    borderWidth: 0.55,
+    borderColor: colors.border,
+    borderRadius: 13,
+    backgroundColor: colors.surface,
+    opacity: 0.75,
+  },
+  otherSkillsPanel: {
+    position: "absolute",
+    top: 310,
+    left: 39,
+    width: 165,
+    height: 155,
+    borderWidth: 0.55,
+    borderColor: colors.border,
+    borderRadius: 13,
+    backgroundColor: colors.surface,
+    opacity: 0.75,
+  },
+  interestsPanel: {
+    position: "absolute",
+    top: 310,
+    left: 206,
+    width: 349,
+    height: 112,
+    borderWidth: 0.55,
+    borderColor: colors.border,
+    borderRadius: 13,
+    backgroundColor: colors.surface,
+    opacity: 0.75,
+  },
+  otherSkills: { position: "absolute", top: 322, left: 49, width: 145 },
+  interests: { position: "absolute", top: 322, left: 216, width: 329 },
+  pillWrap: { flexDirection: "row", flexWrap: "wrap" },
+  pill: {
+    marginRight: 4,
+    marginBottom: 4,
+    paddingTop: 3,
+    paddingRight: 6,
+    paddingBottom: 3,
+    paddingLeft: 6,
+    borderWidth: 0.55,
+    borderColor: colors.border,
+    borderRadius: 9,
+    backgroundColor: colors.surface,
+    color: colors.muted,
     fontSize: 6.5,
+  },
+  projects: { marginTop: 7 },
+  projectGrid: { flexDirection: "row", flexWrap: "wrap" },
+  projectCard: {
+    position: "relative",
+    width: 160,
+    height: 51,
+    marginRight: 6,
+    marginBottom: 6,
+    paddingTop: 7,
+    paddingRight: 8,
+    paddingBottom: 6,
+    paddingLeft: 8,
+    overflow: "hidden",
+    borderWidth: 0.55,
+    borderColor: colors.border,
+    borderRadius: 10,
+    backgroundColor: colors.surface,
+  },
+  projectAccent: {
+    position: "absolute",
+    top: -15,
+    right: -12,
+    width: 48,
+    height: 38,
+    borderRadius: 20,
+    backgroundColor: colors.sage,
+    opacity: 0.72,
+  },
+  projectName: { color: colors.text, fontSize: 7.6, fontWeight: 600, textDecoration: "none" },
+  projectDomain: { marginTop: 1, color: colors.subtle, fontSize: 5.7 },
+  projectStack: { marginTop: 4, color: colors.ink, fontSize: 5.4 },
+  contact: {
+    position: "absolute",
+    left: 39,
+    bottom: 43,
+    width: 235,
+    paddingTop: 12,
+    paddingRight: 12,
+    paddingBottom: 10,
+    paddingLeft: 12,
+    overflow: "hidden",
+    borderWidth: 0.55,
+    borderColor: colors.border,
+    borderRadius: 14,
+    backgroundColor: colors.surface,
+  },
+  contactTitle: { marginBottom: 14, fontSize: 13.5, fontWeight: 900, letterSpacing: 4.2 },
+  contactLink: {
+    marginBottom: 5,
+    color: colors.text,
+    fontSize: 8.2,
+    fontStyle: "italic",
+    textDecoration: "none",
   },
 });
 
-function PageFooter({ page }: { page: number }) {
+function HeaderThread() {
   return (
-    <View style={styles.footer} fixed>
-      <Text>danielius.dev</Text>
-      <Text>{page}/2</Text>
-    </View>
-  );
-}
-
-function HeaderDoodle() {
-  return (
-    <Svg style={{ position: "absolute", top: 59, left: 118, width: 245, height: 76 }} viewBox="0 0 245 76">
+    <Svg style={{ position: "absolute", top: 116, left: 178, width: 258, height: 82 }} viewBox="0 0 258 82">
       <Path
-        d="M2 17 C38 3 69 8 88 26 C108 45 129 48 154 30 C179 12 199 13 218 28 C228 36 235 39 243 34"
-        fill="none"
-        stroke={colors.ink}
-        strokeWidth="0.7"
-        opacity="0.62"
-      />
-      <Path
-        d="M139 31 C148 14 162 12 169 26 C176 41 165 54 152 48 C141 43 138 35 139 31"
+        d="M0 14 C27 12 31 41 59 38 C86 35 86 12 117 18 C142 23 132 53 161 54 C190 55 190 18 223 13 C240 10 250 5 258 0"
         fill="none"
         stroke={colors.ink}
         strokeWidth="0.65"
-        opacity="0.54"
+        opacity="0.8"
+      />
+      <Path
+        d="M145 50 L157 59 L151 68"
+        fill="none"
+        stroke={colors.ink}
+        strokeWidth="0.65"
+        opacity="0.8"
       />
     </Svg>
   );
 }
 
+function ContactArrow() {
+  return (
+    <Svg style={{ position: "absolute", top: 500, left: 190, width: 275, height: 250 }} viewBox="0 0 275 250">
+      <Path
+        d="M245 5 C253 61 260 113 226 150 C194 185 151 185 103 185 C65 185 46 184 31 205 C20 219 14 231 5 242"
+        fill="none"
+        stroke={colors.ink}
+        strokeWidth="0.7"
+        opacity="0.88"
+      />
+      <Path
+        d="M5 242 L8 228 M5 242 L20 235"
+        fill="none"
+        stroke={colors.ink}
+        strokeWidth="0.7"
+        opacity="0.88"
+      />
+    </Svg>
+  );
+}
+
+function CircledPageNumber() {
+  return (
+    <Svg style={{ position: "absolute", right: 43, bottom: 27, width: 35, height: 35 }} viewBox="0 0 35 35">
+      <Path
+        d="M4 22 C4 9 11 3 21 4 C31 5 34 14 31 23 C28 32 17 34 9 29 C4 26 2 20 4 14"
+        fill="none"
+        stroke={colors.ink}
+        strokeWidth="0.65"
+      />
+      <Text x="11" y="22" style={{ fontFamily: "Neris", fontSize: 7, fill: colors.text }}>2/2</Text>
+    </Svg>
+  );
+}
+
 export function ResumeDocument() {
-  const engineeringExperience = experience.slice(0, 3);
-  const additionalExperience = experience[3];
+  const relevantExperience = experience.slice(0, 2);
+  const otherExperience = experience.slice(2);
+  const otherSkills = [
+    "Pragmatic problem solving",
+    "Strong attention to detail",
+    "Clear cross-functional communication",
+    "Visual hierarchy and UI consistency",
+    "Independent delivery and ownership",
+  ];
 
   return (
     <Document
@@ -275,137 +396,137 @@ export function ResumeDocument() {
       keywords="Front-End Developer, React, Next.js, TypeScript"
     >
       <Page size="A4" style={styles.page} wrap={false}>
-        <View style={styles.blobTop} />
-        <View style={styles.blobLeft} />
-        <HeaderDoodle />
+        <View style={{ width: 595.28, height: 841.89 }} />
+        <View style={styles.edgeWash} />
+        <View style={styles.edgeWashLilac} />
+        <View style={styles.photoBlob} />
+        <Image style={styles.photo} src={publicPath("avatar.jpg")} />
+        <HeaderThread />
+        <View style={styles.skillsPanel} />
 
-        <View style={styles.header}>
-          <View style={styles.photoWrap}>
-            <Image style={styles.photo} src={publicPath("avatar.jpg")} />
-          </View>
-          <View style={styles.identity}>
-            <View style={styles.contactRow}>
-              <Link style={styles.contactLink} src={`mailto:${profile.email}`}>{profile.email}</Link>
-              <Link style={styles.contactLink} src={profile.linkedin}>LinkedIn</Link>
-              <Link style={styles.contactLink} src={profile.github}>GitHub</Link>
-              <Text style={styles.contactLink}>{profile.location}</Text>
-            </View>
-            <Text style={styles.name}>DANIELIUS</Text>
-            <Text style={styles.name}>ZAJENČKAUSKAS</Text>
-            <Text style={styles.role}>{profile.role}</Text>
-          </View>
+        <View style={styles.topContact}>
+          <Link style={styles.topLink} src={`mailto:${profile.email}`}>{profile.email}</Link>
+          <Link style={styles.topLink} src={profile.linkedin}>linkedin.com/in/danielius-zajenckauskas</Link>
+          <Link style={styles.topLink} src={profile.github}>github.com/dzajenckauskas</Link>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionLabel}>Professional profile</Text>
-          <Text style={styles.summary}>{profile.about[0]}</Text>
-          <Text style={[styles.summary, { marginTop: 7 }]}>{profile.about[1]}</Text>
+        <View style={styles.identity}>
+          <Text style={styles.name}>DANIELIUS</Text>
+          <Text style={styles.name}>ZAJENČKAUSKAS</Text>
+          <Text style={styles.role}>{profile.role} · {profile.location}</Text>
         </View>
 
-        <View style={styles.columns}>
-          <View style={styles.sidebar}>
-            <Text style={styles.sectionLabel}>Core expertise</Text>
-            {skillGroups.map((group) => (
-              <View key={group.label} style={styles.skillGroup}>
-                <Text style={styles.smallLabel}>{group.label}</Text>
-                <Text style={styles.skillText}>{group.items.join(" · ")}</Text>
-              </View>
-            ))}
-
-            <Text style={[styles.sectionLabel, { marginTop: 10 }]}>Languages</Text>
-            {languages.map((language) => (
-              <View key={language.name} style={styles.languageRow}>
-                <Text>{language.name}</Text>
-                <Text style={styles.languageLevel}>{language.level}</Text>
-              </View>
-            ))}
+        <View style={styles.sidebar}>
+          <Text style={styles.sectionTitle}>Skills</Text>
+          <View style={styles.skillBlock}>
+            <Text style={styles.skillLabel}>Languages</Text>
+            <Text style={styles.skillItems}>
+              {languages.map((language) => `${language.name} — ${language.level.toLowerCase()}`).join("\n")}
+            </Text>
           </View>
-
-          <View style={styles.mainColumn}>
-            <Text style={styles.sectionLabel}>Experience</Text>
-            {engineeringExperience.map((entry, index) => (
-              <View key={entry.title} style={styles.timelineItem}>
-                <View style={styles.timelineLine} />
-                <View style={styles.timelineDot} />
-                <Text style={styles.period}>{entry.period}</Text>
-                <Text style={styles.itemTitle}>{entry.title}</Text>
-                {entry.org && <Text style={styles.itemOrg}>{entry.org}</Text>}
-                {entry.description && <Text style={styles.itemDescription}>{entry.description}</Text>}
-                {index === engineeringExperience.length - 1 ? null : <View />}
-              </View>
-            ))}
-          </View>
-        </View>
-
-        <PageFooter page={1} />
-      </Page>
-
-      <Page size="A4" style={styles.page} wrap={false}>
-        <View style={[styles.blobTop, { backgroundColor: colors.lilac, opacity: 0.58 }]} />
-        <Svg style={{ position: "absolute", right: 35, bottom: 42, width: 105, height: 90 }} viewBox="0 0 105 90">
-          <Path
-            d="M100 5 C89 17 92 34 76 40 C59 46 57 63 42 69 C29 74 18 75 5 84 M5 84 L15 83 M5 84 L10 74"
-            fill="none"
-            stroke={colors.ink}
-            strokeWidth="0.75"
-            opacity="0.55"
-          />
-          <Circle cx="91" cy="14" r="9" fill="none" stroke={colors.ink} strokeWidth="0.6" opacity="0.4" />
-        </Svg>
-
-        <Text style={styles.sectionLabel}>Selected work</Text>
-        <Text style={styles.pageTitle}>PROJECTS</Text>
-        <Text style={styles.pageIntro}>
-          Commercial platforms and independent products spanning e-commerce,
-          healthcare, real estate and international relocation.
-        </Text>
-
-        <View style={styles.projectList}>
-          {projects.map((project) => (
-            <View key={project.slug} style={styles.project}>
-              <View style={styles.projectTop}>
-                <Link src={project.url} style={[styles.projectName, { color: colors.text, textDecoration: "none" }]}>
-                  {project.name}
-                </Link>
-                <Text style={styles.projectPeriod}>{project.period}</Text>
-              </View>
-              <Text style={styles.projectSummary}>{project.summary}</Text>
-              <View style={styles.tags}>
-                {project.stack.slice(0, 6).map((item) => <Text key={item} style={styles.tag}>{item}</Text>)}
-              </View>
+          {skillGroups.map((group) => (
+            <View key={group.label} style={styles.skillBlock}>
+              <Text style={styles.skillLabel}>{group.label}</Text>
+              <Text style={styles.skillItems}>{group.items.join("\n")}</Text>
             </View>
           ))}
         </View>
 
-        <View style={styles.lowerColumns}>
-          <View style={styles.lowerLeft}>
-            <Text style={styles.sectionLabel}>Education</Text>
-            {education.map((entry) => (
-              <View key={entry.title} style={styles.educationItem}>
-                <Text style={styles.educationTitle}>{entry.title}</Text>
-                <Text style={styles.educationMeta}>{entry.org} · {entry.period}</Text>
-              </View>
+        <View style={styles.main}>
+          <View style={styles.statement}>
+            <Text style={styles.sectionTitle}>Professional Statement</Text>
+            {profile.about.map((paragraph) => (
+              <Text key={paragraph} style={styles.statementParagraph}>{paragraph}</Text>
             ))}
           </View>
 
-          <View style={styles.lowerRight}>
-            {additionalExperience && (
-              <View>
-                <Text style={styles.sectionLabel}>Earlier experience</Text>
-                <Text style={styles.educationTitle}>{additionalExperience.title}</Text>
-                <Text style={styles.educationMeta}>{additionalExperience.org} · {additionalExperience.period}</Text>
-              </View>
-            )}
-            <Text style={[styles.sectionLabel, { marginTop: 20 }]}>Beyond code</Text>
-            <Text style={styles.interestText}>{interests.join(" · ")}</Text>
-            <Text style={[styles.sectionLabel, { marginTop: 20 }]}>Contact</Text>
-            <Link style={styles.contactLink} src={`mailto:${profile.email}`}>{profile.email}</Link>
-            <Link style={styles.contactLink} src={profile.linkedin}>linkedin.com/in/danielius-zajenckauskas</Link>
-            <Link style={styles.contactLink} src={profile.github}>github.com/dzajenckauskas</Link>
+          <Text style={styles.sectionTitle}>Relevant Experience</Text>
+          {relevantExperience.map((entry) => (
+            <View key={entry.title} style={styles.experienceEntry}>
+              <View style={styles.experienceLine} />
+              <View style={styles.experienceDot} />
+              <Text style={styles.experienceTitle}>{entry.title}{entry.org ? `, ${entry.org}` : ""}</Text>
+              <Text style={styles.meta}>{entry.period}</Text>
+              {entry.description && <Text style={styles.experienceText}>{entry.description}</Text>}
+            </View>
+          ))}
+
+          <View style={styles.projects}>
+            <Text style={styles.sectionTitle}>Selected Projects</Text>
+            <View style={styles.projectGrid}>
+              {projects.map((project, index) => (
+                <View key={project.slug} style={styles.projectCard}>
+                  <View
+                    style={[
+                      styles.projectAccent,
+                      { backgroundColor: index % 2 === 0 ? colors.sage : colors.lilac },
+                    ]}
+                  />
+                  <Link style={styles.projectName} src={project.url}>{project.name}</Link>
+                  <Text style={styles.projectDomain}>{project.domain}</Text>
+                  <Text style={styles.projectStack}>{project.stack.slice(0, 3).join(" · ")}</Text>
+                </View>
+              ))}
+            </View>
           </View>
         </View>
 
-        <PageFooter page={2} />
+        <Text style={styles.pageNumber}>1/2</Text>
+      </Page>
+
+      <Page size="A4" style={styles.page} wrap={false}>
+        <View style={{ width: 595.28, height: 841.89 }} />
+        <View style={[styles.edgeWash, { opacity: 0.28 }]} />
+        <View style={[styles.edgeWashLilac, { left: -100, right: undefined, opacity: 0.3 }]} />
+        <View style={styles.educationPanel} />
+        <View style={styles.otherExperiencePanel} />
+        <View style={styles.otherSkillsPanel} />
+        <View style={styles.interestsPanel} />
+
+        <View style={styles.pageTwoLeft}>
+          <Text style={styles.sectionTitle}>Education</Text>
+          {education.map((entry) => (
+            <View key={entry.title} style={styles.educationEntry}>
+              <Text style={styles.miniTitle}>{entry.org || entry.title}</Text>
+              <Text style={styles.meta}>{entry.period}</Text>
+              <Text style={styles.bodyMuted}>{entry.org ? entry.title : entry.description}</Text>
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.pageTwoRight}>
+          <Text style={styles.sectionTitle}>Other Experience</Text>
+          {otherExperience.map((entry) => (
+            <View key={entry.title} style={styles.otherEntry}>
+              <Text style={styles.miniTitle}>{entry.title}{entry.org ? `, ${entry.org}` : ""}</Text>
+              <Text style={styles.meta}>{entry.period}</Text>
+              {entry.description && <Text style={styles.otherDescription}>{entry.description}</Text>}
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.otherSkills}>
+          <Text style={styles.sectionTitle}>Other Skills</Text>
+          <View style={styles.pillWrap}>
+            {otherSkills.map((skill) => <Text key={skill} style={styles.pill}>{skill}</Text>)}
+          </View>
+        </View>
+
+        <View style={styles.interests}>
+          <Text style={styles.sectionTitle}>Interests</Text>
+          <View style={styles.pillWrap}>
+            {interests.map((interest) => <Text key={interest} style={styles.pill}>{interest}</Text>)}
+          </View>
+        </View>
+
+        <ContactArrow />
+        <View style={styles.contact}>
+          <Text style={styles.contactTitle}>CONTACT ME</Text>
+          <Link style={styles.contactLink} src={`mailto:${profile.email}`}>{profile.email}</Link>
+          <Link style={styles.contactLink} src={profile.linkedin}>linkedin.com/in/danielius-zajenckauskas</Link>
+          <Link style={styles.contactLink} src={profile.github}>github.com/dzajenckauskas</Link>
+        </View>
+        <CircledPageNumber />
       </Page>
     </Document>
   );
