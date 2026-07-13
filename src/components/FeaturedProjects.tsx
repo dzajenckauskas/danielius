@@ -81,7 +81,11 @@ export function FeaturedProjects() {
             >
               <div>
                 <p className="featured-work-meta">
-                  {project.year} · {project.domain}
+                  {project.year} · {project.url ? (
+                    <a className="project-domain-link" href={project.url} target="_blank" rel="noreferrer noopener" aria-label={`Visit ${project.domain}`}>
+                      {project.domain}<ArrowUpRight aria-hidden="true" />
+                    </a>
+                  ) : project.domain}
                 </p>
                 <h3>{project.name}</h3>
                 <p>{project.summary}</p>

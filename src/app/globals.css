@@ -662,6 +662,9 @@ body {
 }
 
 .section-doodle {
+  --doodle-rotation: 0deg;
+  --doodle-drift-x: 0.45rem;
+  --doodle-drift-y: -0.35rem;
   position: absolute;
   z-index: 0;
   width: 4.75rem;
@@ -672,6 +675,15 @@ body {
   stroke-linejoin: round;
   opacity: 0.48;
   pointer-events: none;
+  transform: rotate(var(--doodle-rotation));
+  animation: section-doodle-float 18s ease-in-out 1.7s infinite;
+  will-change: transform;
+}
+@keyframes section-doodle-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(var(--doodle-rotation)) scale(1); }
+  28% { transform: translate3d(var(--doodle-drift-x), var(--doodle-drift-y), 0) rotate(calc(var(--doodle-rotation) + 1.5deg)) scale(1.018); }
+  58% { transform: translate3d(-0.28rem, 0.18rem, 0) rotate(calc(var(--doodle-rotation) - 1.1deg)) scale(0.992); }
+  82% { transform: translate3d(0.18rem, -0.42rem, 0) rotate(calc(var(--doodle-rotation) + 0.7deg)) scale(1.008); }
 }
 .section-doodle path,
 .section-doodle circle,
@@ -680,10 +692,10 @@ body {
   stroke-dashoffset: 240;
   animation: section-sketch-in 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
 }
-.doodle-about { right: 1.5rem; top: -1.8rem; z-index: 2; transform: rotate(-8deg); }
-.doodle-skills { left: -4.5rem; top: 5.5rem; transform: rotate(4deg); }
-.doodle-languages { left: -4rem; top: 3.5rem; transform: rotate(-5deg); }
-.doodle-contact { right: 2rem; top: -2rem; z-index: 2; transform: rotate(5deg); }
+.doodle-about { --doodle-rotation: -8deg; right: 1.5rem; top: -1.8rem; z-index: 2; }
+.doodle-skills { --doodle-rotation: 4deg; left: -4.5rem; top: 5.5rem; animation-delay: -4s; animation-duration: 20s; }
+.doodle-languages { --doodle-rotation: -5deg; left: -4rem; top: 3.5rem; animation-delay: -9s; animation-duration: 21s; }
+.doodle-contact { --doodle-rotation: 5deg; right: 2rem; top: -2rem; z-index: 2; }
 .doodle-about,
 .doodle-contact {
   width: 5.25rem;
@@ -692,8 +704,10 @@ body {
 }
 .doodle-featured,
 .doodle-projects,
-.doodle-career { left: -4.5rem; top: 1.2rem; transform: rotate(-4deg); }
-.doodle-education { left: -4.5rem; top: 0; transform: rotate(3deg); }
+.doodle-career { --doodle-rotation: -4deg; left: -4.5rem; top: 1.2rem; animation-delay: -7s; animation-duration: 22s; }
+.doodle-featured { animation-delay: -3s; animation-duration: 20s; }
+.doodle-projects { animation-delay: -10s; animation-duration: 23s; }
+.doodle-education { --doodle-rotation: 3deg; left: -4.5rem; top: 0; animation-delay: -12s; animation-duration: 19s; }
 .doodle-accent {
   position: absolute;
   z-index: 0;
@@ -939,6 +953,26 @@ body {
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
+.project-domain-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 38%, transparent);
+  color: inherit;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.project-domain-link svg {
+  width: 0.7rem;
+  height: 0.7rem;
+  transition: transform 0.2s ease;
+}
+.project-domain-link:hover,
+.project-domain-link:focus-visible {
+  border-color: var(--ink);
+  color: var(--ink-strong);
+}
+.project-domain-link:hover svg,
+.project-domain-link:focus-visible svg { transform: translate(0.1rem, -0.1rem); }
 .featured-work-card h3 {
   position: relative;
   z-index: 1;
@@ -1783,6 +1817,220 @@ body {
   touch-action: none;
 }
 .doodle-canvas-active { pointer-events: auto; }
+.doodle-studio {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 4.75rem;
+  z-index: 70;
+  width: min(22rem, calc(100vw - 2.5rem));
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  border-radius: 1.5rem;
+  padding: 1rem;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  box-shadow: 0 24px 70px -30px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(20px);
+  animation: doodle-studio-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes doodle-studio-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.doodle-studio-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 0.15rem 0.15rem 0.9rem;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.doodle-studio-heading:active { cursor: grabbing; }
+.doodle-studio-heading small,
+.doodle-studio-heading strong { display: block; }
+.doodle-studio-heading small {
+  color: var(--ink);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.doodle-studio-heading strong { margin-top: 0.14rem; color: var(--text); font-size: 1.05rem; font-weight: 900; }
+.doodle-studio-heading > button,
+.doodle-send-close {
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--subtle);
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.doodle-studio-heading > button { cursor: pointer; }
+.doodle-studio-heading > button:hover,
+.doodle-send-close:hover { color: var(--text); background: var(--surface-2); }
+.doodle-studio-heading svg,
+.doodle-send-close svg { width: 1rem; height: 1rem; }
+.doodle-tool-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.35rem; }
+.doodle-tool-grid button {
+  display: grid;
+  min-width: 0;
+  height: 3.6rem;
+  place-items: center;
+  align-content: center;
+  gap: 0.28rem;
+  border: 1px solid transparent;
+  border-radius: 0.85rem;
+  color: var(--subtle);
+  font-size: 0.59rem;
+  font-weight: 600;
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+.doodle-tool-grid button:hover { color: var(--text); transform: translateY(-1px); }
+.doodle-tool-grid button.is-selected {
+  border-color: color-mix(in srgb, var(--ink) 36%, var(--border));
+  background: color-mix(in srgb, var(--ink) 10%, transparent);
+  color: var(--ink-strong);
+}
+.doodle-tool-grid svg { width: 1.05rem; height: 1.05rem; }
+.doodle-setting-row {
+  display: grid;
+  grid-template-columns: 3.3rem 1fr;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.7rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.7rem;
+}
+.doodle-setting-row > span { color: var(--subtle); font-size: 0.64rem; font-weight: 600; }
+.doodle-swatches,
+.doodle-weights { display: flex; align-items: center; justify-content: space-between; gap: 0.3rem; }
+.doodle-swatches button {
+  width: 1.48rem;
+  height: 1.48rem;
+  border: 3px solid var(--surface);
+  border-radius: 50%;
+  background: var(--swatch);
+  box-shadow: 0 0 0 1px transparent;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.doodle-swatches button:hover { transform: scale(1.1); }
+.doodle-swatches button.is-selected { box-shadow: 0 0 0 1px var(--ink); }
+.doodle-weights button {
+  display: flex;
+  width: 3.7rem;
+  height: 1.8rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 999px;
+}
+.doodle-weights button.is-selected { border-color: var(--border); background: var(--surface-2); }
+.doodle-weights i { display: block; width: 1.55rem; border-radius: 999px; background: var(--text); }
+.doodle-studio-actions { display: grid; grid-template-columns: auto auto 1fr; gap: 0.4rem; margin-top: 0.85rem; }
+.doodle-studio-actions button {
+  display: inline-flex;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0 0.65rem;
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-weight: 600;
+  transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+}
+.doodle-studio-actions button:hover:not(:disabled) { border-color: var(--ink); transform: translateY(-1px); }
+.doodle-studio-actions button:disabled { cursor: not-allowed; opacity: 0.38; }
+.doodle-studio-actions svg { width: 0.85rem; height: 0.85rem; }
+.doodle-studio-actions .doodle-send-button { border-color: var(--ink); background: var(--ink); color: white; }
+.doodle-send-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: color-mix(in srgb, var(--bg) 52%, transparent);
+  backdrop-filter: blur(8px);
+}
+.doodle-send-panel {
+  position: relative;
+  width: min(36rem, 100%);
+  max-height: calc(100svh - 2.5rem);
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  padding: clamp(1.5rem, 5vw, 3rem);
+  background:
+    radial-gradient(circle at 100% 0%, var(--blob-1), transparent 34%),
+    var(--surface);
+  box-shadow: 0 35px 100px -42px rgba(0, 0, 0, 0.65);
+  animation: doodle-studio-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.doodle-send-close { position: absolute; top: 1rem; right: 1rem; }
+.doodle-send-panel h2 {
+  max-width: 28rem;
+  margin-top: 0.55rem;
+  color: var(--text);
+  font-size: clamp(2.2rem, 7vw, 3.7rem);
+  font-weight: 900;
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+}
+.doodle-send-panel h2 + p { max-width: 28rem; margin-top: 1rem; color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+.doodle-send-panel form > label,
+.doodle-form-grid label { display: grid; gap: 0.35rem; }
+.doodle-send-panel form > label { margin-top: 0.8rem; }
+.doodle-send-panel .doodle-honeypot { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.doodle-send-panel label > span { color: var(--muted); font-size: 0.7rem; font-weight: 600; }
+.doodle-send-panel label small { color: var(--subtle); font-weight: 300; }
+.doodle-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-top: 1.5rem; }
+.doodle-send-panel input,
+.doodle-send-panel textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  padding: 0.7rem 0.8rem;
+  background: color-mix(in srgb, var(--bg) 55%, var(--surface));
+  color: var(--text);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.doodle-send-panel textarea { resize: vertical; }
+.doodle-send-panel input:focus,
+.doodle-send-panel textarea:focus { border-color: var(--ink); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ink) 10%, transparent); }
+.doodle-send-panel input[aria-invalid="true"],
+.doodle-send-panel textarea[aria-invalid="true"] {
+  border-color: #b64c5e;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #b64c5e 10%, transparent);
+}
+.doodle-field-error {
+  color: #b64c5e !important;
+  font-size: 0.68rem !important;
+  font-weight: 600 !important;
+}
+.doodle-captcha { min-height: 65px; margin-top: 1rem; }
+.doodle-captcha-error {
+  margin-top: 1rem;
+  border: 1px solid color-mix(in srgb, #b64c5e 45%, var(--border));
+  border-radius: 0.85rem;
+  padding: 0.7rem 0.8rem;
+  background: color-mix(in srgb, #b64c5e 7%, transparent);
+  color: #b64c5e;
+  font-size: 0.75rem;
+}
+.doodle-send-panel form > .primary-button { margin-top: 1rem; }
+.doodle-send-panel .primary-button svg { width: 1rem; height: 1rem; }
+.doodle-send-panel .primary-button:disabled { cursor: wait; opacity: 0.62; }
+.doodle-form-error { margin-top: 0.75rem; color: #b64c5e; font-size: 0.75rem; }
+.doodle-privacy-note { display: block; margin-top: 0.7rem; color: var(--subtle); font-size: 0.63rem; }
+.doodle-send-success > svg { width: 2rem; height: 2rem; margin-bottom: 1.5rem; color: var(--ink); }
+.doodle-send-success .primary-button { margin-top: 1.5rem; }
 .doodle-tools {
   position: fixed;
   right: 1.25rem;
@@ -1811,16 +2059,116 @@ body {
 }
 .doodle-tool:hover { color: var(--ink-strong); border-color: var(--ink); transform: translateY(-2px) rotate(-1deg); }
 .doodle-tool-active { color: white; border-color: var(--ink); background: var(--ink); }
+.doodle-tool-active:hover {
+  border-color: var(--ink-strong);
+  background: var(--ink-strong);
+  color: white;
+  box-shadow: 0 12px 28px -16px color-mix(in srgb, var(--ink) 72%, transparent);
+  transform: translateY(-2px);
+}
+.doodle-tool-icon {
+  display: inline-flex;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex: 0 0 1.2rem;
+  align-items: center;
+  justify-content: center;
+  color: #e8a500;
+}
+.doodle-tool-icon svg { width: 1.1rem; height: 1.1rem; stroke-width: 2.4; }
+.doodle-tool-active .doodle-tool-icon {
+  color: white;
+}
+.doodle-tool-invite .doodle-tool-icon { animation: doodle-invite-bounce 7.5s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; }
+.doodle-tool-invite:hover .doodle-tool-icon { animation: doodle-invite-hover 0.62s cubic-bezier(0.34, 1.56, 0.64, 1); }
+@keyframes doodle-invite-bounce {
+  0%, 72%, 88%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  76% { transform: translateY(-0.42rem) rotate(-8deg) scale(1.08); }
+  79% { transform: translateY(0.05rem) rotate(3deg) scale(0.97); }
+  82% { transform: translateY(-0.2rem) rotate(-3deg) scale(1.035); }
+  85% { transform: translateY(0) rotate(0deg) scale(1); }
+}
+@keyframes doodle-invite-hover {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  38% { transform: translateY(-0.36rem) rotate(-8deg) scale(1.08); }
+  68% { transform: translateY(0.04rem) rotate(3deg) scale(0.98); }
+}
 .doodle-theme-toggle { min-width: 2.75rem; padding: 0; }
+.theme-toggle-icon {
+  display: inline-flex;
+  width: 1.2rem;
+  height: 1.2rem;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.3s ease;
+}
+.theme-toggle-icon svg { width: 1.15rem; height: 1.15rem; stroke-width: 2.25; }
+.theme-toggle-sun {
+  color: #e2a000;
+  animation: theme-sun-spin 13s ease-in-out infinite;
+}
+.theme-toggle-moon {
+  color: #78bcff;
+  animation: theme-moon-wiggle 11s ease-in-out infinite;
+}
+.doodle-theme-toggle:hover .theme-toggle-sun { animation: theme-sun-hover 2.2s ease-in-out; }
+.doodle-theme-toggle:hover .theme-toggle-moon { animation: theme-moon-hover 0.62s ease-in-out; }
+@keyframes theme-sun-spin {
+  0%, 70%, 100% { transform: rotate(0deg) scale(1); }
+  82% { transform: rotate(180deg) scale(1.025); }
+  94% { transform: rotate(360deg) scale(1); }
+}
+@keyframes theme-moon-wiggle {
+  0%, 82%, 100% { transform: translateY(0) rotate(0deg); }
+  86% { transform: translateY(-0.08rem) rotate(-5deg); }
+  90% { transform: translateY(0.02rem) rotate(4deg); }
+  94% { transform: translateY(-0.03rem) rotate(-2deg); }
+  97% { transform: translateY(0) rotate(0deg); }
+}
+@keyframes theme-sun-hover {
+  from { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.04); }
+  to { transform: rotate(360deg) scale(1); }
+}
+@keyframes theme-moon-hover {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  28% { transform: translateY(-0.08rem) rotate(-6deg); }
+  58% { transform: translateY(0.02rem) rotate(5deg); }
+  80% { transform: translateY(-0.03rem) rotate(-2deg); }
+}
 .doodle-hint {
   position: fixed;
-  right: 1.4rem;
-  bottom: 4.6rem;
+  right: 24.25rem;
+  bottom: 5rem;
   z-index: 70;
   color: var(--subtle);
   font-size: 0.72rem;
   font-style: italic;
   transform: rotate(-2deg);
+}
+
+@media (max-width: 1280px) {
+  .doodle-featured,
+  .doodle-projects,
+  .doodle-career,
+  .doodle-education,
+  .doodle-skills,
+  .doodle-languages {
+    --doodle-drift-x: 0.7rem;
+    --doodle-drift-y: 0.2rem;
+    right: auto;
+    left: 0.75rem;
+    top: -2.25rem;
+  }
+  .doodle-accent-featured,
+  .doodle-accent-projects,
+  .doodle-accent-career,
+  .doodle-accent-education,
+  .doodle-accent-languages {
+    right: auto;
+    left: 2.6rem;
+    top: -0.4rem;
+  }
 }
 
 @media (max-width: 900px) {
@@ -1869,6 +2217,45 @@ body {
   }
   .cta-copy { max-width: 40rem; }
   .cta-contact { width: min(100%, 32rem); }
+  .section-doodle {
+    --doodle-drift-x: -0.55rem;
+    --doodle-drift-y: -0.45rem;
+    width: 4.1rem;
+    opacity: 0.4;
+  }
+  .doodle-skills,
+  .doodle-languages {
+    right: 1rem;
+    left: auto;
+    top: 1.5rem;
+  }
+  .doodle-about,
+  .doodle-contact {
+    right: 0.75rem;
+    left: auto;
+    top: -2.6rem;
+  }
+  .doodle-featured,
+  .doodle-projects,
+  .doodle-career,
+  .doodle-education {
+    right: 0.5rem;
+    left: auto;
+    top: 0.5rem;
+  }
+  .doodle-accent-featured,
+  .doodle-accent-projects,
+  .doodle-accent-career,
+  .doodle-accent-education {
+    right: 1.8rem;
+    left: auto;
+    top: 2.4rem;
+  }
+  .doodle-accent-languages {
+    right: 1.8rem;
+    left: auto;
+    top: 3rem;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1888,8 +2275,22 @@ body {
   .cta-copy h2 { font-size: clamp(2.25rem, 11vw, 3.35rem); }
   .cta-copy > p:last-child { font-size: 0.9rem; line-height: 1.65; }
   .cta-email-link { font-size: 0.82rem; }
-  .doodle-tool span { display: none; }
+  .doodle-tool-label { display: none; }
   .doodle-tool { padding: 0; }
+  .doodle-studio {
+    top: auto;
+    right: 0.75rem;
+    bottom: 4.75rem;
+    left: 0.75rem;
+    width: auto;
+    padding: 0.8rem;
+  }
+  .doodle-studio-heading { padding-bottom: 0.65rem; }
+  .doodle-tool-grid button { height: 3.2rem; }
+  .doodle-setting-row { margin-top: 0.55rem; padding-top: 0.55rem; }
+  .doodle-form-grid { grid-template-columns: 1fr; }
+  .doodle-send-panel { border-radius: 1.5rem; }
+  .doodle-hint { display: none; }
   .section-doodle { width: 3.6rem; opacity: 0.32; }
   .scroll-thread-path { opacity: 0.17; stroke-width: 1; }
   .section-blob-about { right: -6rem; width: 14rem; height: 14rem; }
@@ -2025,6 +2426,12 @@ body {
   .hdline-svg path { clip-path: none; }
   .scroll-thread-path { stroke-dashoffset: 0 !important; transition: none; }
   .section-doodle path, .section-doodle circle, .section-doodle ellipse { stroke-dashoffset: 0; }
+  .section-doodle { animation: none; transform: rotate(var(--doodle-rotation)); }
+  .doodle-tool-invite .doodle-tool-icon { animation: none; }
+  .theme-toggle-sun, .theme-toggle-moon { animation: none; }
+  .doodle-tool-invite:hover .doodle-tool-icon,
+  .doodle-theme-toggle:hover .theme-toggle-sun,
+  .doodle-theme-toggle:hover .theme-toggle-moon { animation: none; }
   .hero-letter-shell { opacity: 1; transform: none; }
   .nav-name-letter-shell, .nav-name-letter { opacity: 1; transform: none; }
   .featured-work-progress span { transition: none; }

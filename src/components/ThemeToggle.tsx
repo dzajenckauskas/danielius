@@ -20,11 +20,13 @@ export function ThemeToggle() {
       className="doodle-tool doodle-theme-toggle"
     >
       {/* Render a stable icon until mounted to avoid hydration mismatch */}
-      {mounted && !isDark ? (
-        <Sun className="h-[18px] w-[18px] animate-[icon-in_.35s_ease-out]" />
-      ) : (
-        <Moon className="h-[18px] w-[18px] animate-[icon-in_.35s_ease-out]" />
-      )}
+      <span className={`theme-toggle-icon ${mounted && !isDark ? "theme-toggle-sun" : "theme-toggle-moon"}`} aria-hidden="true">
+        {mounted && !isDark ? (
+          <Sun className="h-[18px] w-[18px] animate-[icon-in_.35s_ease-out]" />
+        ) : (
+          <Moon className="h-[18px] w-[18px] animate-[icon-in_.35s_ease-out]" />
+        )}
+      </span>
     </button>
   );
 }

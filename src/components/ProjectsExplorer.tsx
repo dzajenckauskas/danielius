@@ -71,7 +71,13 @@ export function ProjectsExplorer() {
             data-thread-anchor
           >
             <header>
-              <p>{project.year} · {project.domain}</p>
+              <p>
+                {project.year} · {project.url ? (
+                  <a className="project-domain-link" href={project.url} target="_blank" rel="noreferrer noopener" aria-label={`Visit ${project.domain}`}>
+                    {project.domain}<ArrowUpRight aria-hidden="true" />
+                  </a>
+                ) : project.domain}
+              </p>
               <h2>{project.name}</h2>
               <span>{project.role}</span>
             </header>
