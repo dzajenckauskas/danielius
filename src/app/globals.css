@@ -1135,7 +1135,14 @@ body {
   text-transform: uppercase;
 }
 .skill-card-content h3 { margin-top: 0.55rem; color: var(--text); font-size: 1.08rem; font-weight: 900; }
-.skill-chip-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.1rem; }
+.skill-card-description {
+  max-width: 31rem;
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+.skill-chip-list { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 1.15rem; }
 .skill-chip {
   display: inline-flex;
   align-items: center;

@@ -6,7 +6,7 @@ export const profile = {
   firstName: "Danielius",
   role: "Front-end Engineer",
   tagline:
-    "Front-end Engineer building maintainable enterprise platforms and customer-facing products with React, Next.js and TypeScript.",
+    "Front-end Engineer turning complex business workflows into reliable, accessible products and maintainable platform systems.",
   location: "Vilnius, Lithuania",
   availability: "Open to selected front-end opportunities",
   email: "danielius@zajenckauskas.lt",
@@ -14,7 +14,7 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/danielius-zajenckauskas/",
 
   about: [
-    "Front-end Engineer with commercial experience across enterprise ERP, finance, payroll and HR software, alongside e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces with TypeScript, React and Next.js.",
+    "Front-end Engineer with commercial experience across enterprise ERP, finance, payroll and HR software, alongside e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces, then build the shared systems that keep them consistent at scale.",
     "I work beyond individual screens: designing shared component packages, config-driven forms and data tables, Strapi content models, REST and GraphQL integrations, PDF reports, transactional email templates and automated test coverage. Recent work spans a 35-app enterprise monorepo and an independently developed multi-application marketplace.",
     "My background in graphic design brings strong product judgement to information hierarchy, responsive behaviour and interaction details. I favour pragmatic architecture, explicit types and reusable patterns that help teams ship confidently and maintain products over time.",
   ],
@@ -22,39 +22,45 @@ export const profile = {
 
 export type SkillGroupData = {
   label: string;
+  description: string;
   items: string[];
 };
 
 export const skillGroups: SkillGroupData[] = [
-  { label: "Core", items: ["TypeScript", "JavaScript", "HTML5", "CSS / SCSS"] },
   {
-    label: "Front-End",
+    label: "Product Engineering",
+    description: "Turning domain rules and user needs into clear, maintainable product workflows.",
     items: [
-      "React",
-      "Next.js",
-      "Redux",
-      "React Hook Form",
-      "Material-UI",
-      "Tailwind CSS",
-      "Emotion",
-      "Framer Motion",
+      "Workflow Design",
+      "Information Architecture",
+      "Responsive UX",
+      "Conversion Journeys",
     ],
   },
   {
-    label: "Data & Integration",
-    items: ["REST APIs", "OData", "GraphQL", "SWR", "Axios", "Stripe", "Firebase"],
+    label: "Front-end Architecture",
+    description: "Building typed foundations that stay coherent across applications and teams.",
+    items: ["TypeScript", "React", "Next.js", "Shared Packages", "Config-driven UI", "Monorepos"],
   },
   {
-    label: "Platforms & Content",
-    items: ["Node.js", "Strapi", "PostgreSQL", "React PDF", "React Email", "Nodemailer"],
+    label: "API & Data Orchestration",
+    description: "Coordinating data contracts, asynchronous states and recoverable integration flows.",
+    items: ["REST APIs", "OData", "GraphQL", "SWR", "Type-safe Contracts", "Failure States"],
   },
   {
-    label: "Quality & Delivery",
-    items: ["Vitest", "Playwright", "React Testing Library", "Turborepo", "Docker", "Git", "CI/CD", "NGINX"],
+    label: "Performance & Accessibility",
+    description: "Protecting first impressions and inclusive use across devices and content conditions.",
+    items: ["Semantic HTML", "Accessibility", "Web Performance", "Progressive Loading", "Payload Control", "Responsive Delivery"],
   },
   {
-    label: "Product & Design",
-    items: ["Responsive Design", "Accessibility", "Web Performance", "Figma", "Adobe Creative Suite", "Agile Delivery"],
+    label: "Reliability & Quality",
+    description: "Making critical journeys testable, understandable and resilient when dependencies fail.",
+    items: ["Playwright", "Vitest", "React Testing Library", "Error Handling", "CI/CD", "Build Validation"],
+  },
+  {
+    label: "Content & Delivery Systems",
+    description: "Connecting editable content, documents, communication and production infrastructure.",
+    items: ["Strapi", "PostgreSQL", "React PDF", "React Email", "Stripe", "Docker", "NGINX"],
   },
 ];
 

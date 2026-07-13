@@ -150,7 +150,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
             <Reveal delay={0.05} className="project-proof-card thread-under">
               <span>02</span>
-              <h3>Front-end decisions</h3>
+              <h3>Product &amp; engineering decisions</h3>
               <ul>
                 {project.caseStudy.decisions.map((item) => (
                   <li key={item}>{item}</li>

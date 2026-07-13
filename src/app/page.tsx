@@ -77,11 +77,11 @@ export default function Home() {
         <SectionDoodle type="code" className="doodle-skills" />
         <div className="home-section-rail">
           <Reveal>
-            <p className="eyebrow">Skills &amp; Tools</p>
-            <h2>Tools chosen for the work.</h2>
+            <p className="eyebrow">Engineering capabilities</p>
+            <h2>Beyond the framework.</h2>
             <p>
-              A product-focused stack spanning interfaces, content platforms,
-              documents, integrations and delivery quality.
+              Product judgement, architecture, data, performance and reliability—supported by
+              tools chosen for the work.
             </p>
           </Reveal>
         </div>
@@ -150,7 +150,7 @@ export default function Home() {
               <p className="eyebrow">Available for selected work</p>
               <h2>Let’s make complex products feel clear.</h2>
               <p>
-                Open to thoughtful front-end work where product quality and maintainability matter.
+                Open to thoughtful product engineering work where quality and maintainability matter.
               </p>
             </div>
 
