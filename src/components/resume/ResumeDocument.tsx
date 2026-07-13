@@ -150,18 +150,6 @@ const styles = StyleSheet.create({
   role: { marginTop: 8, color: colors.muted, fontSize: 8.5, letterSpacing: 0.5 },
   sidebar: { position: "absolute", top: 225, left: 49, width: 142 },
   main: { position: "absolute", top: 225, left: 216, width: 334 },
-  skillsPanel: {
-    position: "absolute",
-    top: 214,
-    left: 39,
-    width: 162,
-    height: 575,
-    borderWidth: 0.55,
-    borderColor: colors.border,
-    borderRadius: 13,
-    backgroundColor: colors.surface,
-    opacity: 0.72,
-  },
   skillBlock: { marginBottom: 8 },
   skillLabel: { fontSize: 7.7, fontWeight: 600 },
   skillItems: { color: colors.text, fontSize: 7.8, lineHeight: 1.28 },
@@ -200,116 +188,32 @@ const styles = StyleSheet.create({
   educationEntry: { marginBottom: 13 },
   otherEntry: { marginBottom: 18 },
   otherDescription: { marginTop: 4, fontSize: 8.15, lineHeight: 1.38 },
-  educationPanel: {
-    position: "absolute",
-    top: 40,
-    left: 39,
-    width: 165,
-    height: 245,
-    borderWidth: 0.55,
-    borderColor: colors.border,
-    borderRadius: 13,
-    backgroundColor: colors.surface,
-    opacity: 0.75,
-  },
-  otherExperiencePanel: {
-    position: "absolute",
-    top: 40,
-    left: 206,
-    width: 349,
-    height: 205,
-    borderWidth: 0.55,
-    borderColor: colors.border,
-    borderRadius: 13,
-    backgroundColor: colors.surface,
-    opacity: 0.75,
-  },
-  otherSkillsPanel: {
-    position: "absolute",
-    top: 310,
-    left: 39,
-    width: 165,
-    height: 155,
-    borderWidth: 0.55,
-    borderColor: colors.border,
-    borderRadius: 13,
-    backgroundColor: colors.surface,
-    opacity: 0.75,
-  },
-  interestsPanel: {
-    position: "absolute",
-    top: 310,
-    left: 206,
-    width: 349,
-    height: 112,
-    borderWidth: 0.55,
-    borderColor: colors.border,
-    borderRadius: 13,
-    backgroundColor: colors.surface,
-    opacity: 0.75,
-  },
   otherSkills: { position: "absolute", top: 322, left: 49, width: 145 },
   interests: { position: "absolute", top: 322, left: 216, width: 329 },
-  pillWrap: { flexDirection: "row", flexWrap: "wrap" },
-  pill: {
-    marginRight: 4,
-    marginBottom: 4,
-    paddingTop: 3,
-    paddingRight: 6,
-    paddingBottom: 3,
-    paddingLeft: 6,
-    borderWidth: 0.55,
-    borderColor: colors.border,
-    borderRadius: 9,
-    backgroundColor: colors.surface,
-    color: colors.muted,
-    fontSize: 6.5,
-  },
+  simpleList: { color: colors.muted, fontSize: 8.1, lineHeight: 1.55 },
+  inlineList: { color: colors.muted, fontSize: 8.1, lineHeight: 1.55 },
   projects: { marginTop: 7 },
   projectGrid: { flexDirection: "row", flexWrap: "wrap" },
   projectCard: {
-    position: "relative",
     width: 160,
-    height: 51,
+    height: 44,
     marginRight: 6,
-    marginBottom: 6,
-    paddingTop: 7,
-    paddingRight: 8,
-    paddingBottom: 6,
-    paddingLeft: 8,
-    overflow: "hidden",
-    borderWidth: 0.55,
+    marginBottom: 4,
+    paddingTop: 4,
+    paddingRight: 4,
+    paddingBottom: 5,
+    paddingLeft: 0,
+    borderBottomWidth: 0.55,
     borderColor: colors.border,
-    borderRadius: 10,
-    backgroundColor: colors.surface,
-  },
-  projectAccent: {
-    position: "absolute",
-    top: -15,
-    right: -12,
-    width: 48,
-    height: 38,
-    borderRadius: 20,
-    backgroundColor: colors.sage,
-    opacity: 0.72,
   },
   projectName: { color: colors.text, fontSize: 7.6, fontWeight: 600, textDecoration: "none" },
   projectDomain: { marginTop: 1, color: colors.subtle, fontSize: 5.7 },
   projectStack: { marginTop: 4, color: colors.ink, fontSize: 5.4 },
   contact: {
     position: "absolute",
-    left: 39,
+    left: 49,
     bottom: 43,
     width: 235,
-    paddingTop: 12,
-    paddingRight: 12,
-    paddingBottom: 10,
-    paddingLeft: 12,
-    overflow: "hidden",
-    borderWidth: 0.55,
-    borderColor: colors.border,
-    borderRadius: 14,
-    backgroundColor: colors.surface,
   },
   contactTitle: { marginBottom: 14, fontSize: 13.5, fontWeight: 900, letterSpacing: 4.2 },
   contactLink: {
@@ -402,7 +306,6 @@ export function ResumeDocument() {
         <View style={styles.photoBlob} />
         <Image style={styles.photo} src={publicPath("avatar.jpg")} />
         <HeaderThread />
-        <View style={styles.skillsPanel} />
 
         <View style={styles.topContact}>
           <Link style={styles.topLink} src={`mailto:${profile.email}`}>{profile.email}</Link>
@@ -454,14 +357,8 @@ export function ResumeDocument() {
           <View style={styles.projects}>
             <Text style={styles.sectionTitle}>Selected Projects</Text>
             <View style={styles.projectGrid}>
-              {projects.map((project, index) => (
+              {projects.map((project) => (
                 <View key={project.slug} style={styles.projectCard}>
-                  <View
-                    style={[
-                      styles.projectAccent,
-                      { backgroundColor: index % 2 === 0 ? colors.sage : colors.lilac },
-                    ]}
-                  />
                   <Link style={styles.projectName} src={project.url}>{project.name}</Link>
                   <Text style={styles.projectDomain}>{project.domain}</Text>
                   <Text style={styles.projectStack}>{project.stack.slice(0, 3).join(" · ")}</Text>
@@ -478,10 +375,6 @@ export function ResumeDocument() {
         <View style={{ width: 595.28, height: 841.89 }} />
         <View style={[styles.edgeWash, { opacity: 0.28 }]} />
         <View style={[styles.edgeWashLilac, { left: -100, right: undefined, opacity: 0.3 }]} />
-        <View style={styles.educationPanel} />
-        <View style={styles.otherExperiencePanel} />
-        <View style={styles.otherSkillsPanel} />
-        <View style={styles.interestsPanel} />
 
         <View style={styles.pageTwoLeft}>
           <Text style={styles.sectionTitle}>Education</Text>
@@ -507,16 +400,12 @@ export function ResumeDocument() {
 
         <View style={styles.otherSkills}>
           <Text style={styles.sectionTitle}>Other Skills</Text>
-          <View style={styles.pillWrap}>
-            {otherSkills.map((skill) => <Text key={skill} style={styles.pill}>{skill}</Text>)}
-          </View>
+          <Text style={styles.simpleList}>{otherSkills.join("\n")}</Text>
         </View>
 
         <View style={styles.interests}>
           <Text style={styles.sectionTitle}>Interests</Text>
-          <View style={styles.pillWrap}>
-            {interests.map((interest) => <Text key={interest} style={styles.pill}>{interest}</Text>)}
-          </View>
+          <Text style={styles.inlineList}>{interests.join("   ·   ")}</Text>
         </View>
 
         <ContactArrow />
