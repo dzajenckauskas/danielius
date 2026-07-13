@@ -18,8 +18,8 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "muses-shop",
-    name: "Musės Shop",
+    slug: "muses-fly-tying-market",
+    name: "Musės - Fly Tying Market",
     domain: "muses.lt",
     url: "https://muses.lt",
     repository: "https://github.com/dzajenckauskas/muses-shop",
@@ -31,7 +31,7 @@ export const projects: Project[] = [
     summary:
       "A specialist fly-tying marketplace connecting a customer storefront with seller, support and administration workflows.",
     about: [
-      "Musės Shop is a specialist marketplace for handcrafted fly-fishing flies, designed as a single product ecosystem rather than an isolated storefront. Customer shopping, seller operations, support and internal administration are delivered through dedicated applications with a shared technical foundation.",
+      "Musės - Fly Tying Market is a specialist marketplace for handcrafted fly-fishing flies, designed as a single product ecosystem rather than an isolated storefront. Customer shopping, seller operations, support and internal administration are delivered through dedicated applications with a shared technical foundation.",
       "The platform is structured as an npm-workspaces monorepo, allowing domain types, authentication, forms, internationalisation and back-office UI patterns to evolve consistently across eleven workspaces.",
     ],
     contribution: [
@@ -91,43 +91,43 @@ export const projects: Project[] = [
     ],
     accent: "blue",
   },
-  {
-    slug: "relohub",
-    name: "Relohub",
-    domain: "relohub.co.uk",
-    url: "https://relohub.co.uk",
-    repository: "https://github.com/dzajenckauskas/relohub",
-    year: "2024",
-    period: "March 2024 – June 2025",
-    engagement: "Commercial client project",
-    location: "United Kingdom · Remote",
-    role: "Frontend Engineer",
-    summary:
-      "A relocation-services platform built around clear service discovery, instant estimates and lead generation.",
-    about: [
-      "Relohub provides a focused entry point for customers planning moves across Europe and overseas. The interface communicates a broad logistics offering while guiding visitors toward a personalised estimate.",
-      "The product combines service content, country data and enquiry workflows in a responsive Next.js application backed by a headless content platform.",
-    ],
-    contribution: [
-      "Built responsive service and landing-page experiences from reusable React and Material UI components.",
-      "Implemented a multi-step estimate flow with country, phone, date and customer-data validation.",
-      "Connected lead-capture workflows to backend services and transactional email handling.",
-      "Supported CMS-managed content and scalable page structures for international service coverage.",
-    ],
-    stack: [
-      "Next.js 14",
-      "React 18",
-      "TypeScript",
-      "Material UI",
-      "Emotion",
-      "React Hook Form",
-      "Axios",
-      "Stripe",
-      "Strapi",
-      "PostgreSQL",
-    ],
-    accent: "sage",
-  },
+  // {
+  //   slug: "relohub",
+  //   name: "Relohub",
+  //   domain: "relohub.co.uk",
+  //   url: "https://relohub.co.uk",
+  //   repository: "https://github.com/dzajenckauskas/relohub",
+  //   year: "2024",
+  //   period: "March 2024 – June 2025",
+  //   engagement: "Commercial client project",
+  //   location: "United Kingdom · Remote",
+  //   role: "Frontend Engineer",
+  //   summary:
+  //     "A relocation-services platform built around clear service discovery, instant estimates and lead generation.",
+  //   about: [
+  //     "Relohub provides a focused entry point for customers planning moves across Europe and overseas. The interface communicates a broad logistics offering while guiding visitors toward a personalised estimate.",
+  //     "The product combines service content, country data and enquiry workflows in a responsive Next.js application backed by a headless content platform.",
+  //   ],
+  //   contribution: [
+  //     "Built responsive service and landing-page experiences from reusable React and Material UI components.",
+  //     "Implemented a multi-step estimate flow with country, phone, date and customer-data validation.",
+  //     "Connected lead-capture workflows to backend services and transactional email handling.",
+  //     "Supported CMS-managed content and scalable page structures for international service coverage.",
+  //   ],
+  //   stack: [
+  //     "Next.js 14",
+  //     "React 18",
+  //     "TypeScript",
+  //     "Material UI",
+  //     "Emotion",
+  //     "React Hook Form",
+  //     "Axios",
+  //     "Stripe",
+  //     "Strapi",
+  //     "PostgreSQL",
+  //   ],
+  //   accent: "sage",
+  // },
   {
     slug: "noreikis",
     name: "Noreikis",
@@ -167,7 +167,7 @@ export const projects: Project[] = [
   },
   {
     slug: "opklinika",
-    name: "OpKlinika",
+    name: "Ortopedijos Paslaugų Klinika",
     domain: "opklinika.lt",
     url: "https://www.opklinika.lt",
     repository: "https://github.com/dzajenckauskas/opklinika-front",
@@ -179,7 +179,7 @@ export const projects: Project[] = [
     summary:
       "A healthcare content and product platform for an orthopaedic clinic, its services and technical-aid catalogue.",
     about: [
-      "OpKlinika makes specialist orthopaedic services and technical products easier to understand and navigate. The website combines clinic information, consultations, rehabilitation services and a structured catalogue of orthopaedic aids.",
+      "Ortopedijos Paslaugų Klinika makes specialist orthopaedic services and technical products easier to understand and navigate. The website combines clinic information, consultations, rehabilitation services and a structured catalogue of orthopaedic aids.",
       "A headless CMS allows the clinic team to maintain detailed service, category and product information while the frontend keeps discovery consistent across a large content surface.",
     ],
     contribution: [

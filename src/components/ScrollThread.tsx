@@ -67,14 +67,22 @@ export function ScrollThread() {
   const interactionRef = useRef(0);
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
   const displacementRef = useRef<SVGFEDisplacementMapElement>(null);
+  const pageHeightRef = useRef(0);
   const pathname = usePathname();
 
   const measure = useCallback(() => {
     const svg = svgRef.current;
     const path = pathRef.current;
-    if (!svg || !path) return;
+    const pageShell = document.querySelector<HTMLElement>("[data-page-shell]");
+    if (!svg || !path || !pageShell) return;
 
-    const documentHeight = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+    // Measure only real page content. Measuring document.scrollHeight here would
+    // include this absolute SVG, causing it to make itself taller forever.
+    const documentHeight = Math.max(
+      Math.ceil(pageShell.getBoundingClientRect().bottom + window.scrollY),
+      window.innerHeight,
+    );
+    pageHeightRef.current = documentHeight;
     const anchors = Array.from(document.querySelectorAll<HTMLElement>("[data-thread-anchor]"));
     if (variationRef.current.length === 0) {
       variationRef.current = Array.from({ length: 18 }, () => 0.18 + Math.random() * 0.64);
@@ -127,7 +135,7 @@ export function ScrollThread() {
       path.style.strokeDashoffset = "0";
       return;
     }
-    const scrollRange = Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+    const scrollRange = Math.max(pageHeightRef.current - window.innerHeight, 1);
     const progress = Math.min(Math.max(window.scrollY / scrollRange, 0), 1);
     const introElapsed = performance.now() - introStartedRef.current;
     const introProgress = Math.min(0.42, (introElapsed / 1800) * 0.42);
@@ -185,7 +193,8 @@ export function ScrollThread() {
     introStartedRef.current = performance.now();
     measure();
     update();
-    resizeObserver.observe(document.body);
+    const pageShell = document.querySelector<HTMLElement>("[data-page-shell]");
+    if (pageShell) resizeObserver.observe(pageShell);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onPointerMove, { passive: true });
     window.addEventListener("resize", measure);

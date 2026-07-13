@@ -46,7 +46,7 @@ export const skillGroups: SkillGroupData[] = [
   },
   {
     label: "Full-Stack",
-    items: ["Node.js", "Next.js API Routes", "Strapi", "Prisma", "PostgreSQL", "NextAuth.js"],
+    items: ["Node.js", "Next.js API Routes", "Strapi", "PostgreSQL"],
   },
   {
     label: "Quality & Delivery",
@@ -139,14 +139,14 @@ export const education: TimelineEntry[] = [
   },
   {
     title: "Secondary Education",
-    org: "Mažeikiai Gymnasium of Gabija",
+    org: "Mažeikių Gabijos Gimnazija",
     period: "2012 · Mažeikiai",
     description: "Focus on arts, mechanical drawing and mathematics.",
     year: "2012",
   },
   {
     title: "Fine Arts",
-    org: "Mažeikiai School of Fine Arts",
+    org: "Mažeikių Dailės Mokykla",
     period: "2009 · Mažeikiai",
     description:
       "Drawing, graphics, composition, color studies and art history.",
@@ -166,6 +166,6 @@ export const interests = [
   "Visual Arts",
   "Biking",
   "Photography",
-  "Food Design",
+  "Fly Fishing",
   "Digital Media",
 ];

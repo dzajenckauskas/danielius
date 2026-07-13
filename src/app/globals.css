@@ -97,9 +97,13 @@
   --font-sans: "Neris", var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
-html { scroll-behavior: smooth; }
+html {
+  overflow-x: clip;
+  scroll-behavior: smooth;
+}
 
 body {
+  overflow-x: clip;
   background-color: var(--bg);
   color: var(--text);
   font-family: "Neris", var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;

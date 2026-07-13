@@ -39,7 +39,7 @@ export default function RootLayout({
       <body className="min-h-screen font-sans">
         <Providers>
           <div className="page-wash" aria-hidden="true" />
-          <div className="flex min-h-screen flex-col">
+          <div data-page-shell className="flex min-h-screen flex-col">
             <Nav />
             <main className="flex-1">{children}</main>
             <Footer />
