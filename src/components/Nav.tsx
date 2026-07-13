@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { FileDown, Github, Mail, Linkedin, Menu, X } from "lucide-react";
+import { FileText, Github, Mail, Linkedin, Menu, X } from "lucide-react";
 import { profile } from "@/data/profile";
 
 const links = [
@@ -86,12 +86,13 @@ export function Nav() {
             <Mail className="h-[18px] w-[18px]" />
           </a>
           <a
-            href="/api/resume/Danielius-Zajenckauskas-CV.pdf"
-            download="Danielius-Zajenckauskas-CV.pdf"
-            aria-label="Download CV"
+            href="/api/resume"
+            target="_blank"
+            rel="noreferrer noopener"
+            aria-label="View CV"
             className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
           >
-            <FileDown className="h-[18px] w-[18px]" />
+            <FileText className="h-[18px] w-[18px]" />
           </a>
         </div>
 
@@ -150,12 +151,13 @@ export function Nav() {
                 <Mail className="h-[18px] w-[18px]" />
               </a>
               <a
-                href="/api/resume/Danielius-Zajenckauskas-CV.pdf"
-                download="Danielius-Zajenckauskas-CV.pdf"
-                aria-label="Download CV"
+                href="/api/resume"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="View CV"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
               >
-                <FileDown className="h-[18px] w-[18px]" />
+                <FileText className="h-[18px] w-[18px]" />
               </a>
             </div>
           </div>

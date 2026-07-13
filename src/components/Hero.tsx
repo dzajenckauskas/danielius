@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowDownRight, ArrowRight, Download, Github, Linkedin, Mail, MapPin } from "lucide-react";
+import { ArrowDownRight, ArrowRight, ExternalLink, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { profile } from "@/data/profile";
 
@@ -61,12 +61,13 @@ export function Hero() {
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
               <a
-                href="/api/resume/Danielius-Zajenckauskas-CV.pdf"
-                download="Danielius-Zajenckauskas-CV.pdf"
+                href="/api/resume"
+                target="_blank"
+                rel="noreferrer noopener"
                 className="secondary-button"
               >
-                <Download className="h-4 w-4" />
-                Download CV
+                <ExternalLink className="h-4 w-4" />
+                View CV
               </a>
             </div>
           </Reveal>
