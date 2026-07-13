@@ -16,7 +16,7 @@ const links = [
 // physics, rolls across the letter tops (each letter bobs on contact),
 // tumbles off the "S" and out of the header, then fires "nav-ball-exit" so
 // the scroll-thread ball can take over.
-const DOT_SIZE = 7;
+const DOT_SIZE = 11;
 const DOT_R = DOT_SIZE / 2;
 const GRAVITY = 2600; // px/s²
 const RESTITUTION = 0.55;

@@ -12,7 +12,7 @@ type Point = { x: number; y: number; loops?: number; radius?: number };
 const BALL_HANDOFF_FALLBACK_MS = 9000;
 const BALL_CATCHUP_MS = 1400;
 const SAMPLE_STEP = 8;
-const BALL_R = 4;
+const BALL_R = 6;
 
 function connect(path: string, from: Point, to: Point, character: number) {
   const distance = Math.max(to.y - from.y, 80);
@@ -160,20 +160,23 @@ export function ScrollThread() {
     const variation = variationRef.current;
     const randomAt = (index: number) => variation[index % variation.length] ?? 0.5;
 
-    // Start the thread right under the logo's last letter — the nav ball
-    // rolls off it and the thread ball continues from the same spot.
+    // Trace the nav ball's journey: start at the very top (y 0) where it
+    // drops in over the first letter, sweep under the name to the last
+    // letter where it tumbles out of the header, then continue down.
     const logoShells = document.querySelectorAll<HTMLElement>(".nav-name .nav-name-letter-shell");
-    const logoLetter = logoShells[logoShells.length - 1];
-    let start: Point = { x: 700 + randomAt(0) * 210, y: 0 };
-    if (logoLetter) {
-      const letterRect = logoLetter.getBoundingClientRect();
-      const svgWidth = Math.max(svg.clientWidth, 1);
-      start = {
-        x: Math.max(30, Math.min(970, ((letterRect.left + letterRect.width) / svgWidth) * 1000)),
-        y: 72,
-      };
+    const firstLetter = logoShells[0];
+    const lastLetter = logoShells[logoShells.length - 1];
+    const points: Point[] = [];
+    const svgWidth = Math.max(svg.clientWidth, 1);
+    const toViewBoxX = (px: number) => Math.max(20, Math.min(980, (px / svgWidth) * 1000));
+    if (firstLetter && lastLetter) {
+      const firstRect = firstLetter.getBoundingClientRect();
+      const lastRect = lastLetter.getBoundingClientRect();
+      points.push({ x: toViewBoxX(firstRect.left + firstRect.width / 2), y: 0 });
+      points.push({ x: toViewBoxX(lastRect.right), y: 72 });
+    } else {
+      points.push({ x: 700 + randomAt(0) * 210, y: 0 });
     }
-    const points: Point[] = [start];
 
     anchors.forEach((anchor, index) => {
       const rect = anchor.getBoundingClientRect();
@@ -211,7 +214,7 @@ export function ScrollThread() {
     });
     points.push({
       x: 120 + randomAt(anchors.length * 3 + 5) * 760,
-      y: Math.max(documentHeight - 1, 0),
+      y: documentHeight,
     });
 
     svg.setAttribute("viewBox", `0 0 1000 ${documentHeight}`);
@@ -367,13 +370,9 @@ export function ScrollThread() {
           />
         </filter>
         <mask ref={maskRef} id="thread-reveal" maskUnits="userSpaceOnUse">
-          <path
-            ref={maskPathRef}
-            fill="none"
-            stroke="#fff"
-            strokeWidth="8"
-            vectorEffect="non-scaling-stroke"
-          />
+          {/* No non-scaling-stroke here: its dash lengths must stay in user
+              units so the reveal edge tracks getPointAtLength exactly. */}
+          <path ref={maskPathRef} fill="none" stroke="#fff" strokeWidth="10" />
         </mask>
       </defs>
       <path
