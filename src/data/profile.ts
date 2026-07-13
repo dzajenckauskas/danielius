@@ -4,9 +4,9 @@
 export const profile = {
   name: "Danielius Zajenčkauskas",
   firstName: "Danielius",
-  role: "Frontend Engineer",
+  role: "Front-end Engineer",
   tagline:
-    "Frontend Engineer building maintainable enterprise platforms and customer-facing products with React, Next.js and TypeScript.",
+    "Front-end Engineer building maintainable enterprise platforms and customer-facing products with React, Next.js and TypeScript.",
   location: "Vilnius, Lithuania",
   availability: "Open to selected front-end opportunities",
   email: "danielius@zajenckauskas.lt",
@@ -14,7 +14,7 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/danielius-zajenckauskas/",
 
   about: [
-    "Frontend Engineer with commercial experience across enterprise ERP, finance, payroll and HR software, alongside e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces with TypeScript, React and Next.js.",
+    "Front-end Engineer with commercial experience across enterprise ERP, finance, payroll and HR software, alongside e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces with TypeScript, React and Next.js.",
     "I work beyond individual screens: designing shared component packages, config-driven forms and data tables, Strapi content models, REST and GraphQL integrations, PDF reports, transactional email templates and automated test coverage. Recent work spans a 35-app enterprise monorepo and an independently developed multi-application marketplace.",
     "My background in graphic design brings strong product judgement to information hierarchy, responsive behaviour and interaction details. I favour pragmatic architecture, explicit types and reusable patterns that help teams ship confidently and maintain products over time.",
   ],
@@ -69,7 +69,7 @@ export type TimelineEntry = {
 
 export const experience: TimelineEntry[] = [
   {
-    title: "Frontend Engineer",
+    title: "Front-end Engineer",
     org: "Lobasoft",
     period: "Mar 2024 – Present · Hybrid",
     year: "2024",
@@ -87,7 +87,7 @@ export const experience: TimelineEntry[] = [
     ],
   },
   {
-    title: "Front-End Developer",
+    title: "Front-end Developer",
     org: "Ideaformus",
     period: "Nov 2021 – Mar 2024 · Vilnius",
     year: "2021",

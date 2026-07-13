@@ -28,6 +28,13 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   return {
     title: project.name,
     description: project.summary,
+    alternates: { canonical: `/projects/${project.slug}` },
+    openGraph: {
+      title: project.name,
+      description: project.summary,
+      url: `/projects/${project.slug}`,
+      type: "article",
+    },
   };
 }
 
@@ -143,7 +150,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
             <Reveal delay={0.05} className="project-proof-card thread-under">
               <span>02</span>
-              <h3>Frontend decisions</h3>
+              <h3>Front-end decisions</h3>
               <ul>
                 {project.caseStudy.decisions.map((item) => (
                   <li key={item}>{item}</li>

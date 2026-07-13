@@ -3,7 +3,13 @@ import { ExperienceExplorer } from "@/components/ExperienceExplorer";
 
 export const metadata: Metadata = {
   title: "Experience",
-  description: "Work history and education of Danielius Zajenckauskas.",
+  description: "Work history and education of Danielius Zajenčkauskas.",
+  alternates: { canonical: "/experience" },
+  openGraph: {
+    title: "Experience and education",
+    description: "Work history and education of Danielius Zajenčkauskas.",
+    url: "/experience",
+  },
 };
 
 export default function ExperiencePage() {

@@ -261,8 +261,9 @@ body {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
-  background: linear-gradient(110deg, transparent 20%, color-mix(in srgb, var(--ink) 8%, transparent) 50%, transparent 80%);
+  background: linear-gradient(110deg, transparent 20%, color-mix(in srgb, var(--ink) 10%, transparent) 50%, transparent 80%);
   transform: translateX(-100%);
   transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -1210,12 +1211,83 @@ body {
 .home-info-content li { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; border-bottom: 1px solid color-mix(in srgb, var(--border) 70%, transparent); padding-bottom: 0.55rem; color: var(--text); font-size: 0.86rem; }
 .home-info-content li small { color: var(--subtle); font-size: 0.68rem; }
 .home-interest-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; }
-.cta-panel { transition: border-color 0.3s ease, transform 0.35s ease, box-shadow 0.35s ease; }
+.home-contact-section { padding-top: 7rem; padding-bottom: 7rem; }
+.cta-panel {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: 20rem;
+  grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
+  gap: clamp(2.5rem, 6vw, 6rem);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-feature);
+  padding: clamp(2rem, 4vw, 3.5rem);
+  background:
+    radial-gradient(circle at 96% 4%, color-mix(in srgb, var(--hero-blob-lilac) 28%, transparent), transparent 34%),
+    radial-gradient(circle at 4% 100%, color-mix(in srgb, var(--hero-blob-sage) 18%, transparent), transparent 36%),
+    color-mix(in srgb, var(--surface) 74%, transparent);
+  transition: border-color 0.3s ease, transform 0.35s ease, box-shadow 0.35s ease;
+}
 .cta-panel:hover {
   border-color: color-mix(in srgb, var(--ink) 42%, var(--border));
   transform: translateY(-4px);
   box-shadow: 0 30px 72px -55px color-mix(in srgb, var(--text) 65%, transparent);
 }
+.cta-copy { position: relative; z-index: 2; align-self: end; max-width: 37rem; }
+.cta-copy h2 {
+  max-width: 35rem;
+  margin-top: 0.85rem;
+  color: var(--text);
+  font-size: clamp(2.35rem, 4.5vw, 4.4rem);
+  font-weight: 900;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+}
+.cta-copy > p:last-child {
+  max-width: 34rem;
+  margin-top: 1.35rem;
+  color: var(--muted);
+  font-size: 0.96rem;
+  line-height: 1.75;
+}
+.cta-contact {
+  position: relative;
+  z-index: 2;
+  align-self: end;
+  padding-bottom: 0.25rem;
+}
+.cta-contact > span {
+  display: block;
+  color: var(--subtle);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.cta-email-link {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.8rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 55%, var(--border));
+  padding-bottom: 0.75rem;
+  color: var(--text);
+  font-size: clamp(0.85rem, 1.3vw, 1rem);
+  font-weight: 600;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+.cta-email-link svg {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  color: var(--ink-strong);
+  transition: transform 0.25s ease;
+}
+.cta-email-link:hover { color: var(--ink-strong); border-color: var(--ink); }
+.cta-email-link:hover svg { transform: translate(0.2rem, -0.2rem); }
 
 /* Full project index — sticky editorial navigator with case-study evidence. */
 .projects-explorer,
@@ -1789,12 +1861,20 @@ body {
   .projects-explorer-list,
   .experience-card-list { gap: 1.5rem; }
   .education-editorial { margin-top: 7rem; }
+  .cta-panel {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: 2.75rem;
+  }
+  .cta-copy { max-width: 40rem; }
+  .cta-contact { width: min(100%, 32rem); }
 }
 
 @media (max-width: 640px) {
   .hero-editorial-layout { padding-top: 3.5rem; padding-bottom: 3.5rem; }
-  .hero-editorial .hero-name { margin-top: 0.9rem; font-size: clamp(2.25rem, 12.1vw, 3.25rem); }
-  .hero-editorial .hero-name-line { gap: clamp(0.025rem, 0.45vw, 0.14rem); }
+  .hero-editorial .hero-name { margin-top: 0.9rem; font-size: clamp(1.7rem, 9.1cqw, 2.65rem); }
+  .hero-editorial .hero-name-line { gap: clamp(0.015rem, 0.25cqw, 0.08rem); }
   .hero-intro-copy { margin-top: 1.5rem; font-size: 0.96rem; }
   .hero-actions { display: grid; grid-template-columns: 1fr; }
   .hero-actions a { width: 100%; }
@@ -1803,6 +1883,11 @@ body {
   .hero-portrait-frame { height: min(112vw, 30rem); }
   .hero-portrait-footer { display: block; }
   .hero-socials { margin-top: 1rem; }
+  .home-contact-section { padding-top: 6rem; padding-bottom: 5rem; }
+  .cta-panel { gap: 2.25rem; border-radius: var(--radius-card); padding: 1.5rem; }
+  .cta-copy h2 { font-size: clamp(2.25rem, 11vw, 3.35rem); }
+  .cta-copy > p:last-child { font-size: 0.9rem; line-height: 1.65; }
+  .cta-email-link { font-size: 0.82rem; }
   .doodle-tool span { display: none; }
   .doodle-tool { padding: 0; }
   .section-doodle { width: 3.6rem; opacity: 0.32; }

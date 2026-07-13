@@ -39,7 +39,7 @@ export function Hero() {
       <div className="hero-editorial-layout">
         <div className="hero-intro">
           <Reveal>
-            <p className="eyebrow">Product engineering · Frontend systems</p>
+            <p className="eyebrow">Product engineering · Front-end systems</p>
           </Reveal>
 
           <Reveal delay={0.06}>

@@ -4,6 +4,7 @@ import { Reveal } from "@/components/Reveal";
 import { Tag } from "@/components/Tag";
 import { SectionDoodle } from "@/components/SectionDoodle";
 import { FeaturedProjects } from "@/components/FeaturedProjects";
+import { ArrowUpRight } from "lucide-react";
 import {
   profile,
   skillGroups,
@@ -51,7 +52,7 @@ export default function Home() {
             <p className="eyebrow">About</p>
             <h2>Product thinking, platform discipline.</h2>
             <p>
-              I combine frontend engineering with a graphic communication design background to
+              I combine front-end engineering with a graphic communication design background to
               make complex product workflows easier to understand and maintain.
             </p>
           </Reveal>
@@ -139,24 +140,27 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="relative mx-auto max-w-6xl px-5 py-20" data-thread-anchor>
+      <section className="home-contact-section relative mx-auto max-w-6xl px-5 py-20" data-thread-anchor>
         <span aria-hidden className="section-blob section-blob-cta parallax-blob" />
         <span aria-hidden className="doodle-accent doodle-accent-contact" />
         <SectionDoodle type="contact" className="doodle-contact" />
         <Reveal className="thread-over">
-          <div className="cta-panel relative overflow-hidden rounded-3xl border border-border bg-surface/60 px-6 py-12 text-center sm:px-10">
-            <div aria-hidden className="absolute -right-16 -top-20 h-44 w-44 rounded-full bg-[var(--blob-1)] blur-3xl" />
-            <h2 className="relative text-2xl font-black text-text">Building products that perform.</h2>
-            <p className="mx-auto mt-2 max-w-md text-muted">
-              Available for selected opportunities where product quality,
-              thoughtful engineering and long-term maintainability matter.
-            </p>
-            <a
-              href={`mailto:${profile.email}`}
-              className="primary-button relative mt-6"
-            >
-              {profile.email}
-            </a>
+          <div className="cta-panel">
+            <div className="cta-copy">
+              <p className="eyebrow">Available for selected work</p>
+              <h2>Let’s make complex products feel clear.</h2>
+              <p>
+                Open to thoughtful frontend work where product quality and maintainability matter.
+              </p>
+            </div>
+
+            <div className="cta-contact">
+              <span>Start a conversation</span>
+              <a href={`mailto:${profile.email}`} className="cta-email-link">
+                {profile.email}
+                <ArrowUpRight aria-hidden="true" />
+              </a>
+            </div>
           </div>
         </Reveal>
       </section>

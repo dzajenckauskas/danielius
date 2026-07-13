@@ -12,17 +12,41 @@ import { ScrollProgress } from "@/components/ScrollProgress";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://zajenckauskas.lt"),
+  applicationName: profile.name,
   title: {
     default: `${profile.name} — ${profile.role}`,
     template: `%s — ${profile.name}`,
   },
   description: profile.tagline,
+  authors: [{ name: profile.name, url: "https://zajenckauskas.lt" }],
+  creator: profile.name,
+  publisher: profile.name,
+  keywords: [
+    "Danielius Zajenčkauskas",
+    "Frontend Engineer",
+    "React Developer",
+    "Next.js Developer",
+    "TypeScript",
+    "Frontend Architecture",
+    "Vilnius",
+  ],
+  alternates: { canonical: "/" },
   openGraph: {
     title: `${profile.name} — ${profile.role}`,
     description: profile.tagline,
+    url: "/",
+    siteName: profile.name,
+    locale: "en_GB",
     type: "website",
+    images: [{ url: "/avatar.jpg", width: 640, height: 640, alt: profile.name }],
+  },
+  twitter: {
+    card: "summary",
+    title: `${profile.name} — ${profile.role}`,
+    description: profile.tagline,
     images: ["/avatar.jpg"],
   },
+  category: "technology",
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },

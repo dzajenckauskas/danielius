@@ -4,6 +4,12 @@ import { ProjectsExplorer } from "@/components/ProjectsExplorer";
 export const metadata: Metadata = {
   title: "Projects",
   description: "Selected digital products and web platforms developed by Danielius Zajenčkauskas.",
+  alternates: { canonical: "/projects" },
+  openGraph: {
+    title: "Selected projects",
+    description: "Selected digital products and web platforms developed by Danielius Zajenčkauskas.",
+    url: "/projects",
+  },
 };
 
 export default function ProjectsPage() {

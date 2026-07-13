@@ -2,7 +2,7 @@
 
 # Danielius Zajenčkauskas
 
-### Frontend Engineer · React · Next.js · TypeScript
+### Front-end Engineer · React · Next.js · TypeScript
 
 I build maintainable enterprise platforms and customer-facing products—from complex ERP workflows to multi-application marketplaces.
 
@@ -16,7 +16,7 @@ I build maintainable enterprise platforms and customer-facing products—from co
 
 ## About
 
-I am a frontend engineer based in Vilnius, Lithuania, working across enterprise ERP, finance, payroll and HR software as well as e-commerce, healthcare and real-estate products.
+I am a front-end engineer based in Vilnius, Lithuania, working across enterprise ERP, finance, payroll and HR software as well as e-commerce, healthcare and real-estate products.
 
 My work goes beyond individual screens: shared component packages, config-driven forms and data tables, Strapi content architecture, REST and GraphQL integrations, PDF reports, transactional email and automated testing. A background in visual design helps me bring strong information hierarchy and product judgement to technically complex work.
 
@@ -70,7 +70,7 @@ A healthcare content and product platform with a Strapi-managed catalogue and br
 
 ## Private commercial work
 
-Most commercial source code is private because it belongs to clients or contains product-specific business logic. The portfolio therefore presents precise case studies covering the problem, my contribution, frontend decisions, quality checks and outcomes without exposing confidential code or data.
+Most commercial source code is private because it belongs to clients or contains product-specific business logic. The portfolio therefore presents precise case studies covering the problem, my contribution, front-end decisions, quality checks and outcomes without exposing confidential code or data.
 
 For a relevant role, I can provide a guided architecture walkthrough or a focused, sanitised code sample where the applicable client agreement allows it.
 
@@ -78,7 +78,7 @@ For a relevant role, I can provide a guided architecture walkthrough or a focuse
 
 <div align="center">
 
-Open to selected frontend opportunities where product quality and maintainable engineering matter.
+Open to selected front-end opportunities where product quality and maintainable engineering matter.
 
 **[View portfolio](https://zajenckauskas.lt) · [Connect on LinkedIn](https://www.linkedin.com/in/danielius-zajenckauskas/)**
 

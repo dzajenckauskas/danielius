@@ -3,7 +3,7 @@
 ## Profile settings
 
 - Create a public repository named exactly `dzajenckauskas` and copy the adjacent `README.md` into its root.
-- Bio: `Frontend Engineer · React, Next.js & TypeScript · Enterprise platforms, Strapi and product systems`
+- Bio: `Front-end Engineer · React, Next.js & TypeScript · Enterprise platforms, Strapi and product systems`
 - Website: `https://zajenckauskas.lt`
 - Company: `Lobasoft`
 - Keep location as `Vilnius, Lithuania` and add the existing LinkedIn profile.
@@ -20,7 +20,7 @@
 
 ## Repository presentation
 
-1. Pin `sports-standings` and `mocc` first; they currently provide the strongest public evidence of product and frontend work.
+1. Pin `sports-standings` and `mocc` first; they currently provide the strongest public evidence of product and front-end work.
 2. Give `mocc` this description: `Healthcare services platform built with Next.js, TypeScript and Strapi, including responsive content, enquiry workflows and PDF generation.`
 3. Add `https://www.mocc.lt` as the `mocc` homepage and topics: `nextjs`, `typescript`, `strapi`, `react-pdf`, `material-ui`, `healthcare`.
 4. Add `https://standings.danzaj.lt` as the `sports-standings` homepage and topics: `react`, `typescript`, `redux-toolkit`, `accessibility`, `i18n`, `react-hook-form`.

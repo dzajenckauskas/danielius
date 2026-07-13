@@ -35,12 +35,12 @@ export const projects: Project[] = [
     period: "March 2024 – Present",
     engagement: "Commercial product development",
     location: "Vilnius, Lithuania · Hybrid",
-    role: "Frontend Engineer",
+    role: "Front-end Engineer",
     summary:
       "A multi-application business platform covering ERP, financials, payroll, HR, audit and employee self-service workflows.",
     about: [
       "Lobasoft is a large enterprise software ecosystem composed of 35 React applications and 12 shared packages. Its products support data-heavy operational workflows across finance, accounting, payroll, HR, audit, document management and employee self-service.",
-      "The frontend is organised as a Turborepo monorepo with reusable UI, form, data, document and domain packages. A config-driven architecture turns resource definitions into consistent forms, lists, filters, actions and detail views while still supporting specialised product workflows.",
+      "The front-end is organised as a Turborepo monorepo with reusable UI, form, data, document and domain packages. A config-driven architecture turns resource definitions into consistent forms, lists, filters, actions and detail views while still supporting specialised product workflows.",
     ],
     contribution: [
       "Built and modernised config-driven forms, data tables, filters and action workflows shared across ERP, payroll, projects and financial applications.",
@@ -145,7 +145,7 @@ export const projects: Project[] = [
     period: "March 2024 – Present",
     engagement: "Commercial client project",
     location: "United Kingdom · Remote",
-    role: "Frontend Engineer",
+    role: "Front-end Engineer",
     summary:
       "A customer-facing international removals platform supporting quotations and relocations by road, sea and air.",
     about: [
@@ -171,7 +171,7 @@ export const projects: Project[] = [
         "Reduced media cost with progressive loading, adjacent-image preloading and touch-friendly navigation rather than loading full galleries eagerly.",
       ],
       outcome:
-        "Customers receive a clearer path from initial estimate to structured booking, while the frontend is easier to extend across service and support journeys.",
+        "Customers receive a clearer path from initial estimate to structured booking, while the front-end is easier to extend across service and support journeys.",
     },
     sourceAccess: {
       visibility: "private",
@@ -202,7 +202,7 @@ export const projects: Project[] = [
     period: "December 2023 – Present",
     engagement: "Commercial client project",
     location: "Lithuania · Remote",
-    role: "Frontend Engineer",
+    role: "Front-end Engineer",
     summary:
       "A real-estate platform combining broker positioning, property discovery and qualified lead generation.",
     about: [
@@ -219,7 +219,7 @@ export const projects: Project[] = [
       challenge:
         "Balance a distinctive personal brand with fast property discovery, editable content and reliable lead capture for buyers and sellers.",
       decisions: [
-        "Structured property, editorial, testimonial and SEO content in Strapi so the broker could update the site without frontend releases.",
+        "Structured property, editorial, testimonial and SEO content in Strapi so the broker could update the site without front-end releases.",
         "Kept valuation and contact journeys contextual to the content that triggered them, with reusable validated form primitives.",
       ],
       quality: [
@@ -256,12 +256,12 @@ export const projects: Project[] = [
     period: "March 2023 – Present",
     engagement: "Commercial client project",
     location: "Vilnius, Lithuania",
-    role: "Frontend Engineer",
+    role: "Front-end Engineer",
     summary:
       "A healthcare content and product platform for an orthopaedic clinic, its services and technical-aid catalogue.",
     about: [
       "Ortopedijos Paslaugų Klinika makes specialist orthopaedic services and technical products easier to understand and navigate. The website combines clinic information, consultations, rehabilitation services and a structured catalogue of orthopaedic aids.",
-      "A headless CMS allows the clinic team to maintain detailed service, category and product information while the frontend keeps discovery consistent across a large content surface.",
+      "A headless CMS allows the clinic team to maintain detailed service, category and product information while the front-end keeps discovery consistent across a large content surface.",
     ],
     contribution: [
       "Built responsive service, category, product and clinic-information templates for a content-rich healthcare website.",
