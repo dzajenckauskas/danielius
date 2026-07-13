@@ -42,35 +42,44 @@ export default function Home() {
       <FeaturedProjects />
 
       {/* About */}
-      <section className="relative mx-auto max-w-4xl px-5 py-12" data-thread-anchor>
+      <section className="home-editorial-section relative mx-auto max-w-6xl px-5 py-16" data-thread-anchor>
         <span aria-hidden className="section-blob section-blob-about parallax-blob" />
         <SectionDoodle type="pencil" className="doodle-about" />
-        <Reveal>
-          <h2 className="eyebrow">
-            About
-          </h2>
-        </Reveal>
-        <div className="mt-4 space-y-4">
+        <div className="home-section-rail">
+          <Reveal>
+            <p className="eyebrow">About</p>
+            <h2>Product thinking, platform discipline.</h2>
+            <p>
+              I combine frontend engineering with a visual-design background to
+              make complex product workflows easier to understand and maintain.
+            </p>
+          </Reveal>
+        </div>
+        <div className="home-editorial-cards">
           {profile.about.map((para, i) => (
-            <Reveal key={i} delay={i * 0.05}>
-              <p className="max-w-3xl text-[15px] leading-relaxed text-muted">
-                {para}
-              </p>
+            <Reveal key={para} delay={i * 0.05} className="home-editorial-card">
+              <span>{String(i + 1).padStart(2, "0")}</span>
+              <p>{para}</p>
             </Reveal>
           ))}
         </div>
       </section>
 
       {/* Skills */}
-      <section className="relative mx-auto max-w-4xl px-5 py-12" data-thread-anchor>
+      <section className="home-editorial-section relative mx-auto max-w-6xl px-5 py-16" data-thread-anchor>
         <span aria-hidden className="section-blob section-blob-skills parallax-blob" />
         <SectionDoodle type="code" className="doodle-skills" />
-        <Reveal>
-          <h2 className="eyebrow">
-            Skills &amp; Tools
-          </h2>
-        </Reveal>
-        <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="home-section-rail">
+          <Reveal>
+            <p className="eyebrow">Skills &amp; Tools</p>
+            <h2>Tools chosen for the work.</h2>
+            <p>
+              A product-focused stack spanning interfaces, content platforms,
+              documents, integrations and delivery quality.
+            </p>
+          </Reveal>
+        </div>
+        <div className="home-skill-cards">
           {skillGroups.map((group, i) => (
             <Reveal
               key={group.label}
@@ -84,12 +93,13 @@ export default function Home() {
       </section>
 
       {/* Languages + Interests */}
-      <section className="relative mx-auto max-w-4xl px-5 py-12" data-thread-anchor>
+      <section className="home-dual-section relative mx-auto max-w-6xl px-5 py-16" data-thread-anchor>
         <span aria-hidden className="section-blob section-blob-languages parallax-blob" />
         <SectionDoodle type="speech" className="doodle-languages" />
         <SectionDoodle type="bike" className="doodle-interests" />
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-          <Reveal className="thread-over">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <Reveal className="home-info-panel thread-over">
+            <span className="home-info-number">02</span>
             <h2 className="eyebrow">
               Languages
             </h2>
@@ -105,7 +115,8 @@ export default function Home() {
               ))}
             </ul>
           </Reveal>
-          <Reveal delay={0.05} className="thread-under">
+          <Reveal delay={0.05} className="home-info-panel thread-under">
+            <span className="home-info-number">08</span>
             <h2 className="eyebrow">
               Beyond Code
             </h2>
@@ -119,7 +130,7 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="relative mx-auto max-w-4xl px-5 py-16" data-thread-anchor>
+      <section className="relative mx-auto max-w-6xl px-5 py-20" data-thread-anchor>
         <span aria-hidden className="section-blob section-blob-cta parallax-blob" />
         <SectionDoodle type="contact" className="doodle-contact" />
         <Reveal className="thread-over">

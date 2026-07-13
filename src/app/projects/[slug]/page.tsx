@@ -41,7 +41,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <article className={`project-detail project-accent-${project.accent}`}>
       <span aria-hidden className="project-page-blob project-detail-blob parallax-blob" />
-      <div className="mx-auto max-w-4xl px-5 py-12 sm:py-18">
+      <div className="mx-auto max-w-6xl px-5 py-12 sm:py-18">
         <Reveal>
           <Link href="/projects" className="project-back-link">
             <ArrowLeft className="h-4 w-4" aria-hidden />

@@ -19,7 +19,7 @@ export function Nav() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-bg/70 backdrop-blur-md">
-      <nav className="mx-auto flex h-16 max-w-4xl items-center justify-between px-5">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Link
           href="/"
           className="nav-name"

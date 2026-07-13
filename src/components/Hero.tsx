@@ -51,7 +51,7 @@ export function Hero() {
       <div aria-hidden className="hero-shape hero-shape-two parallax-blob" />
       <div aria-hidden className="hero-shape hero-shape-three parallax-blob" />
 
-      <div className="relative mx-auto flex max-w-4xl flex-col items-center px-5 pb-14 pt-16 text-center sm:pt-24">
+      <div className="relative mx-auto flex max-w-6xl flex-col items-center px-5 pb-14 pt-16 text-center sm:pt-24">
         <Reveal>
           <div
             className="group relative h-32 w-32 sm:h-36 sm:w-36"
