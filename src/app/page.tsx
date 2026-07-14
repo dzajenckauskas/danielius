@@ -13,6 +13,12 @@ import {
 } from "@/data/profile";
 import { projects } from "@/data/projects";
 
+const aboutCardTitles = [
+  "Product engineering",
+  "Platform architecture",
+  "Design-led systems",
+];
+
 export default function Home() {
   return (
     <>
@@ -66,7 +72,10 @@ export default function Home() {
               className={`home-editorial-card ${i % 2 === 0 ? "thread-over" : "thread-under"}`}
             >
               <span>{String(i + 1).padStart(2, "0")}</span>
-              <p>{para}</p>
+              <div className="home-editorial-card-content">
+                <h3>{aboutCardTitles[i]}</h3>
+                <p>{para}</p>
+              </div>
             </Reveal>
           ))}
         </div>

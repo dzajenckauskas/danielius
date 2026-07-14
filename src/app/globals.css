@@ -1699,6 +1699,16 @@ body {
   font-size: 0.68rem;
 }
 
+.home-editorial-card-content h3 {
+  margin-bottom: 0.8rem;
+  color: var(--subtle);
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
 .home-editorial-card p {
   max-width: 35rem;
   color: var(--muted);
