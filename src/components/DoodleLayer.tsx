@@ -57,15 +57,16 @@ function defaultPortraitDoodle(rect: DOMRect): DrawingAction[] {
     y: pageTop + rect.height * y,
   });
   const ink = "#3d5b57";
+  const illustrationLineWidth = 1.6;
 
   const stroke = (
-    width: number,
+    _width: number,
     points: Array<[number, number]>,
     smooth = true,
   ): DrawingAction => ({
     tool: "pen",
     color: ink,
-    width,
+    width: illustrationLineWidth,
     smooth,
     points: points.map(([x, y]) => point(x, y)),
   });
@@ -80,6 +81,13 @@ function defaultPortraitDoodle(rect: DOMRect): DrawingAction[] {
     stroke(1.4, [[0.48, 0.032], [0.47, 0.06], [0.465, 0.098], [0.465, 0.143]]),
     stroke(1.4, [[0.51, 0.032], [0.526, 0.06], [0.534, 0.098], [0.536, 0.146]]),
     stroke(1.5, [[0.488, 0.03], [0.488, 0.019], [0.493, 0.013], [0.501, 0.014], [0.505, 0.021], [0.505, 0.031]]),
+    // Stitching and surrounding accents make the cap feel intentionally illustrated.
+    stroke(1.05, [[0.394, 0.151], [0.414, 0.153]], false),
+    stroke(1.05, [[0.43, 0.154], [0.45, 0.155]], false),
+    stroke(1.05, [[0.566, 0.153], [0.586, 0.151]], false),
+    stroke(1.15, [[0.72, 0.055], [0.727, 0.073], [0.744, 0.081], [0.727, 0.089], [0.72, 0.108], [0.713, 0.089], [0.696, 0.081], [0.713, 0.073], [0.72, 0.055]], false),
+    stroke(1.1, [[0.32, 0.075], [0.345, 0.084]], false),
+    stroke(1.1, [[0.31, 0.105], [0.338, 0.108]], false),
 
     // Deliberately asymmetric glasses, traced from the supplied doodle.
     stroke(2, [[0.385, 0.365], [0.395, 0.345], [0.425, 0.332], [0.465, 0.332], [0.502, 0.344], [0.52, 0.366], [0.52, 0.405], [0.507, 0.432], [0.477, 0.45], [0.435, 0.45], [0.405, 0.44], [0.388, 0.415], [0.385, 0.365]]),
@@ -88,6 +96,32 @@ function defaultPortraitDoodle(rect: DOMRect): DrawingAction[] {
     stroke(1.25, [[0.535, 0.379], [0.549, 0.368], [0.565, 0.37]]),
     stroke(1.9, [[0.31, 0.372], [0.348, 0.368], [0.387, 0.371]]),
     stroke(1.9, [[0.682, 0.407], [0.72, 0.407], [0.752, 0.405]]),
+    // Lens shine and small hinge ticks echo the cap's fine-detail line weight.
+    stroke(1.05, [[0.414, 0.363], [0.432, 0.352]], false),
+    stroke(1.05, [[0.426, 0.382], [0.451, 0.365]], false),
+    stroke(1.05, [[0.601, 0.377], [0.619, 0.365]], false),
+    stroke(1.05, [[0.613, 0.396], [0.637, 0.378]], false),
+    stroke(1.1, [[0.383, 0.382], [0.391, 0.394]], false),
+    stroke(1.1, [[0.681, 0.401], [0.688, 0.413]], false),
+
+    // Small collage accents complete the composition around the face.
+    stroke(1.2, [[0.275, 0.245], [0.282, 0.263], [0.302, 0.264], [0.287, 0.276], [0.292, 0.296], [0.275, 0.284], [0.258, 0.296], [0.263, 0.276], [0.248, 0.264], [0.268, 0.263], [0.275, 0.245]], false),
+    stroke(1.2, [[0.78, 0.255], [0.756, 0.296], [0.777, 0.296], [0.748, 0.345], [0.758, 0.31], [0.738, 0.31]], false),
+    stroke(1.2, [[0.29, 0.47], [0.271, 0.46], [0.253, 0.468], [0.247, 0.486], [0.257, 0.503], [0.278, 0.506], [0.293, 0.494], [0.292, 0.478], [0.28, 0.47], [0.268, 0.478], [0.27, 0.49]]),
+    stroke(1.2, [[0.76, 0.18], [0.768, 0.192], [0.78, 0.184]], false),
+    stroke(1.2, [[0.785, 0.205], [0.798, 0.211]], false),
+    stroke(1.2, [[0.24, 0.32], [0.25, 0.327]], false),
+
+    // Travel-sketch paper plane and its loose dotted flight path.
+    stroke(1.2, [[0.735, 0.555], [0.825, 0.515], [0.79, 0.592], [0.768, 0.568], [0.735, 0.555]], false),
+    stroke(1.2, [[0.768, 0.568], [0.825, 0.515]], false),
+    stroke(1.2, [[0.768, 0.568], [0.764, 0.603], [0.79, 0.592]], false),
+    stroke(1.2, [[0.831, 0.53], [0.845, 0.539]], false),
+    stroke(1.2, [[0.852, 0.555], [0.859, 0.57]], false),
+    stroke(1.2, [[0.861, 0.59], [0.858, 0.606]], false),
+    stroke(1.2, [[0.851, 0.626], [0.84, 0.64]], false),
+    stroke(1.2, [[0.825, 0.654], [0.808, 0.663]], false),
+    stroke(1.2, [[0.788, 0.67], [0.769, 0.668]], false),
   ];
 }
 
