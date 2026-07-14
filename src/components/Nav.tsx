@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { FileText, Github, Mail, Linkedin, Menu, X } from "lucide-react";
+import { ArrowUpRight, FileText, Github, Linkedin, Menu, X } from "lucide-react";
 import { profile } from "@/data/profile";
 
 const links = [
@@ -26,9 +26,19 @@ const DROP_DELAY_MS = 1600;
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const nameRef = useRef<HTMLAnchorElement>(null);
   const dotRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const updateHeader = () => setIsScrolled(window.scrollY > 8);
+
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+
+    return () => window.removeEventListener("scroll", updateHeader);
+  }, []);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -124,7 +134,13 @@ export function Nav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60  md:backdrop-blur-md">
+    <header
+      className={`sticky top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${
+        isScrolled
+          ? "border-border/60 bg-bg/20 md:backdrop-blur-md"
+          : "border-transparent bg-transparent"
+      }`}
+    >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Link
           href="/"
@@ -188,13 +204,6 @@ export function Nav() {
             </a>
           )}
           <a
-            href={`mailto:${profile.email}`}
-            aria-label="Email"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
-          >
-            <Mail className="h-[18px] w-[18px]" />
-          </a>
-          <a
             href="/api/resume"
             target="_blank"
             rel="noreferrer noopener"
@@ -202,6 +211,13 @@ export function Nav() {
             className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
           >
             <FileText className="h-[18px] w-[18px]" />
+          </a>
+          <a
+            href={`mailto:${profile.email}`}
+            className="ml-1 inline-flex h-10 items-center gap-2 rounded-xl bg-[#1b1b1b] px-5 text-xs font-semibold text-white transition-[background-color,transform,box-shadow] hover:-translate-y-0.5 hover:bg-black hover:shadow-lg"
+          >
+            Let&apos;s talk
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
           </a>
         </div>
 
@@ -253,13 +269,6 @@ export function Nav() {
                 <Linkedin className="h-[18px] w-[18px]" />
               </a>
               <a
-                href={`mailto:${profile.email}`}
-                aria-label="Email"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
-              >
-                <Mail className="h-[18px] w-[18px]" />
-              </a>
-              <a
                 href="/api/resume"
                 target="_blank"
                 rel="noreferrer noopener"
@@ -267,6 +276,13 @@ export function Nav() {
                 className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
               >
                 <FileText className="h-[18px] w-[18px]" />
+              </a>
+              <a
+                href={`mailto:${profile.email}`}
+                className="ml-auto inline-flex h-9 items-center gap-1.5 rounded-xl bg-[#1b1b1b] px-4 text-xs font-semibold text-white transition-colors hover:bg-black"
+              >
+                Let&apos;s talk
+                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
               </a>
             </div>
           </div>
