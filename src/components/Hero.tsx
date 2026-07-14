@@ -88,7 +88,8 @@ export function Hero() {
               <span aria-hidden className="hero-photo-blob hero-photo-blob-back-accent" />
               <div className="hero-portrait-frame">
                 <Image
-                  src="/avatar.jpg"
+                  src="/avatar-2.png"
+                  // src="/avatar.jpg"
                   alt={profile.name}
                   width={720}
                   height={820}
