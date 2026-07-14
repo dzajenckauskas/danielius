@@ -273,6 +273,8 @@ export function DoodleLayer() {
   const drawingRef = useRef(false);
   const resizeFrameRef = useRef<number | null>(null);
   const scrollFrameRef = useRef<number | null>(null);
+  const scrollSettleTimerRef = useRef<number | null>(null);
+  const canvasScrollOriginRef = useRef({ x: 0, y: 0 });
   const defaultAnimationFrameRef = useRef<number | null>(null);
   const defaultAnimationProgressRef = useRef(1);
   const defaultActionCountRef = useRef(0);
@@ -304,6 +306,9 @@ export function DoodleLayer() {
     const canvas = canvasRef.current;
     const context = canvas?.getContext("2d");
     if (!canvas || !context) return;
+    canvas.style.transform = "";
+    canvas.style.willChange = "auto";
+    canvasScrollOriginRef.current = { x: window.scrollX, y: window.scrollY };
     context.save();
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -325,7 +330,10 @@ export function DoodleLayer() {
   const prepareCanvas = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    const isMobile = window.innerWidth <= 900
+      || window.matchMedia("(pointer: coarse)").matches;
+    const maxRatio = isMobile ? 1.5 : 2;
+    const ratio = Math.max(Math.min(window.devicePixelRatio || 1, maxRatio), 1);
     canvas.width = Math.floor(window.innerWidth * ratio);
     canvas.height = Math.floor(window.innerHeight * ratio);
     canvas.style.width = `${window.innerWidth}px`;
@@ -346,6 +354,13 @@ export function DoodleLayer() {
       defaultAnimationProgressRef.current = 0;
       setHistorySize(actionsRef.current.length);
       prepareCanvas();
+      const shouldAnimate = window.innerWidth > 900
+        && !window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)").matches;
+      if (!shouldAnimate) {
+        defaultAnimationProgressRef.current = 1;
+        redraw();
+        return;
+      }
       const startedAt = performance.now();
       const animateDoodle = (time: number) => {
         defaultAnimationProgressRef.current = Math.min(1, (time - startedAt) / 1_800);
@@ -405,7 +420,25 @@ export function DoodleLayer() {
       if (scrollFrameRef.current !== null) return;
       scrollFrameRef.current = window.requestAnimationFrame(() => {
         scrollFrameRef.current = null;
-        redraw();
+        const useCompositorScroll = window.innerWidth <= 900
+          || window.matchMedia("(pointer: coarse)").matches;
+        if (!useCompositorScroll) {
+          redraw();
+          return;
+        }
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const origin = canvasScrollOriginRef.current;
+        canvas.style.willChange = "transform";
+        canvas.style.transform = `translate3d(${origin.x - window.scrollX}px, ${origin.y - window.scrollY}px, 0)`;
+
+        if (scrollSettleTimerRef.current !== null) {
+          window.clearTimeout(scrollSettleTimerRef.current);
+        }
+        scrollSettleTimerRef.current = window.setTimeout(() => {
+          scrollSettleTimerRef.current = null;
+          redraw();
+        }, 90);
       });
     };
     window.addEventListener("resize", handleResize);
@@ -417,6 +450,10 @@ export function DoodleLayer() {
       resizeFrameRef.current = null;
       if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
       scrollFrameRef.current = null;
+      if (scrollSettleTimerRef.current !== null) {
+        window.clearTimeout(scrollSettleTimerRef.current);
+      }
+      scrollSettleTimerRef.current = null;
     };
   }, [active, historySize, prepareCanvas, redraw]);
 
@@ -845,7 +882,7 @@ export function DoodleLayer() {
       </div>
       {active && !sendOpen && (
         <p className={`doodle-hint ${studioOpen ? "doodle-hint-above-studio" : "doodle-hint-above-tools"}`}>
-          Draw on my portrait · Clear the starter doodle or make it stranger
+          Draw on my portrait · Clear the starter doodle or add your own touch
         </p>
       )}
     </>

@@ -136,8 +136,8 @@ export function Nav() {
   return (
     <header
       className={`sticky top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${
-        isScrolled
-          ? "border-border/60 bg-bg/20 md:backdrop-blur-md"
+        isScrolled || open
+          ? "border-border/60 bg-bg/20 backdrop-blur-sm md:backdrop-blur-md"
           : "border-transparent bg-transparent"
       }`}
     >
@@ -188,7 +188,7 @@ export function Nav() {
             target="_blank"
             rel="noreferrer noopener"
             aria-label="GitHub"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
+            className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
           >
             <Github className="h-[18px] w-[18px]" />
           </a>
@@ -236,7 +236,7 @@ export function Nav() {
       </nav>
 
       {open && (
-        <div className="border-t border-border/60 bg-bg/95 px-5 py-3 sm:hidden">
+        <div className="bg-transparent px-5 py-3 sm:hidden">
           <div className="flex flex-col gap-1">
             {links.map((l) => (
               <Link

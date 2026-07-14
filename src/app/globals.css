@@ -3851,8 +3851,44 @@ body {
   .proof-strip dl,
   .featured-work-card,
   .home-editorial-card,
+  .skill-group-card,
+  .projects-explorer-card,
+  .experience-card,
+  .project-list-card,
+  .project-facts,
+  .project-proof-card,
   .private-source-note {
     backdrop-filter: none;
+  }
+
+  /* Keep the header as the only continuously scrolling blurred surface.
+     These controls already use an opaque-enough surface on small screens. */
+  .doodle-tool,
+  .doodle-studio,
+  .doodle-studio-restore {
+    backdrop-filter: none;
+  }
+
+  /* Continuous decorative transforms keep layers promoted throughout a long
+     mobile page. Static artwork retains the composition at far lower cost. */
+  .parallax-blob,
+  .section-doodle,
+  .nav-name-letter {
+    animation: none;
+    will-change: auto;
+  }
+
+  .hero-photo-blob-back {
+    filter: blur(24px);
+  }
+
+  .hero-photo-blob-side {
+    filter: blur(6px);
+  }
+
+  .section-blob-about,
+  .section-blob-career {
+    filter: blur(30px);
   }
 
   .featured-work-card {
@@ -4023,7 +4059,21 @@ body {
   }
 
   .doodle-hint {
-    display: none;
+    right: 0.75rem;
+    display: block;
+    width: calc(100% - 1.5rem);
+    font-size: 0.68rem;
+    line-height: 1.45;
+    pointer-events: none;
+    transform: none;
+  }
+
+  .doodle-hint-above-studio {
+    bottom: 24.5rem;
+  }
+
+  .doodle-hint-above-tools {
+    bottom: 7.75rem;
   }
 
   .section-doodle {
