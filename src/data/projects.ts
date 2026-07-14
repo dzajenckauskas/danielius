@@ -82,6 +82,64 @@ export const projects: Project[] = [
     accent: "sage",
   },
   {
+    slug: "tezaurus",
+    name: "Tezaurus",
+    domain: "tezaurus.lt",
+    url: "https://tezaurus.lt",
+    year: "2024",
+    period: "2024 – Present",
+    engagement: "Commercial product development",
+    location: "Vilnius, Lithuania · Hybrid",
+    role: "Front-end Engineer",
+    summary:
+      "A multilingual corporate and client self-service platform for an audit and accounting group, serving three branded websites from one codebase.",
+    about: [
+      "Tezaurus is the web platform of UAB „Tezaurus auditas“, a Lithuanian audit, accounting and payroll group with more than three decades of practice. Beyond presenting services and generating leads, the platform lets clients register, subscribe to services, place orders and settle payments in authenticated self-service flows.",
+      "The codebase is white-label by design: a single Next.js application powers tezaurus.lt and two sibling brands, with theming, analytics, push notifications and social integrations resolved per brand at build time. Marketing content is managed in an in-house headless CMS and delivered over GraphQL.",
+    ],
+    contribution: [
+      "Built the multilingual (LT/EN) Next.js App Router front-end with locale-prefixed routing and CMS-managed services, pricing, team, career and article content.",
+      "Implemented the white-label architecture that ships three branded websites from one component tree, each with its own theme, analytics and integration configuration.",
+      "Developed account journeys covering registration, email confirmation, password recovery and Dokobit e-identity sign-in on top of next-auth.",
+      "Built subscription and order checkout with coupons, Braintree payment methods and an invoice-payment fallback, plus proforma, invoice and contract-conditions PDFs rendered with React PDF.",
+      "Created a suite of React Email transactional templates — orders, subscriptions, expiration reminders, contract and termination notices — alongside validated lead-generation forms.",
+      "Handled technical SEO, per-brand analytics via next/third-parties, image optimisation and bundle analysis for a content-heavy multilingual surface.",
+    ],
+    caseStudy: {
+      challenge:
+        "Serve three differently branded companies from one maintainable codebase while combining marketing content with authenticated subscription, ordering and payment self-service.",
+      decisions: [
+        "Resolved brand identity at build time — theme, analytics, push and social integrations — so shared components stay unaware of which site they render.",
+        "Kept editable marketing content in the headless CMS over GraphQL while modelling account, checkout and payment journeys as explicit application workflows.",
+      ],
+      quality: [
+        "Modelled payment progress as explicit states (awaiting payment, awaiting contract, pending, paid) with matching transactional email templates for each transition.",
+        "Used default-locale-clean multilingual routing, structured metadata and image and bundle optimisation to keep a large content surface fast and discoverable.",
+      ],
+      outcome:
+        "The group operates three branded web products from a single front-end codebase, and clients move from marketing pages into signed-in subscription, ordering and invoicing flows without leaving the product.",
+    },
+    sourceAccess: {
+      visibility: "private",
+      note: "Commercial source code is confidential. I can walk through the white-label architecture and selected checkout and account flows where client agreements allow.",
+    },
+    stack: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Material UI",
+      "Emotion",
+      "next-intl",
+      "Apollo GraphQL",
+      "next-auth",
+      "MySQL",
+      "Braintree",
+      "React PDF",
+      "React Email",
+    ],
+    accent: "blue",
+  },
+  {
     slug: "muses-fly-tying-market",
     name: "Musės - Fly Tying Market",
     domain: "muses.lt",

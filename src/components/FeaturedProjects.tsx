@@ -110,7 +110,7 @@ export function FeaturedProjects() {
                   )}
                 </div>
 
-                <Link href={`/projects/${project.slug}`}>
+                <Link href={`/projects/${project.slug}`} className="link-button">
                   Explore case study
                   <ArrowUpRight aria-hidden="true" />
                 </Link>

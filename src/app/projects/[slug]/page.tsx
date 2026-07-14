@@ -67,9 +67,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
           <div className="mt-7 flex flex-wrap gap-3">
             {project.url && (
-              <a className="primary-button" href={project.url} target="_blank" rel="noreferrer noopener">
+              <a className="primary-button group" href={project.url} target="_blank" rel="noreferrer noopener">
                 Visit {project.domain}
-                <ArrowUpRight className="h-4 w-4" aria-hidden />
+                <ArrowUpRight
+                  className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  aria-hidden
+                />
               </a>
             )}
             {project.repository && (
@@ -88,6 +91,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 <p>{project.sourceAccess.note}</p>
               </div>
               <a
+                className="link-button"
                 href={`mailto:${profile.email}?subject=${encodeURIComponent(`Private code walkthrough — ${project.name}`)}`}
               >
                 Request walkthrough

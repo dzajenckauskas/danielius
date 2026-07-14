@@ -11,6 +11,7 @@ import {
   languages,
   interests,
 } from "@/data/profile";
+import { projects } from "@/data/projects";
 
 export default function Home() {
   return (
@@ -33,7 +34,7 @@ export default function Home() {
               <dd>marketplace workspaces</dd>
             </div>
             <div>
-              <dt>5</dt>
+              <dt>{projects.length}</dt>
               <dd>selected case studies</dd>
             </div>
           </dl>
@@ -156,7 +157,7 @@ export default function Home() {
 
             <div className="cta-contact">
               <span>Start a conversation</span>
-              <a href={`mailto:${profile.email}`} className="cta-email-link">
+              <a href={`mailto:${profile.email}`} className="link-button">
                 {profile.email}
                 <ArrowUpRight aria-hidden="true" />
               </a>

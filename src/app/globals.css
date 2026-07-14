@@ -309,6 +309,37 @@ body {
 .secondary-button { border: 1px solid var(--border); color: var(--text); }
 .secondary-button:hover { border-color: var(--ink); color: var(--ink-strong); transform: translateY(-2px); }
 
+/* Compact pill for inline call-to-action links (case studies, walkthroughs)
+   — reads as a button rather than a bold subtitle. */
+.link-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 32%, var(--border));
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  background: color-mix(in srgb, var(--surface) 70%, transparent);
+  color: var(--text);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+.link-button svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: var(--ink-strong);
+  transition: transform 0.25s ease;
+}
+.link-button:hover {
+  border-color: var(--ink);
+  background: var(--surface);
+  color: var(--ink-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -14px var(--ink);
+}
+.link-button:hover svg { transform: translate(0.18rem, -0.18rem); }
+
 .cta-panel::before {
   content: "";
   position: absolute;
@@ -1097,21 +1128,7 @@ body {
   color: var(--ink-strong);
 }
 .featured-source-tag svg { width: 0.7rem; height: 0.7rem; }
-.featured-work-card a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  margin-top: 2rem;
-  color: var(--text);
-  font-size: 0.82rem;
-  font-weight: 900;
-}
-.featured-work-card a svg {
-  width: 1rem;
-  height: 1rem;
-  transition: transform 0.25s ease;
-}
-.featured-work-card a:hover svg { transform: translate(0.18rem, -0.18rem); }
+.featured-work-card .link-button { margin-top: 2rem; }
 
 /* Homepage sections use the same editorial rhythm and width as Selected work. */
 .home-editorial-section {
@@ -1363,34 +1380,7 @@ body {
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
-.cta-email-link {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 0.8rem;
-  border: 0;
-  padding-bottom: 0;
-  background-image: none;
-  box-shadow: none;
-  color: var(--text);
-  font-size: clamp(0.85rem, 1.3vw, 1rem);
-  font-weight: 600;
-  text-decoration: none;
-  transition: color 0.25s ease;
-}
-.cta-email-link::before,
-.cta-email-link::after { display: none; content: none; }
-.cta-email-link svg {
-  flex: none;
-  width: 1rem;
-  height: 1rem;
-  color: var(--ink-strong);
-  transition: transform 0.25s ease;
-}
-.cta-email-link:hover { color: var(--ink-strong); }
-.cta-email-link:hover svg { transform: translate(0.2rem, -0.2rem); }
+.cta-contact .link-button { margin-top: 0.8rem; max-width: 100%; }
 
 /* Full project index — sticky editorial navigator with case-study evidence. */
 .projects-explorer,
@@ -1501,9 +1491,7 @@ body {
 .projects-explorer-tags span { border: 1px solid var(--border); border-radius: 999px; padding: 0.32rem 0.62rem; background: color-mix(in srgb, var(--surface) 62%, transparent); color: var(--muted); font-size: 0.66rem; }
 .projects-explorer-tags .is-private { display: inline-flex; align-items: center; gap: 0.3rem; border-color: color-mix(in srgb, var(--ink) 38%, var(--border)); color: var(--ink-strong); }
 .projects-explorer-tags svg { width: 0.65rem; height: 0.65rem; }
-.projects-explorer-card footer > a { display: inline-flex; flex: none; align-items: center; gap: 0.5rem; color: var(--text); font-size: 0.78rem; font-weight: 900; }
-.projects-explorer-card footer > a svg { width: 1rem; height: 1rem; transition: transform 0.25s ease; }
-.projects-explorer-card footer > a:hover svg { transform: translate(0.2rem, -0.2rem); }
+.projects-explorer-card footer > a { flex: none; }
 
 /* Experience follows the same system while retaining a career-timeline identity. */
 .experience-active-role { margin-top: 1.25rem; border-top: 1px solid var(--border); padding-top: 1rem; }
@@ -1717,16 +1705,7 @@ body {
   font-size: 0.72rem;
   line-height: 1.45;
 }
-.private-source-note a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  white-space: nowrap;
-  color: var(--text);
-  font-size: 0.72rem;
-  font-weight: 900;
-}
-.private-source-note a svg { width: 0.9rem; height: 0.9rem; }
+.private-source-note .link-button { font-size: 0.72rem; }
 .project-facts {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -2343,7 +2322,6 @@ body {
   .cta-panel { gap: 2.25rem; border-radius: var(--radius-card); padding: 1.5rem; }
   .cta-copy h2 { font-size: clamp(2.25rem, 11vw, 3.35rem); }
   .cta-copy > p:last-child { font-size: 0.9rem; line-height: 1.65; }
-  .cta-email-link { font-size: 0.82rem; }
   .doodle-tool-label { display: none; }
   .doodle-tool { padding: 0; }
   .doodle-studio {

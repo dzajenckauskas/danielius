@@ -102,7 +102,7 @@ export function ProjectsExplorer() {
                   <span className="is-private"><LockKeyhole aria-hidden="true" />Private source</span>
                 )}
               </div>
-              <Link href={`/projects/${project.slug}`}>
+              <Link href={`/projects/${project.slug}`} className="link-button">
                 Read case study
                 <ArrowUpRight aria-hidden="true" />
               </Link>
