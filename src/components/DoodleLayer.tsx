@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { TurnstileWidget } from "@/components/TurnstileWidget";
+import { profile } from "@/data/profile";
 import {
   DoodleFormValues,
   doodleFormSchema,
@@ -758,6 +759,147 @@ export function DoodleLayer() {
     return output.toDataURL("image/png");
   };
 
+  const exportPortraitCard = async (composite: string) => {
+    if (!composite) return "";
+    await document.fonts.ready;
+    const portrait = new window.Image();
+    portrait.src = composite;
+    await portrait.decode();
+
+    const output = document.createElement("canvas");
+    output.width = 900;
+    output.height = 1125;
+    const context = output.getContext("2d");
+    if (!context) return "";
+
+    const photo = { x: 46, y: 58, width: 808, height: 920, radius: 28 };
+    const drawSoftBlob = (
+      x: number,
+      y: number,
+      width: number,
+      height: number,
+      color: string,
+      blur: number,
+      alpha: number,
+      rotation = 0,
+    ) => {
+      context.save();
+      context.translate(x + width / 2, y + height / 2);
+      context.rotate(rotation);
+      context.filter = `blur(${blur}px)`;
+      context.globalAlpha = alpha;
+      context.fillStyle = color;
+      context.beginPath();
+      context.ellipse(0, 0, width / 2, height / 2, 0, 0, Math.PI * 2);
+      context.fill();
+      context.restore();
+    };
+
+    context.fillStyle = "#faf9f6";
+    context.fillRect(0, 0, output.width, output.height);
+
+    // The same supporting layers and order used around the live portrait.
+    drawSoftBlob(188, 902, 500, 150, "#8fbccc", 38, 0.32, -0.08);
+    drawSoftBlob(830, 92, 118, 82, "#d891aa", 10, 0.72, -0.28);
+
+    context.save();
+    context.beginPath();
+    context.roundRect(photo.x, photo.y, photo.width, photo.height, photo.radius);
+    context.clip();
+    const imageScale = Math.max(photo.width / portrait.naturalWidth, photo.height / portrait.naturalHeight);
+    const imageWidth = portrait.naturalWidth * imageScale;
+    const imageHeight = portrait.naturalHeight * imageScale;
+    context.drawImage(
+      portrait,
+      photo.x + (photo.width - imageWidth) / 2,
+      photo.y + (photo.height - imageHeight) / 2,
+      imageWidth,
+      imageHeight,
+    );
+    context.restore();
+
+    // The lilac form sits in front of the photo, not behind it.
+    drawSoftBlob(-94, 430, 315, 430, "#b59bd7", 20, 0.7, 0.22);
+
+    context.save();
+    context.strokeStyle = "#9dafac";
+    context.globalAlpha = 0.5;
+    context.lineWidth = 2;
+    context.setLineDash([18, 18]);
+    context.beginPath();
+    context.moveTo(4, 575);
+    context.bezierCurveTo(82, 670, 118, 796, 208, 910);
+    context.bezierCurveTo(252, 968, 286, 1046, 304, 1100);
+    context.stroke();
+    context.restore();
+
+    context.save();
+    context.translate(220, 940);
+    context.rotate(0.22);
+    context.globalAlpha = 0.86;
+    context.fillStyle = "#d2ae6c";
+    context.beginPath();
+    context.moveTo(-42, -24);
+    context.bezierCurveTo(-24, -48, 20, -42, 52, -16);
+    context.bezierCurveTo(68, 2, 48, 40, 17, 48);
+    context.bezierCurveTo(-17, 52, -57, 22, -42, -24);
+    context.closePath();
+    context.fill();
+    context.restore();
+
+    const drawSocialButton = (centerX: number, href: "github" | "linkedin" | "mail") => {
+      const centerY = 1058;
+      context.save();
+      context.strokeStyle = "#ded9d2";
+      context.fillStyle = "#fffefd";
+      context.lineWidth = 1.5;
+      context.beginPath();
+      context.arc(centerX, centerY, 25, 0, Math.PI * 2);
+      context.fill();
+      context.stroke();
+      context.translate(centerX - 12, centerY - 12);
+      context.scale(1, 1);
+      context.strokeStyle = "#5f6266";
+      context.lineWidth = 1.8;
+      context.lineCap = "round";
+      context.lineJoin = "round";
+      const paths = {
+        github: [
+          "M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7A5.5 5.5 0 0 0 19.3 3 5.1 5.1 0 0 0 19.1 0S18 0 15 1.7a13.4 13.4 0 0 0-7 0C5 0 3.9 0 3.9 0a5.1 5.1 0 0 0-.2 3A5.5 5.5 0 0 0 2.2 7.5c0 5.4 3.5 6.6 6.8 7A4.8 4.8 0 0 0 8 18v4",
+          "M8 19c-3 .9-3-1.5-4-2",
+        ],
+        linkedin: ["M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6", "M2 9h4v12H2z", "M4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"],
+        mail: ["M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z", "m22 6-10 7L2 6"],
+      }[href];
+      paths.forEach((path) => context.stroke(new Path2D(path)));
+      context.restore();
+    };
+
+    context.fillStyle = "#191a1c";
+    context.font = "900 27px Neris, Arial, sans-serif";
+    context.textBaseline = "middle";
+    context.fillText(profile.name, 48, 1058);
+    drawSocialButton(724, "github");
+    drawSocialButton(786, "linkedin");
+    drawSocialButton(848, "mail");
+
+    context.save();
+    context.shadowColor = "rgba(25, 26, 28, 0.34)";
+    context.shadowBlur = 18;
+    context.shadowOffsetY = 5;
+    const ballGradient = context.createRadialGradient(294, 1090, 2, 304, 1100, 17);
+    ballGradient.addColorStop(0, "#657a76");
+    ballGradient.addColorStop(0.24, "#344945");
+    ballGradient.addColorStop(1, "#17191a");
+    context.fillStyle = ballGradient;
+    context.beginPath();
+    context.arc(304, 1100, 14, 0, Math.PI * 2);
+    context.fill();
+    context.restore();
+
+    return output.toDataURL("image/png");
+  };
+
   const validateDoodleField = async (field: keyof DoodleFormValues, value: string) => {
     try {
       await doodleFormSchema.validateAt(field, { [field]: value });
@@ -804,10 +946,9 @@ export function DoodleLayer() {
     }
 
     try {
-      const [artwork, composite] = await Promise.all([
-        Promise.resolve(exportArtwork()),
-        exportPortraitComposite(),
-      ]);
+      const artwork = exportArtwork();
+      const composite = await exportPortraitComposite();
+      const portraitCard = await exportPortraitCard(composite);
       const response = await fetch("/api/doodles", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -818,6 +959,7 @@ export function DoodleLayer() {
           turnstileToken,
           artwork,
           composite,
+          portraitCard,
           page: window.location.href,
         }),
       });
@@ -943,7 +1085,7 @@ export function DoodleLayer() {
                 <Sparkles />
                 <p className="eyebrow">Doodle delivered</p>
                 <h2>That made my inbox better.</h2>
-                <p>Thanks for saying hello in your own way. I’ll reply to the email you shared.</p>
+                <p>Thanks for saying hello in your own way. A keepsake PDF is on its way to your inbox, and I’ll reply to the email you shared.</p>
                 <button type="button" className="primary-button" onClick={() => { setSendOpen(false); setActive(false); }}>Done</button>
               </div>
             ) : (

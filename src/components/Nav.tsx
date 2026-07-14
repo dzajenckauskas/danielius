@@ -23,6 +23,7 @@ const RESTITUTION = 0.55;
 const ROLL_ACCEL = 50; // gentle imaginary downhill so the roll keeps going
 const MIN_BOUNCE_SPEED = 130; // below this the ball settles into rolling
 const IMPACT_DEFORMATION = 0.06; // subtle compression for a rigid ball
+const LETTER_CAP_CONTACT = 0.24; // font-box position of the visible cap edge
 const DROP_DELAY_MS = 1600;
 
 export function Nav() {
@@ -59,7 +60,9 @@ export function Nav() {
       const shells = Array.from(link.querySelectorAll<HTMLElement>(".nav-name-letter-shell"));
       if (shells.length === 0) return;
       const h = shells[0].offsetHeight;
-      const groundY = shells[0].offsetTop + h * 0.16; // cap-height line of the letters
+      // Sit fractionally into the rendered cap edge so the pressed letter
+      // never opens a visible gap beneath the rolling ball.
+      const groundY = shells[0].offsetTop + h * LETTER_CAP_CONTACT;
       const nameLeft = shells[0].offsetLeft;
       const lastShell = shells[shells.length - 1];
       const nameRight = lastShell.offsetLeft + lastShell.offsetWidth;
