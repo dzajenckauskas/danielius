@@ -61,6 +61,17 @@ export default function RootLayout({
       className={`${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        {/* The hero headline (LCP element) renders in Neris Black; preload it
+            so the browser doesn't discover it late via CSS. */}
+        <link
+          rel="preload"
+          href="/fonts/neris/Neris-Black.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="min-h-screen font-sans">
         <Providers>
           <ScrollProgress />

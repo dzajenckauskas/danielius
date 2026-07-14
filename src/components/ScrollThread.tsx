@@ -14,6 +14,8 @@ const BALL_CATCHUP_MS = 1400;
 const SAMPLE_STEP = 8;
 const BALL_R = 6;
 
+const SAMPLE_STEP_LOW_POWER = 14;
+
 // The trace records how you scrolled: a slow ball presses down and draws a
 // solid line; a fast one skims and leaves spaced skip-marks. Gap size scales
 // with drawing speed (path px/s, smoothed) between these two thresholds.
@@ -97,6 +99,15 @@ export function ScrollThread() {
   const speedRef = useRef(0);
   const lastDrawnRef = useRef(0);
   const lastTimeRef = useRef(0);
+  const lastAppliedDrawnRef = useRef(-1);
+  const geometryRef = useRef({ width: 0, height: 0 });
+  const blobsRef = useRef<HTMLElement[]>([]);
+  // Touch devices: skip the displacement filter and per-frame parallax work —
+  // re-rasterizing a document-height filtered SVG every scroll frame is the
+  // main source of mobile jank.
+  const lowPowerRef = useRef(false);
+  const stepRef = useRef(SAMPLE_STEP);
+  const measuredRef = useRef(false);
   const pathname = usePathname();
 
   // Length along the path whose point sits at the "pen tip" for the current
@@ -113,7 +124,7 @@ export function ScrollThread() {
     const tipY = window.scrollY + window.innerHeight * (0.8 + 0.2 * progress);
     let i = 0;
     while (i < samples.length - 1 && samples[i].y < tipY) i += 1;
-    return Math.min(i * SAMPLE_STEP, totalRef.current);
+    return Math.min(i * stepRef.current, totalRef.current);
   }, []);
 
   const drawThread = useCallback(() => {
@@ -133,6 +144,8 @@ export function ScrollThread() {
     }
     if (ballModeRef.current === "live") drawnRef.current = tipLength();
     const drawn = Math.max(0, Math.min(drawnRef.current, totalRef.current));
+    if (Math.abs(drawn - lastAppliedDrawnRef.current) < 0.5) return;
+    lastAppliedDrawnRef.current = drawn;
     maskPath.style.strokeDasharray = `${drawn} ${gap}`;
 
     // Smoothed drawing speed (only forward motion counts; retreating just
@@ -164,7 +177,7 @@ export function ScrollThread() {
       }
       if (pathElement) pathElement.style.strokeDasharray = pattern.map((n) => n.toFixed(1)).join(" ");
     }
-    const point = samples[Math.min(Math.round(drawn / SAMPLE_STEP), samples.length - 1)];
+    const point = samples[Math.min(Math.round(drawn / stepRef.current), samples.length - 1)];
     const svgWidth = svgRef.current?.clientWidth || window.innerWidth;
     const x = (point.x / 1000) * svgWidth - BALL_R;
     const y = point.y - BALL_R;
@@ -173,7 +186,7 @@ export function ScrollThread() {
     ball.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${roll.toFixed(0)}deg)`;
   }, [tipLength]);
 
-  const measure = useCallback(() => {
+  const measure = useCallback((force = false) => {
     const svg = svgRef.current;
     const path = pathRef.current;
     const pageShell = document.querySelector<HTMLElement>("[data-page-shell]");
@@ -191,6 +204,18 @@ export function ScrollThread() {
       footerRect ? Math.ceil(footerRect.bottom + window.scrollY) : 0,
       window.innerHeight,
     );
+    // Skip rebuilds when geometry is effectively unchanged (mobile URL-bar
+    // show/hide fires resize/RO constantly) — a rebuild resets the laid ink
+    // and re-runs the expensive path sampling.
+    const svgWidth = Math.max(svg.clientWidth, 1);
+    if (!force
+      && Math.abs(geometryRef.current.width - svgWidth) < 2
+      && Math.abs(geometryRef.current.height - documentHeight) < 8) {
+      return;
+    }
+    geometryRef.current = { width: svgWidth, height: documentHeight };
+    blobsRef.current = Array.from(document.querySelectorAll<HTMLElement>(".parallax-blob"));
+
     const anchors = Array.from(document.querySelectorAll<HTMLElement>("[data-thread-anchor]"));
     if (variationRef.current.length === 0) {
       variationRef.current = Array.from({ length: 64 }, () => 0.08 + Math.random() * 0.84);
@@ -210,7 +235,6 @@ export function ScrollThread() {
     const firstLetter = logoShells[0];
     const lastLetter = logoShells[logoShells.length - 1];
     const points: Point[] = [];
-    const svgWidth = Math.max(svg.clientWidth, 1);
     const toViewBoxX = (px: number) => Math.max(20, Math.min(980, (px / svgWidth) * 1000));
     if (firstLetter && lastLetter) {
       const firstRect = firstLetter.getBoundingClientRect();
@@ -279,13 +303,16 @@ export function ScrollThread() {
     patternRef.current = [];
     patternLenRef.current = 0;
     lastDrawnRef.current = 0;
+    lastAppliedDrawnRef.current = -1;
     speedRef.current = 0;
     path.style.strokeDasharray = "";
-    const count = Math.max(1, Math.ceil(totalRef.current / SAMPLE_STEP));
+    const step = stepRef.current;
+    const count = Math.max(1, Math.ceil(totalRef.current / step));
     samplesRef.current = Array.from({ length: count + 1 }, (_, index) => {
-      const p = path.getPointAtLength(Math.min(index * SAMPLE_STEP, totalRef.current));
+      const p = path.getPointAtLength(Math.min(index * step, totalRef.current));
       return { x: p.x, y: p.y };
     });
+    measuredRef.current = true;
     drawThread();
   }, [drawThread]);
 
@@ -294,27 +321,30 @@ export function ScrollThread() {
     const path = pathRef.current;
     if (!path) return;
 
-    const svg = svgRef.current;
-    if (svg) {
-      svg.style.translate = `${(pointerRef.current.x * 4).toFixed(2)}px ${(pointerRef.current.y * 3).toFixed(2)}px`;
-    }
-    if (displacementRef.current) {
-      displacementRef.current.setAttribute("scale", `${(0.25 + interactionRef.current * 1.1).toFixed(2)}`);
+    // Pointer sway, filter turbulence and blob parallax are desktop garnish;
+    // on touch devices they only burn the main thread during scroll.
+    if (!lowPowerRef.current) {
+      const svg = svgRef.current;
+      if (svg) {
+        svg.style.translate = `${(pointerRef.current.x * 4).toFixed(2)}px ${(pointerRef.current.y * 3).toFixed(2)}px`;
+      }
+      if (displacementRef.current) {
+        displacementRef.current.setAttribute("scale", `${(0.25 + interactionRef.current * 1.1).toFixed(2)}`);
+      }
+      blobsRef.current.forEach((blob, index) => {
+        const rect = blob.getBoundingClientRect();
+        const distance = rect.top + rect.height / 2 - window.innerHeight / 2;
+        const depthPattern = [0.55, 1.15, 0.8, 1.35, 0.65, 1, 0.72];
+        const depth = depthPattern[index % depthPattern.length];
+        const shiftY = Math.max(-34, Math.min(34, distance * -0.04 * depth));
+        const shiftX = Math.sin((window.scrollY + index * 170) / 420) * 10 * depth;
+        const rotation = Math.max(-4.5, Math.min(4.5, distance * -0.0032 * depth));
+        blob.style.setProperty("--parallax-x", `${shiftX.toFixed(2)}px`);
+        blob.style.setProperty("--parallax-y", `${shiftY.toFixed(2)}px`);
+        blob.style.setProperty("--parallax-rotate", `${rotation.toFixed(2)}deg`);
+      });
     }
     drawThread();
-
-    document.querySelectorAll<HTMLElement>(".parallax-blob").forEach((blob, index) => {
-      const rect = blob.getBoundingClientRect();
-      const distance = rect.top + rect.height / 2 - window.innerHeight / 2;
-      const depthPattern = [0.55, 1.15, 0.8, 1.35, 0.65, 1, 0.72];
-      const depth = depthPattern[index % depthPattern.length];
-      const shiftY = Math.max(-34, Math.min(34, distance * -0.04 * depth));
-      const shiftX = Math.sin((window.scrollY + index * 170) / 420) * 10 * depth;
-      const rotation = Math.max(-4.5, Math.min(4.5, distance * -0.0032 * depth));
-      blob.style.setProperty("--parallax-x", `${shiftX.toFixed(2)}px`);
-      blob.style.setProperty("--parallax-y", `${shiftY.toFixed(2)}px`);
-      blob.style.setProperty("--parallax-rotate", `${rotation.toFixed(2)}deg`);
-    });
     interactionRef.current *= 0.9;
     if (interactionRef.current > 0.015) {
       frameRef.current = requestAnimationFrame(update);
@@ -337,24 +367,53 @@ export function ScrollThread() {
       interactionRef.current = Math.min(1, interactionRef.current + movement / 90);
       schedule();
     };
+    // Gate reactive re-measures until the deferred initial measure has run,
+    // so early ResizeObserver/resize events can't trigger the expensive path
+    // sampling while the page is still hydrating.
+    const remeasure = () => {
+      if (measuredRef.current) measure(false);
+    };
     const resizeObserver = new ResizeObserver(() => {
-      measure();
+      remeasure();
       schedule();
     });
 
     reducedMotionRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    measure();
-    update();
+    lowPowerRef.current = window.matchMedia("(pointer: coarse)").matches;
+    if (lowPowerRef.current) {
+      stepRef.current = SAMPLE_STEP_LOW_POWER;
+      // The hand-drawn wobble filter forces a full re-rasterization of the
+      // document-height SVG on every reveal-edge change — far too costly on
+      // mobile GPUs, and the curve randomness alone still reads hand-drawn.
+      pathRef.current?.removeAttribute("filter");
+    }
+
+    // The thread is invisible until the nav ball hands off (~6s in), so the
+    // costly initial build can wait until the main thread is idle instead of
+    // competing with hydration (mobile TBT).
+    let idleHandle: number | undefined;
+    const scheduleInitialMeasure = () => {
+      const run = () => {
+        idleHandle = undefined;
+        measure(true);
+        update();
+      };
+      idleHandle = typeof window.requestIdleCallback === "function"
+        ? window.requestIdleCallback(run, { timeout: 2500 })
+        : window.setTimeout(run, 350);
+    };
+    scheduleInitialMeasure();
     const pageShell = document.querySelector<HTMLElement>("[data-page-shell]");
     if (pageShell) resizeObserver.observe(pageShell);
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pointermove", onPointerMove, { passive: true });
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", remeasure);
 
     // One-time handoff: when the nav ball tumbles out of the header, sweep
     // the thread from the logo down to the current tip, then follow scroll.
     const startBall = () => {
       if (reducedMotionRef.current || ballModeRef.current !== "hidden") return;
+      if (!measuredRef.current) measure(true);
       ballModeRef.current = "catchup";
       const startTime = performance.now();
       const tick = (now: number) => {
@@ -374,9 +433,13 @@ export function ScrollThread() {
       resizeObserver.disconnect();
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", remeasure);
       window.removeEventListener("nav-ball-exit", startBall);
       window.clearTimeout(ballTimer);
+      if (idleHandle !== undefined) {
+        if (typeof window.cancelIdleCallback === "function") window.cancelIdleCallback(idleHandle);
+        else window.clearTimeout(idleHandle);
+      }
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
     };
   }, [measure, pathname, update, drawThread, tipLength]);

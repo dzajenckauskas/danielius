@@ -2265,6 +2265,21 @@ body {
   }
   .cta-copy { max-width: 40rem; }
   .cta-contact { width: min(100%, 32rem); }
+  /* Mobile perf: backdrop blur re-samples the page behind these surfaces on
+     every frame while they reveal/scroll — the main cause of laggy cards.
+     Raise the surface mix slightly to keep text contrast without the blur. */
+  .proof-strip dl,
+  .featured-work-card,
+  .home-editorial-card,
+  .private-source-note {
+    backdrop-filter: none;
+  }
+  .featured-work-card {
+    background:
+      radial-gradient(circle at 88% 8%, var(--project-accent), transparent 36%),
+      color-mix(in srgb, var(--surface) 94%, transparent);
+  }
+  .proof-strip dl { background: color-mix(in srgb, var(--surface) 92%, transparent); }
   .section-doodle {
     --doodle-drift-x: -0.55rem;
     --doodle-drift-y: -0.45rem;
