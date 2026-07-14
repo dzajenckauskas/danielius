@@ -400,19 +400,19 @@ body {
   transform: translateY(-2px);
 }
 
-/* Compact pill for inline call-to-action links (case studies, walkthroughs)
-   — reads as a button rather than a bold subtitle. */
+/* Compact inline call-to-action links matching the nav CTA's proportions. */
 .link-button {
   display: inline-flex;
+  min-height: 2.5rem;
   align-items: center;
   gap: 0.45rem;
   border: 1px solid color-mix(in srgb, var(--ink) 32%, var(--border));
-  border-radius: 999px;
-  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  padding: 0.5rem 1.25rem;
   background: color-mix(in srgb, var(--surface) 70%, transparent);
   color: var(--text);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 600;
   white-space: nowrap;
   transition: color 0.25s ease, border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
