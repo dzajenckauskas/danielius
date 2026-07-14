@@ -16,6 +16,7 @@ const deliveryWindows = new Map<string, number[]>();
 const DELIVERY_LIMIT = 5;
 const DELIVERY_WINDOW_MS = 10 * 60 * 1000;
 const MAX_ARTWORK_BYTES = 3_000_000;
+const MAX_COMPOSITE_BYTES = 6_000_000;
 
 function escapeHtml(value: string) {
   return value.replace(/[&<>"']/g, (character) => ({
@@ -99,6 +100,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "The drawing is invalid or too large to send." }, { status: 400 });
   }
 
+  const composite = typeof body.composite === "string" ? body.composite : "";
+  if (!composite.startsWith("data:image/png;base64,")) {
+    return NextResponse.json({ error: "The portrait preview is missing or invalid." }, { status: 400 });
+  }
+  const compositeBuffer = Buffer.from(composite.slice("data:image/png;base64,".length), "base64");
+  if (!isPng(compositeBuffer) || compositeBuffer.length > MAX_COMPOSITE_BYTES) {
+    return NextResponse.json({ error: "The portrait preview is invalid or too large to send." }, { status: 400 });
+  }
+
   const turnstileToken = typeof body.turnstileToken === "string" ? body.turnstileToken.trim() : "";
   if (!turnstileToken) {
     return NextResponse.json({ error: "Complete the bot check before sending." }, { status: 400 });
@@ -169,13 +179,20 @@ export async function POST(request: Request) {
           <p><strong>Reply to:</strong> ${escapeHtml(values.email)}</p>
           <p style="white-space:pre-wrap">${escapeHtml(values.message)}</p>
           ${page ? `<p style="color:#777;font-size:12px">Drawn on ${escapeHtml(page)}</p>` : ""}
-          <p>The full-resolution artwork is attached.</p>
+          <p>The transparent doodle and its portrait preview are attached.</p>
         </div>`,
-      attachments: [{
-        filename: `doodle-${Date.now()}.png`,
-        content: artworkBuffer,
-        contentType: "image/png",
-      }],
+      attachments: [
+        {
+          filename: `doodle-transparent-${Date.now()}.png`,
+          content: artworkBuffer,
+          contentType: "image/png",
+        },
+        {
+          filename: `doodle-on-portrait-${Date.now()}.png`,
+          content: compositeBuffer,
+          contentType: "image/png",
+        },
+      ],
     });
   } catch (error) {
     console.error("Doodle SMTP delivery failed", error);

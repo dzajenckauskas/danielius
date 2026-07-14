@@ -39,7 +39,7 @@ export function Hero() {
       <div className="hero-editorial-layout">
         <div className="hero-intro">
           <Reveal>
-            <p className="eyebrow">Product engineering · Front-end systems</p>
+            <p className="eyebrow">Front-end systems · Product engineering</p>
           </Reveal>
 
           <Reveal delay={0.06}>
@@ -86,7 +86,7 @@ export function Hero() {
               <span aria-hidden className="hero-photo-blob hero-photo-blob-back" />
               <span aria-hidden className="hero-photo-blob hero-photo-blob-side" />
               <span aria-hidden className="hero-photo-blob hero-photo-blob-back-accent" />
-              <div className="hero-portrait-frame">
+              <div className="hero-portrait-frame" data-doodle-portrait>
                 <Image
                   src="/avatar-2.png"
                   // src="/avatar.jpg"

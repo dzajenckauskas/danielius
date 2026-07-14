@@ -124,7 +124,7 @@ export function Nav() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-bg/95 md:bg-bg/70 md:backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-border/60  md:backdrop-blur-md">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5">
         <Link
           href="/"
