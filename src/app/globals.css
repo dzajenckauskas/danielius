@@ -223,34 +223,42 @@ body {
    bounces on the letter caps, rolls across the name and tumbles out of the
    header. */
 .nav-dot {
+  --ball-color: var(--ink);
   position: absolute;
   left: 0;
   top: 0;
   width: 11px;
   height: 11px;
   border-radius: 999px;
-  background: var(--ink);
-  /* Shading baked onto the ball itself, so it rotates and shows the spin. */
-  box-shadow:
-    inset -2px -2px 3px rgba(0, 0, 0, 0.32),
-    inset 2px 2px 3px rgba(255, 255, 255, 0.3);
   pointer-events: none;
   opacity: 0;
   will-change: transform;
 }
-.nav-name:hover .nav-dot { background: var(--ink-strong); }
-/* Off-centre highlight that makes the ball's rolling visible. */
-.nav-dot::after {
+.nav-name:hover .nav-dot { --ball-color: var(--ink-strong); }
+/* Sphere shading baked onto the ball (light upper-left, dark limb) so it
+   rotates with the transform and makes the spin readable. Derived from the
+   ball's own color so it works in both themes. */
+.nav-dot,
+.scroll-thread-ball {
+  background: radial-gradient(
+    circle at 32% 28%,
+    color-mix(in srgb, var(--ball-color) 55%, #fff) 0%,
+    var(--ball-color) 52%,
+    color-mix(in srgb, var(--ball-color) 62%, #000) 100%
+  );
+  box-shadow: 0 1px 2.5px rgba(0, 0, 0, 0.22);
+}
+/* Off-centre specular glow — always white, independent of theme. */
+.nav-dot::after,
+.scroll-thread-ball::after {
   content: "";
   position: absolute;
-  top: 1.5px;
-  left: 50%;
-  width: 3px;
-  height: 3px;
-  margin-left: -1.5px;
+  top: 12%;
+  left: 20%;
+  width: 42%;
+  height: 42%;
   border-radius: 999px;
-  background: var(--bg);
-  opacity: 0.85;
+  background: radial-gradient(circle at 45% 45%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 72%);
 }
 /* Contact reaction, toggled by the sim when the ball touches a letter. */
 .nav-name-letter-shell.nav-letter-boop-on > .nav-name-letter {
@@ -799,7 +807,9 @@ body {
 }
 /* The ball that rides the tip of the thread, drawing it as you scroll.
    Positioned by ScrollThread.tsx in document coordinates. */
+/* Sphere gradient + specular glow shared with .nav-dot (defined there). */
 .scroll-thread-ball {
+  --ball-color: var(--ink-strong);
   position: absolute;
   top: 0;
   left: 0;
@@ -807,28 +817,10 @@ body {
   width: 12px;
   height: 12px;
   border-radius: 999px;
-  background: var(--ink-strong);
-  /* Shading baked onto the ball itself, so it rotates and shows the spin. */
-  box-shadow:
-    inset -2px -2px 3.5px rgba(0, 0, 0, 0.32),
-    inset 2px 2px 3.5px rgba(255, 255, 255, 0.3);
   opacity: 0;
   transition: opacity 0.35s ease;
   pointer-events: none;
   will-change: transform;
-}
-/* Off-centre highlight that makes the ball's rolling visible. */
-.scroll-thread-ball::after {
-  content: "";
-  position: absolute;
-  top: 1.5px;
-  left: 50%;
-  width: 3.5px;
-  height: 3.5px;
-  margin-left: -1.75px;
-  border-radius: 999px;
-  background: var(--bg);
-  opacity: 0.85;
 }
 .thread-under { position: relative; z-index: 0; }
 .thread-over { position: relative; z-index: 2; }

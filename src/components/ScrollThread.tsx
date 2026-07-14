@@ -14,6 +14,14 @@ const BALL_CATCHUP_MS = 1400;
 const SAMPLE_STEP = 8;
 const BALL_R = 6;
 
+// The trace records how you scrolled: a slow ball presses down and draws a
+// solid line; a fast one skims and leaves spaced skip-marks. Gap size scales
+// with drawing speed (path px/s, smoothed) between these two thresholds.
+const SPEED_SOLID = 250;
+const SPEED_SKIM = 3000;
+const DASH_BASE = 10;
+const GAP_MAX = 26;
+
 function connect(path: string, from: Point, to: Point, character: number) {
   const distance = Math.max(to.y - from.y, 80);
   const sway = (character - 0.5) * 32;
@@ -84,6 +92,11 @@ export function ScrollThread() {
   const ballModeRef = useRef<"hidden" | "catchup" | "live">("hidden");
   const drawnRef = useRef(0);
   const reducedMotionRef = useRef(false);
+  const patternRef = useRef<number[]>([]);
+  const patternLenRef = useRef(0);
+  const speedRef = useRef(0);
+  const lastDrawnRef = useRef(0);
+  const lastTimeRef = useRef(0);
   const pathname = usePathname();
 
   // Length along the path whose point sits at the "pen tip" for the current
@@ -121,6 +134,36 @@ export function ScrollThread() {
     if (ballModeRef.current === "live") drawnRef.current = tipLength();
     const drawn = Math.max(0, Math.min(drawnRef.current, totalRef.current));
     maskPath.style.strokeDasharray = `${drawn} ${gap}`;
+
+    // Smoothed drawing speed (only forward motion counts; retreating just
+    // lets it decay — marks already on the page stay put).
+    const now = performance.now();
+    const dt = Math.min((now - lastTimeRef.current) / 1000, 0.25);
+    if (dt > 0.001) {
+      const instant = Math.max(0, (drawn - lastDrawnRef.current) / dt);
+      speedRef.current += (instant - speedRef.current) * (1 - Math.exp(-dt / 0.15));
+    }
+    lastTimeRef.current = now;
+    lastDrawnRef.current = drawn;
+
+    // Lay down ink just ahead of the reveal edge: solid runs while slow,
+    // skip-marks with speed-sized gaps while fast. Once laid, never redrawn.
+    if (drawn + 40 > patternLenRef.current && patternLenRef.current < totalRef.current + 40) {
+      const pattern = patternRef.current;
+      const skim = Math.max(0, Math.min(1, (speedRef.current - SPEED_SOLID) / (SPEED_SKIM - SPEED_SOLID)));
+      const dash = DASH_BASE + skim * 8;
+      const dashGap = skim * GAP_MAX < 1.5 ? 0 : skim * GAP_MAX;
+      const pathElement = pathRef.current;
+      while (patternLenRef.current < Math.min(drawn + 40, totalRef.current + 40)) {
+        if (dashGap === 0 && pattern.length >= 2 && pattern[pattern.length - 1] === 0) {
+          pattern[pattern.length - 2] += dash;
+        } else {
+          pattern.push(dash, dashGap);
+        }
+        patternLenRef.current += dash + dashGap;
+      }
+      if (pathElement) pathElement.style.strokeDasharray = pattern.map((n) => n.toFixed(1)).join(" ");
+    }
     const point = samples[Math.min(Math.round(drawn / SAMPLE_STEP), samples.length - 1)];
     const svgWidth = svgRef.current?.clientWidth || window.innerWidth;
     const x = (point.x / 1000) * svgWidth - BALL_R;
@@ -231,22 +274,13 @@ export function ScrollThread() {
 
     totalRef.current = path.getTotalLength();
 
-    // Hand-drawn line quality: random alternation of solid runs and dashed
-    // stretches along the whole thread. The reveal is done by the mask path,
-    // so this pattern can live on the visible path permanently.
-    const pattern: number[] = [];
-    let used = 0;
-    let segment = 0;
-    while (used < totalRef.current) {
-      const solid = 160 + randomAt(segment * 7 + 3) * 320;
-      pattern.push(solid, 0);
-      used += solid;
-      const dashes = 5 + Math.round(randomAt(segment * 11 + 5) * 14);
-      for (let i = 0; i < dashes; i += 1) pattern.push(8, 6);
-      used += dashes * 14;
-      segment += 1;
-    }
-    path.style.strokeDasharray = pattern.map((n) => n.toFixed(1)).join(" ");
+    // The path changed shape, so ink laid against the old geometry no longer
+    // lines up — start the speed-based dash pattern over.
+    patternRef.current = [];
+    patternLenRef.current = 0;
+    lastDrawnRef.current = 0;
+    speedRef.current = 0;
+    path.style.strokeDasharray = "";
     const count = Math.max(1, Math.ceil(totalRef.current / SAMPLE_STEP));
     samplesRef.current = Array.from({ length: count + 1 }, (_, index) => {
       const p = path.getPointAtLength(Math.min(index * SAMPLE_STEP, totalRef.current));
@@ -375,11 +409,12 @@ export function ScrollThread() {
           <path ref={maskPathRef} fill="none" stroke="#fff" strokeWidth="10" />
         </mask>
       </defs>
+      {/* No non-scaling-stroke: dash lengths must stay in user units so the
+          speed-generated pattern lines up with the mask reveal edge. */}
       <path
         ref={pathRef}
         className="scroll-thread-path"
         fill="none"
-        vectorEffect="non-scaling-stroke"
         filter="url(#living-thread)"
         mask="url(#thread-reveal)"
       />
