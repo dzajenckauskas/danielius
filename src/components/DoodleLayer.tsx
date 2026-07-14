@@ -197,43 +197,57 @@ function drawAction(context: CanvasRenderingContext2D, action: DrawingAction, pr
   const height = Math.max(Math.abs(end.y - start.y), 12);
 
   if (action.tool === "blob") {
-    const x = left;
-    const y = top;
     const seed = action.shapeSeed ?? 0.5;
     const vary = (offset: number, min: number, max: number) => (
       min + seededRandom(seed, offset) * (max - min)
     );
-    const startX = vary(1, 0.38, 0.62);
-    const rightY = vary(2, 0.48, 0.7);
-    const bottomX = vary(3, 0.28, 0.55);
-    const leftY = vary(4, 0.52, 0.76);
+    const pointCount = Math.floor(vary(1, 6, 11));
+    const lobeCount = Math.floor(vary(2, 2, 5));
+    const lobeDepth = vary(3, 0.1, 0.3);
+    const phase = vary(4, 0, Math.PI * 2);
+    const angleStep = (Math.PI * 2) / pointCount;
+    const centerX = left + width * vary(5, 0.46, 0.54);
+    const centerY = top + height * vary(6, 0.46, 0.54);
+    const radiusX = width * vary(7, 0.43, 0.5);
+    const radiusY = height * vary(8, 0.43, 0.5);
+    const tension = vary(9, 0.72, 1.08);
+    const blobPoints = Array.from({ length: pointCount }, (_, index) => {
+      const baseAngle = phase + index * angleStep;
+      const angle = baseAngle + vary(20 + index, -angleStep * 0.16, angleStep * 0.16);
+      const lobe = Math.sin(baseAngle * lobeCount + phase) * lobeDepth;
+      const radialJitter = vary(40 + index, -0.2, 0.2);
+      const radius = 0.88 + lobe + radialJitter;
+
+      return {
+        x: centerX + Math.cos(angle) * radiusX * radius,
+        y: centerY + Math.sin(angle) * radiusY * radius,
+      };
+    });
 
     context.globalAlpha = 0.58;
-    context.moveTo(x + width * startX, y);
-    context.bezierCurveTo(
-      x + width * vary(5, 0.74, 1.02),
-      y - height * vary(6, 0.01, 0.1),
-      x + width * vary(7, 0.98, 1.14),
-      y + height * vary(8, 0.2, 0.42),
-      x + width * vary(9, 0.84, 0.98),
-      y + height * rightY,
-    );
-    context.bezierCurveTo(
-      x + width * vary(10, 0.68, 0.94),
-      y + height * vary(11, 0.9, 1.1),
-      x + width * vary(12, 0.14, 0.36),
-      y + height * vary(13, 0.96, 1.12),
-      x + width * bottomX,
-      y + height * vary(14, 0.92, 1.04),
-    );
-    context.bezierCurveTo(
-      x - width * vary(15, 0.02, 0.12),
-      y + height * leftY,
-      x + width * vary(16, 0.08, 0.3),
-      y + height * vary(17, 0.01, 0.14),
-      x + width * startX,
-      y,
-    );
+    context.moveTo(blobPoints[0].x, blobPoints[0].y);
+    blobPoints.forEach((current, index) => {
+      const previous = blobPoints[(index - 1 + pointCount) % pointCount];
+      const next = blobPoints[(index + 1) % pointCount];
+      const afterNext = blobPoints[(index + 2) % pointCount];
+      const controlOne = {
+        x: current.x + ((next.x - previous.x) / 6) * tension,
+        y: current.y + ((next.y - previous.y) / 6) * tension,
+      };
+      const controlTwo = {
+        x: next.x - ((afterNext.x - current.x) / 6) * tension,
+        y: next.y - ((afterNext.y - current.y) / 6) * tension,
+      };
+      context.bezierCurveTo(
+        controlOne.x,
+        controlOne.y,
+        controlTwo.x,
+        controlTwo.y,
+        next.x,
+        next.y,
+      );
+    });
+    context.closePath();
     context.fill();
   } else if (action.tool === "circle") {
     context.ellipse(left + width / 2, top + height / 2, width / 2, height / 2, action.rotation ?? -0.04, 0, Math.PI * 2);
