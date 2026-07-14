@@ -88,7 +88,7 @@ export function Hero() {
               <span aria-hidden className="hero-photo-blob hero-photo-blob-back-accent" />
               <div className="hero-portrait-frame" data-doodle-portrait>
                 <Image
-                  src="/avatar-2.png"
+                  src="/avatar.png"
                   // src="/avatar.jpg"
                   alt={profile.name}
                   width={720}
