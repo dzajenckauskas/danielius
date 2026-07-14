@@ -219,6 +219,7 @@ export function DoodleLayer() {
   const actionsRef = useRef<DrawingAction[]>([]);
   const draftRef = useRef<DrawingAction | null>(null);
   const drawingRef = useRef(false);
+  const resizeFrameRef = useRef<number | null>(null);
   const scrollFrameRef = useRef<number | null>(null);
   const defaultAnimationFrameRef = useRef<number | null>(null);
   const defaultAnimationProgressRef = useRef(1);
@@ -326,8 +327,27 @@ export function DoodleLayer() {
     if (!active && historySize === 0) return;
     prepareCanvas();
     const handleResize = () => {
-      prepareCanvas();
-      setStudioOffset({ x: 0, y: 0 });
+      if (resizeFrameRef.current !== null) return;
+      resizeFrameRef.current = window.requestAnimationFrame(() => {
+        resizeFrameRef.current = null;
+        const defaultCount = Math.min(
+          defaultActionCountRef.current,
+          actionsRef.current.length,
+        );
+        const frame = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR);
+
+        if (frame && defaultCount > 0) {
+          const userActions = actionsRef.current.slice(defaultCount);
+          const remappedDefaults = defaultPortraitDoodle(
+            frame.getBoundingClientRect(),
+          ).slice(0, defaultCount);
+          actionsRef.current = [...remappedDefaults, ...userActions];
+          defaultActionCountRef.current = remappedDefaults.length;
+        }
+
+        prepareCanvas();
+        setStudioOffset({ x: 0, y: 0 });
+      });
     };
     const handleScroll = () => {
       if (scrollFrameRef.current !== null) return;
@@ -341,6 +361,8 @@ export function DoodleLayer() {
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", handleScroll);
+      if (resizeFrameRef.current !== null) window.cancelAnimationFrame(resizeFrameRef.current);
+      resizeFrameRef.current = null;
       if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
       scrollFrameRef.current = null;
     };
@@ -363,6 +385,9 @@ export function DoodleLayer() {
 
       event.preventDefault();
       actionsRef.current.pop();
+      if (actionsRef.current.length < defaultActionCountRef.current) {
+        defaultActionCountRef.current = actionsRef.current.length;
+      }
       setHistorySize(actionsRef.current.length);
       redraw();
     };
@@ -404,6 +429,9 @@ export function DoodleLayer() {
 
   const undo = () => {
     actionsRef.current.pop();
+    if (actionsRef.current.length < defaultActionCountRef.current) {
+      defaultActionCountRef.current = actionsRef.current.length;
+    }
     setHistorySize(actionsRef.current.length);
     redraw();
   };
