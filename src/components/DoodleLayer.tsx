@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { TurnstileWidget } from "@/components/TurnstileWidget";
-import { profile } from "@/data/profile";
 import {
   DoodleFormValues,
   doodleFormSchema,
@@ -282,6 +281,7 @@ export function DoodleLayer() {
   const defaultAnimationFrameRef = useRef<number | null>(null);
   const defaultAnimationProgressRef = useRef(1);
   const defaultActionCountRef = useRef(0);
+  const pdfPreviewRequestedRef = useRef(false);
   const sendOpenedAtRef = useRef(0);
   const studioDragRef = useRef<{
     pointerX: number;
@@ -728,7 +728,7 @@ export function DoodleLayer() {
     return output.toDataURL("image/png");
   };
 
-  const exportPortraitComposite = async () => {
+  const exportPortraitComposite = useCallback(async () => {
     const frame = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR);
     const image = frame?.querySelector<HTMLImageElement>("img");
     if (!frame || !image) return "";
@@ -757,9 +757,9 @@ export function DoodleLayer() {
     actionsRef.current.forEach((action) => drawAction(context, action));
     context.restore();
     return output.toDataURL("image/png");
-  };
+  }, []);
 
-  const exportPortraitCard = async (composite: string) => {
+  const exportPortraitCard = useCallback(async (composite: string) => {
     if (!composite) return "";
     await document.fonts.ready;
     const portrait = new window.Image();
@@ -768,11 +768,11 @@ export function DoodleLayer() {
 
     const output = document.createElement("canvas");
     output.width = 900;
-    output.height = 1125;
+    output.height = 1070;
     const context = output.getContext("2d");
     if (!context) return "";
 
-    const photo = { x: 46, y: 58, width: 808, height: 920, radius: 28 };
+    const photo = { x: 0, y: 0, width: 900, height: 1070, radius: 0 };
     const drawSoftBlob = (
       x: number,
       y: number,
@@ -783,24 +783,61 @@ export function DoodleLayer() {
       alpha: number,
       rotation = 0,
     ) => {
-      context.save();
-      context.translate(x + width / 2, y + height / 2);
-      context.rotate(rotation);
-      context.filter = `blur(${blur}px)`;
-      context.globalAlpha = alpha;
-      context.fillStyle = color;
-      context.beginPath();
-      context.ellipse(0, 0, width / 2, height / 2, 0, 0, Math.PI * 2);
-      context.fill();
-      context.restore();
+      const drawLayer = (scale: number, layerBlur: number, layerAlpha: number) => {
+        const halfWidth = width / 2;
+        const halfHeight = height / 2;
+        context.save();
+        context.translate(x + halfWidth, y + halfHeight);
+        context.rotate(rotation);
+        context.scale(scale, scale);
+        context.filter = `blur(${layerBlur}px)`;
+        context.globalAlpha = layerAlpha;
+        context.fillStyle = color;
+        context.beginPath();
+        context.moveTo(-halfWidth * 0.96, -halfHeight * 0.08);
+        context.bezierCurveTo(
+          -halfWidth * 1.04,
+          -halfHeight * 0.58,
+          -halfWidth * 0.48,
+          -halfHeight * 1.02,
+          halfWidth * 0.06,
+          -halfHeight * 0.9,
+        );
+        context.bezierCurveTo(
+          halfWidth * 0.58,
+          -halfHeight * 0.82,
+          halfWidth * 1.02,
+          -halfHeight * 0.34,
+          halfWidth * 0.86,
+          halfHeight * 0.18,
+        );
+        context.bezierCurveTo(
+          halfWidth * 0.75,
+          halfHeight * 0.68,
+          halfWidth * 0.32,
+          halfHeight * 1.02,
+          -halfWidth * 0.18,
+          halfHeight * 0.88,
+        );
+        context.bezierCurveTo(
+          -halfWidth * 0.72,
+          halfHeight * 0.98,
+          -halfWidth * 1.03,
+          halfHeight * 0.5,
+          -halfWidth * 0.96,
+          -halfHeight * 0.08,
+        );
+        context.closePath();
+        context.fill();
+        context.restore();
+      };
+
+      drawLayer(1.06, blur, alpha * 0.48);
+      drawLayer(0.9, Math.max(3, blur * 0.38), alpha * 0.52);
     };
 
     context.fillStyle = "#faf9f6";
     context.fillRect(0, 0, output.width, output.height);
-
-    // The same supporting layers and order used around the live portrait.
-    drawSoftBlob(188, 902, 500, 150, "#8fbccc", 38, 0.32, -0.08);
-    drawSoftBlob(830, 92, 118, 82, "#d891aa", 10, 0.72, -0.28);
 
     context.save();
     context.beginPath();
@@ -818,8 +855,10 @@ export function DoodleLayer() {
     );
     context.restore();
 
-    // The lilac form sits in front of the photo, not behind it.
-    drawSoftBlob(-94, 430, 315, 430, "#b59bd7", 20, 0.7, 0.22);
+    // With a full-bleed portrait, the atmosphere sits over the edge of the image.
+    drawSoftBlob(150, 884, 610, 190, "#8fbccc", 44, 0.3, -0.08);
+    drawSoftBlob(824, 86, 138, 94, "#d891aa", 13, 0.6, -0.28);
+    drawSoftBlob(-90, 418, 310, 420, "#b59bd7", 25, 0.62, 0.22);
 
     context.save();
     context.strokeStyle = "#9dafac";
@@ -829,7 +868,7 @@ export function DoodleLayer() {
     context.beginPath();
     context.moveTo(4, 575);
     context.bezierCurveTo(82, 670, 118, 796, 208, 910);
-    context.bezierCurveTo(252, 968, 286, 1046, 304, 1100);
+    context.bezierCurveTo(252, 968, 286, 1025, 304, 1050);
     context.stroke();
     context.restore();
 
@@ -847,58 +886,60 @@ export function DoodleLayer() {
     context.fill();
     context.restore();
 
-    const drawSocialButton = (centerX: number, href: "github" | "linkedin" | "mail") => {
-      const centerY = 1058;
-      context.save();
-      context.strokeStyle = "#ded9d2";
-      context.fillStyle = "#fffefd";
-      context.lineWidth = 1.5;
-      context.beginPath();
-      context.arc(centerX, centerY, 25, 0, Math.PI * 2);
-      context.fill();
-      context.stroke();
-      context.translate(centerX - 12, centerY - 12);
-      context.scale(1, 1);
-      context.strokeStyle = "#5f6266";
-      context.lineWidth = 1.8;
-      context.lineCap = "round";
-      context.lineJoin = "round";
-      const paths = {
-        github: [
-          "M15 22v-4a4.8 4.8 0 0 0-1-3.5c3.3-.4 6.8-1.6 6.8-7A5.5 5.5 0 0 0 19.3 3 5.1 5.1 0 0 0 19.1 0S18 0 15 1.7a13.4 13.4 0 0 0-7 0C5 0 3.9 0 3.9 0a5.1 5.1 0 0 0-.2 3A5.5 5.5 0 0 0 2.2 7.5c0 5.4 3.5 6.6 6.8 7A4.8 4.8 0 0 0 8 18v4",
-          "M8 19c-3 .9-3-1.5-4-2",
-        ],
-        linkedin: ["M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6", "M2 9h4v12H2z", "M4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"],
-        mail: ["M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z", "m22 6-10 7L2 6"],
-      }[href];
-      paths.forEach((path) => context.stroke(new Path2D(path)));
-      context.restore();
-    };
-
-    context.fillStyle = "#191a1c";
-    context.font = "900 27px Neris, Arial, sans-serif";
+    context.save();
+    context.fillStyle = "#3d5b57";
+    context.font = "300 12px 'Geist Mono', monospace";
+    context.textAlign = "right";
     context.textBaseline = "middle";
-    context.fillText(profile.name, 48, 1058);
-    drawSocialButton(724, "github");
-    drawSocialButton(786, "linkedin");
-    drawSocialButton(848, "mail");
+    context.fillText("zajenckauskas.lt ↗", 872, 1038);
+    context.restore();
 
     context.save();
     context.shadowColor = "rgba(25, 26, 28, 0.34)";
     context.shadowBlur = 18;
     context.shadowOffsetY = 5;
-    const ballGradient = context.createRadialGradient(294, 1090, 2, 304, 1100, 17);
+    const ballGradient = context.createRadialGradient(294, 1040, 2, 304, 1050, 17);
     ballGradient.addColorStop(0, "#657a76");
     ballGradient.addColorStop(0.24, "#344945");
     ballGradient.addColorStop(1, "#17191a");
     context.fillStyle = ballGradient;
     context.beginPath();
-    context.arc(304, 1100, 14, 0, Math.PI * 2);
+    context.arc(304, 1050, 14, 0, Math.PI * 2);
     context.fill();
     context.restore();
 
     return output.toDataURL("image/png");
-  };
+  }, []);
+
+  useEffect(() => {
+    if (
+      pathname !== "/"
+      || historySize === 0
+      || pdfPreviewRequestedRef.current
+      || new URLSearchParams(window.location.search).get("doodlePdfPreview") !== "1"
+    ) return;
+
+    pdfPreviewRequestedRef.current = true;
+    const generatePreview = async () => {
+      try {
+        const composite = await exportPortraitComposite();
+        const portraitCard = await exportPortraitCard(composite);
+        const response = await fetch("/api/doodles/preview", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ portraitCard }),
+        });
+        if (!response.ok) throw new Error("The PDF preview could not be generated.");
+        const previewUrl = URL.createObjectURL(await response.blob());
+        window.location.replace(previewUrl);
+      } catch (error) {
+        document.body.textContent = error instanceof Error
+          ? error.message
+          : "The PDF preview could not be generated.";
+      }
+    };
+    void generatePreview();
+  }, [exportPortraitCard, exportPortraitComposite, historySize, pathname]);
 
   const validateDoodleField = async (field: keyof DoodleFormValues, value: string) => {
     try {
