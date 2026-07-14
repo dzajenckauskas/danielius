@@ -214,7 +214,7 @@ export function Nav() {
           </a>
           <a
             href={`mailto:${profile.email}`}
-            className="ml-1 inline-flex h-10 items-center gap-2 rounded-xl bg-[#1b1b1b] px-5 text-xs font-semibold text-white transition-[background-color,transform,box-shadow] hover:-translate-y-0.5 hover:bg-black hover:shadow-lg"
+            className="ml-1 inline-flex h-10 items-center gap-2 rounded-xl bg-[#1b1b1b] px-5 text-xs font-semibold text-white transition-[background-color,transform,box-shadow] hover:-translate-y-0.5 hover:bg-black hover:shadow-lg dark:bg-[#f2f0ec] dark:text-[#191a1c] dark:hover:bg-white"
           >
             Let&apos;s talk
             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -279,7 +279,7 @@ export function Nav() {
               </a>
               <a
                 href={`mailto:${profile.email}`}
-                className="ml-auto inline-flex h-9 items-center gap-1.5 rounded-xl bg-[#1b1b1b] px-4 text-xs font-semibold text-white transition-colors hover:bg-black"
+                className="ml-auto inline-flex h-9 items-center gap-1.5 rounded-xl bg-[#1b1b1b] px-4 text-xs font-semibold text-white transition-colors hover:bg-black dark:bg-[#f2f0ec] dark:text-[#191a1c] dark:hover:bg-white"
               >
                 Let&apos;s talk
                 <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
