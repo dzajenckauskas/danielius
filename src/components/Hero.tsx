@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { ArrowDownRight, ArrowRight, ExternalLink, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { profile } from "@/data/profile";
@@ -34,6 +37,105 @@ function NameLine({ children, offset = 0 }: { children: string; offset?: number 
 }
 
 export function Hero() {
+  type ResizeDirection = "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+  const portraitCompositionRef = useRef<HTMLDivElement>(null);
+  const resizeStartRef = useRef<{
+    pointerX: number;
+    pointerY: number;
+    width: number;
+    height: number;
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+    offsetX: number;
+    offsetY: number;
+    direction: ResizeDirection;
+  } | null>(null);
+  const [portraitSize, setPortraitSize] = useState<{
+    width: number;
+    height: number;
+    offsetX: number;
+    offsetY: number;
+  } | null>(null);
+  const [portraitResizeEnabled, setPortraitResizeEnabled] = useState(false);
+
+  useEffect(() => {
+    const handleResizeMode = (event: Event) => {
+      setPortraitResizeEnabled((event as CustomEvent<{ enabled: boolean }>).detail.enabled);
+    };
+    window.addEventListener("portrait-resize-mode", handleResizeMode);
+    return () => window.removeEventListener("portrait-resize-mode", handleResizeMode);
+  }, []);
+
+  const startPortraitResize = (event: React.PointerEvent<HTMLButtonElement>, direction: ResizeDirection) => {
+    const composition = portraitCompositionRef.current;
+    if (!composition) return;
+    const frame = composition.querySelector<HTMLElement>("[data-doodle-portrait]");
+    if (!frame) return;
+    const rect = frame.getBoundingClientRect();
+    resizeStartRef.current = {
+      pointerX: event.clientX,
+      pointerY: event.clientY,
+      width: rect.width,
+      height: rect.height,
+      left: rect.left,
+      right: rect.right,
+      top: rect.top,
+      bottom: rect.bottom,
+      offsetX: portraitSize?.offsetX ?? 0,
+      offsetY: portraitSize?.offsetY ?? 0,
+      direction,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  };
+
+  const resizePortrait = (event: React.PointerEvent<HTMLButtonElement>) => {
+    const start = resizeStartRef.current;
+    const composition = portraitCompositionRef.current;
+    if (!start || !composition) return;
+    const deltaX = event.clientX - start.pointerX;
+    const deltaY = event.clientY - start.pointerY;
+    const resizingLeft = start.direction.includes("left");
+    const resizingRight = start.direction.includes("right");
+    const resizingTop = start.direction.includes("top");
+    const resizingBottom = start.direction.includes("bottom");
+    const maxWidth = resizingLeft
+      ? Math.max(260, start.right - 20)
+      : resizingRight
+        ? Math.max(260, window.innerWidth - start.left - 20)
+        : start.width;
+    const availableHeight = resizingTop
+      ? start.bottom - 20
+      : resizingBottom
+        ? window.innerHeight - start.top - 20
+        : start.height;
+    const maxHeight = Math.max(start.height, availableHeight, 340);
+    const nextWidth = Math.min(
+      maxWidth,
+      Math.max(260, start.width + (resizingLeft ? -deltaX : resizingRight ? deltaX : 0)),
+    );
+    const nextHeight = Math.min(
+      maxHeight,
+      Math.max(340, start.height + (resizingTop ? -deltaY : resizingBottom ? deltaY : 0)),
+    );
+    setPortraitSize({
+      width: nextWidth,
+      height: nextHeight,
+      offsetX: resizingLeft
+        ? start.offsetX + start.width - nextWidth
+        : start.offsetX,
+      offsetY: resizingTop
+        ? start.offsetY + start.height - nextHeight
+        : start.offsetY,
+    });
+  };
+
+  const finishPortraitResize = () => {
+    resizeStartRef.current = null;
+  };
+
   return (
     <section className="hero-editorial">
       <div className="hero-editorial-layout">
@@ -82,7 +184,17 @@ export function Hero() {
 
         <Reveal delay={0.12} className="hero-portrait-wrap">
           <div className="hero-portrait-stage" data-thread-anchor data-thread-x="490">
-            <div className="hero-photo-composition">
+            <div
+              ref={portraitCompositionRef}
+              className="hero-photo-composition"
+              data-doodle-control-anchor
+              style={portraitSize ? {
+                "--hero-portrait-user-width": `${portraitSize.width}px`,
+                "--hero-portrait-user-height": `${portraitSize.height}px`,
+                "--hero-portrait-user-x": `${portraitSize.offsetX}px`,
+                "--hero-portrait-user-y": `${portraitSize.offsetY}px`,
+              } as React.CSSProperties : undefined}
+            >
               <span aria-hidden className="hero-photo-blob hero-photo-blob-back" />
               <span aria-hidden className="hero-photo-blob hero-photo-blob-side" />
               <span aria-hidden className="hero-photo-blob hero-photo-blob-back-accent" />
@@ -98,6 +210,23 @@ export function Hero() {
                   style={{ filter: "var(--photo-filter)" }}
                 />
               </div>
+              {portraitResizeEnabled && (
+                <div className="hero-portrait-resize-edges" aria-label="Portrait resize controls">
+                  {(["top", "right", "bottom", "left", "top-left", "top-right", "bottom-left", "bottom-right"] as ResizeDirection[]).map((direction) => (
+                    <button
+                      key={direction}
+                      type="button"
+                      className={`hero-portrait-resize-edge is-${direction}`}
+                      aria-label={`Resize portrait from ${direction.replace("-", " ")}`}
+                      onPointerDown={(event) => startPortraitResize(event, direction)}
+                      onPointerMove={resizePortrait}
+                      onPointerUp={finishPortraitResize}
+                      onPointerCancel={finishPortraitResize}
+                      onDoubleClick={() => setPortraitSize(null)}
+                    />
+                  ))}
+                </div>
+              )}
               <span aria-hidden className="hero-photo-blob hero-photo-blob-front-accent" />
             </div>
 

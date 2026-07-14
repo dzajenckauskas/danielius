@@ -481,7 +481,7 @@ function PageOne() {
                 <Text style={styles.metricLabel}>SHARED PACKAGES</Text>
               </View>
               <View style={[styles.metric, styles.metricBorder]}>
-                <Text style={styles.metricValue}>5</Text>
+                <Text style={styles.metricValue}>6</Text>
                 <Text style={styles.metricLabel}>SELECTED CASE STUDIES</Text>
               </View>
             </View>

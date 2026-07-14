@@ -1,12 +1,14 @@
 "use client";
 
 import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { createPortal } from "react-dom";
 import {
   Circle,
   Eraser,
-  Minus,
   Pencil,
   Send,
+  Scaling,
   Sparkles,
   Square,
   Triangle,
@@ -266,6 +268,7 @@ function drawAction(context: CanvasRenderingContext2D, action: DrawingAction, pr
 }
 
 export function DoodleLayer() {
+  const pathname = usePathname();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const studioRef = useRef<HTMLElement>(null);
   const actionsRef = useRef<DrawingAction[]>([]);
@@ -290,8 +293,16 @@ export function DoodleLayer() {
     height: number;
   } | null>(null);
   const [active, setActive] = useState(false);
-  const [studioOpen, setStudioOpen] = useState(true);
+  const [portraitResizeEnabled, setPortraitResizeEnabled] = useState(false);
+  const [heroInView, setHeroInView] = useState(false);
+  const [doodleAnchor, setDoodleAnchor] = useState<HTMLElement | null>(null);
   const [studioOffset, setStudioOffset] = useState({ x: 0, y: 0 });
+  const [studioPlacement, setStudioPlacement] = useState({
+    left: 0,
+    top: 0,
+    width: 320,
+    ready: false,
+  });
   const [tool, setTool] = useState<Tool>("pen");
   const [color, setColor] = useState(COLORS[0]);
   const [weight, setWeight] = useState(DEFAULT_WEIGHT);
@@ -301,6 +312,17 @@ export function DoodleLayer() {
   const [sendError, setSendError] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof DoodleFormValues, string>>>({});
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent("portrait-resize-mode", {
+      detail: { enabled: active && portraitResizeEnabled },
+    }));
+    return () => {
+      window.dispatchEvent(new CustomEvent("portrait-resize-mode", {
+        detail: { enabled: false },
+      }));
+    };
+  }, [active, portraitResizeEnabled]);
 
   const redraw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -343,14 +365,66 @@ export function DoodleLayer() {
   }, [redraw]);
 
   useEffect(() => {
+    if (pathname === "/") return;
+    const defaultCount = Math.min(
+      defaultActionCountRef.current,
+      actionsRef.current.length,
+    );
+    if (defaultCount === 0) return;
+
+    if (defaultAnimationFrameRef.current !== null) {
+      window.cancelAnimationFrame(defaultAnimationFrameRef.current);
+      defaultAnimationFrameRef.current = null;
+    }
+    actionsRef.current = actionsRef.current.slice(defaultCount);
+    defaultActionCountRef.current = 0;
+    defaultAnimationProgressRef.current = 1;
+    setHistorySize(actionsRef.current.length);
+    redraw();
+  }, [pathname, redraw]);
+
+  useEffect(() => {
+    if (pathname !== "/") {
+      setHeroInView(false);
+      setDoodleAnchor(null);
+      setActive(false);
+      return;
+    }
+
+    const hero = document.querySelector<HTMLElement>(".hero-editorial");
+    setDoodleAnchor(document.querySelector<HTMLElement>("[data-doodle-control-anchor]"));
+    if (!hero) {
+      setHeroInView(false);
+      return;
+    }
+
+    const updateVisibility = (visible: boolean) => {
+      setHeroInView(visible);
+      if (!visible) setActive(false);
+    };
+    const rect = hero.getBoundingClientRect();
+    updateVisibility(rect.bottom > 0 && rect.top < window.innerHeight);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => updateVisibility(entry.isIntersecting),
+      { rootMargin: "-30% 0px 0px", threshold: 0 },
+    );
+    observer.observe(hero);
+
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  useEffect(() => {
+    if (pathname !== "/") return;
     const frame = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR);
-    if (!frame || actionsRef.current.length) return;
+    if (!frame || defaultActionCountRef.current > 0) return;
     let seeded = false;
     const seedDoodle = () => {
-      if (seeded || actionsRef.current.length) return;
+      if (seeded || defaultActionCountRef.current > 0) return;
       seeded = true;
-      actionsRef.current = defaultPortraitDoodle(frame.getBoundingClientRect());
-      defaultActionCountRef.current = actionsRef.current.length;
+      const defaults = defaultPortraitDoodle(frame.getBoundingClientRect());
+      actionsRef.current = [...defaults, ...actionsRef.current];
+      defaultActionCountRef.current = defaults.length;
       defaultAnimationProgressRef.current = 0;
       setHistorySize(actionsRef.current.length);
       prepareCanvas();
@@ -388,7 +462,36 @@ export function DoodleLayer() {
         defaultAnimationFrameRef.current = null;
       }
     };
-  }, [prepareCanvas, redraw]);
+  }, [pathname, prepareCanvas, redraw]);
+
+  useEffect(() => {
+    if (!active || !doodleAnchor) return;
+
+    const updatePlacement = () => {
+      const portrait = doodleAnchor.getBoundingClientRect();
+      const studioWidth = Math.min(portrait.width, window.innerWidth - 24);
+
+      setStudioPlacement({
+        left: Math.min(
+          window.innerWidth - studioWidth - 12,
+          Math.max(12, portrait.left),
+        ) + window.scrollX,
+        top: portrait.bottom + window.scrollY + 12,
+        width: studioWidth,
+        ready: true,
+      });
+    };
+
+    updatePlacement();
+    const observer = new ResizeObserver(updatePlacement);
+    observer.observe(doodleAnchor);
+    window.addEventListener("resize", updatePlacement);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", updatePlacement);
+    };
+  }, [active, doodleAnchor]);
 
   useEffect(() => {
     if (!active && historySize === 0) return;
@@ -443,9 +546,13 @@ export function DoodleLayer() {
     };
     window.addEventListener("resize", handleResize);
     window.addEventListener("scroll", handleScroll, { passive: true });
+    const portrait = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR);
+    const portraitResizeObserver = portrait ? new ResizeObserver(handleResize) : null;
+    if (portrait && portraitResizeObserver) portraitResizeObserver.observe(portrait);
     return () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("scroll", handleScroll);
+      portraitResizeObserver?.disconnect();
       if (resizeFrameRef.current !== null) window.cancelAnimationFrame(resizeFrameRef.current);
       resizeFrameRef.current = null;
       if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
@@ -462,8 +569,10 @@ export function DoodleLayer() {
     const handleKeyboardShortcut = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         if (sendOpen) setSendOpen(false);
-        else if (studioOpen) setStudioOpen(false);
-        else setActive(false);
+        else {
+          setPortraitResizeEnabled(false);
+          setActive(false);
+        }
         return;
       }
 
@@ -482,7 +591,7 @@ export function DoodleLayer() {
     };
     window.addEventListener("keydown", handleKeyboardShortcut);
     return () => window.removeEventListener("keydown", handleKeyboardShortcut);
-  }, [active, redraw, sendOpen, studioOpen]);
+  }, [active, redraw, sendOpen]);
 
   const pointFromEvent = (event: React.PointerEvent<HTMLCanvasElement>) => {
     const rect = event.currentTarget.getBoundingClientRect();
@@ -731,7 +840,7 @@ export function DoodleLayer() {
     <>
       <canvas
         ref={canvasRef}
-        className={`doodle-canvas ${active ? "doodle-canvas-active" : ""}`}
+        className={`doodle-canvas ${active && !portraitResizeEnabled ? "doodle-canvas-active" : ""}`}
         aria-label="Doodle canvas"
         onPointerDown={startDrawing}
         onPointerMove={draw}
@@ -739,12 +848,19 @@ export function DoodleLayer() {
         onPointerCancel={finishDrawing}
       />
 
-      {active && studioOpen && (
+      {active && studioPlacement.ready && (
         <aside
           ref={studioRef}
           className="doodle-studio"
           aria-label="Doodle studio"
-          style={{ transform: `translate3d(${studioOffset.x}px, ${studioOffset.y}px, 0)` }}
+          style={{
+            left: studioPlacement.left,
+            top: studioPlacement.top,
+            right: "auto",
+            bottom: "auto",
+            width: studioPlacement.width,
+            transform: `translate3d(${studioOffset.x}px, ${studioOffset.y}px, 0)`,
+          }}
         >
           <div
             className="doodle-studio-heading"
@@ -754,10 +870,9 @@ export function DoodleLayer() {
             onPointerUp={finishStudioDrag}
             onPointerCancel={finishStudioDrag}
           >
-            <div><small>Make your mark</small><strong>Doodle studio</strong></div>
+            <strong>Doodle studio</strong>
             <div className="doodle-studio-heading-actions">
-              <button type="button" onClick={() => setStudioOpen(false)} aria-label="Minimize doodle studio" title="Minimize studio"><Minus /></button>
-              <button type="button" onClick={() => setActive(false)} aria-label="Close doodle studio and exit drawing mode" title="Exit drawing mode"><X /></button>
+              <button type="button" onClick={() => { setPortraitResizeEnabled(false); setActive(false); }} aria-label="Close doodle studio and exit drawing mode" title="Exit drawing mode"><X /></button>
             </div>
           </div>
 
@@ -804,21 +919,19 @@ export function DoodleLayer() {
           <div className="doodle-studio-actions">
             <button type="button" onClick={undo} disabled={!historySize}><Undo2 />Undo</button>
             <button type="button" onClick={clear} disabled={!historySize}><Eraser />Clear</button>
+            <button
+              type="button"
+              className={`doodle-resize-button ${portraitResizeEnabled ? "is-selected" : ""}`}
+              onClick={() => setPortraitResizeEnabled((enabled) => !enabled)}
+              aria-pressed={portraitResizeEnabled}
+              title={portraitResizeEnabled ? "Return to drawing" : "Resize portrait"}
+            >
+              <Scaling />
+              <span>{portraitResizeEnabled ? "Done" : "Resize"}</span>
+            </button>
             <button type="button" className="doodle-send-button" onClick={() => { sendOpenedAtRef.current = Date.now(); setTurnstileToken(""); setSendOpen(true); setSendState("idle"); setSendError(""); setFieldErrors({}); }} disabled={!historySize}><Send />Send it</button>
           </div>
         </aside>
-      )}
-
-      {active && !studioOpen && !sendOpen && (
-        <button
-          type="button"
-          className="doodle-studio-restore"
-          onClick={() => setStudioOpen(true)}
-          aria-label="Open doodle studio"
-        >
-          <Pencil aria-hidden="true" />
-          <span>Studio</span>
-        </button>
       )}
 
       {sendOpen && (
@@ -870,20 +983,21 @@ export function DoodleLayer() {
 
       <div className="doodle-tools" aria-label="Page tools">
         <ThemeToggle />
-        <button type="button" onClick={() => {
-          if (!active) setStudioOpen(true);
-          setActive((value) => !value);
-        }} className={`doodle-tool ${active ? "doodle-tool-active" : "doodle-tool-invite"}`} aria-label={active ? "Exit drawing mode" : "Draw on this page"} aria-pressed={active}>
-          <span className="doodle-tool-icon" aria-hidden="true">
-            {active ? <X className="h-4 w-4" /> : <Pencil className="h-4 w-4" />}
-          </span>
-          <span className="doodle-tool-label">{active ? "Done" : "Doodle"}</span>
-        </button>
       </div>
-      {active && !sendOpen && (
-        <p className={`doodle-hint ${studioOpen ? "doodle-hint-above-studio" : "doodle-hint-above-tools"}`}>
-          Draw on my portrait · Clear the starter doodle or add your own touch
-        </p>
+      {heroInView && !active && doodleAnchor && createPortal(
+        (
+          <button type="button" onClick={() => {
+            setPortraitResizeEnabled(false);
+            setStudioPlacement((current) => ({ ...current, ready: false }));
+            setActive(true);
+          }} className="doodle-tool doodle-tool-invite hero-doodle-invite" aria-label="Draw on my portrait" aria-pressed="false">
+            <span className="doodle-tool-icon" aria-hidden="true">
+              <Pencil className="h-4 w-4" />
+            </span>
+            <span className="doodle-tool-label">Doodle me</span>
+          </button>
+        ),
+        doodleAnchor,
       )}
     </>
   );

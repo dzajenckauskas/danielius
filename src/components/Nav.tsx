@@ -16,12 +16,13 @@ const links = [
 // physics, rolls across the letter tops (each letter bobs on contact),
 // tumbles off the "S" and out of the header, then fires "nav-ball-exit" so
 // the scroll-thread ball can take over.
-const DOT_SIZE = 11;
+const DOT_SIZE = 18;
 const DOT_R = DOT_SIZE / 2;
 const GRAVITY = 2600; // px/s²
 const RESTITUTION = 0.55;
 const ROLL_ACCEL = 50; // gentle imaginary downhill so the roll keeps going
 const MIN_BOUNCE_SPEED = 130; // below this the ball settles into rolling
+const IMPACT_DEFORMATION = 0.06; // subtle compression for a rigid ball
 const DROP_DELAY_MS = 1600;
 
 export function Nav() {
@@ -47,6 +48,12 @@ export function Nav() {
     if (!link || !dot) return;
 
     let raf = 0;
+    const stopBall = () => {
+      cancelAnimationFrame(raf);
+      dot.style.opacity = "0";
+    };
+    window.addEventListener("scroll-ball-start", stopBall);
+
     const timer = window.setTimeout(async () => {
       await document.fonts?.ready;
       const shells = Array.from(link.querySelectorAll<HTMLElement>(".nav-name-letter-shell"));
@@ -116,7 +123,7 @@ export function Nav() {
         dot.style.transform =
           `translate(${(cx - DOT_R).toFixed(1)}px, ${(cy - DOT_R).toFixed(1)}px)`
           + ` rotate(${rot.toFixed(1)}deg)`
-          + ` scale(${(1 + squash * 0.55).toFixed(3)}, ${(1 - squash * 0.55).toFixed(3)})`;
+          + ` scale(${(1 + squash * IMPACT_DEFORMATION).toFixed(3)}, ${(1 - squash * IMPACT_DEFORMATION).toFixed(3)})`;
 
         if (opacity <= 0) {
           window.dispatchEvent(new Event("nav-ball-exit"));
@@ -129,7 +136,8 @@ export function Nav() {
 
     return () => {
       window.clearTimeout(timer);
-      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll-ball-start", stopBall);
+      stopBall();
     };
   }, []);
 

@@ -284,12 +284,12 @@ body {
    bounces on the letter caps, rolls across the name and tumbles out of the
    header. */
 .nav-dot {
-  --ball-color: var(--ink);
+  --ball-color: var(--text);
   position: absolute;
   left: 0;
   top: 0;
-  width: 11px;
-  height: 11px;
+  width: 18px;
+  height: 18px;
   border-radius: 999px;
   pointer-events: none;
   opacity: 0;
@@ -297,7 +297,7 @@ body {
 }
 
 .nav-name:hover .nav-dot {
-  --ball-color: var(--ink-strong);
+  --ball-color: var(--text);
 }
 
 /* Sphere shading baked onto the ball (light upper-left, dark limb) so it
@@ -305,11 +305,13 @@ body {
    ball's own color so it works in both themes. */
 .nav-dot,
 .scroll-thread-ball {
-  background: radial-gradient(circle at 32% 28%,
-      color-mix(in srgb, var(--ball-color) 55%, #fff) 0%,
-      var(--ball-color) 52%,
-      color-mix(in srgb, var(--ball-color) 62%, #000) 100%);
-  box-shadow: 0 1px 2.5px rgba(0, 0, 0, 0.22);
+  background: radial-gradient(circle at 35% 30%,
+      color-mix(in srgb, var(--ball-color) 88%, #fff) 0%,
+      var(--ball-color) 68%,
+      color-mix(in srgb, var(--ball-color) 88%, #000) 100%);
+  box-shadow:
+    0 5px 14px -3px rgba(0, 0, 0, 0.38),
+    0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Off-centre specular glow — always white, independent of theme. */
@@ -323,6 +325,7 @@ body {
   height: 42%;
   border-radius: 999px;
   background: radial-gradient(circle at 45% 45%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 72%);
+  opacity: 0.18;
 }
 
 /* Contact reaction, toggled by the sim when the ball touches a letter. */
@@ -613,6 +616,76 @@ body {
 
 .hero-photo-composition {
   position: relative;
+  width: min(var(--hero-portrait-user-width, 100%), calc(100vw - 2.5rem));
+  margin-left: auto;
+  transform: translate3d(var(--hero-portrait-user-x, 0), var(--hero-portrait-user-y, 0), 0);
+}
+
+.hero-portrait-resize-edges {
+  position: absolute;
+  inset: 0;
+  z-index: 18;
+  border: 1px dashed color-mix(in srgb, var(--ink) 72%, transparent);
+  border-radius: var(--radius-utility);
+  pointer-events: none;
+}
+
+.hero-portrait-resize-edge {
+  position: absolute;
+  display: block;
+  padding: 0;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.hero-portrait-resize-edge.is-top,
+.hero-portrait-resize-edge.is-bottom {
+  right: 1rem;
+  left: 1rem;
+  height: 0.8rem;
+  cursor: ns-resize;
+}
+
+.hero-portrait-resize-edge.is-top { top: -0.4rem; }
+.hero-portrait-resize-edge.is-bottom { bottom: -0.4rem; }
+
+.hero-portrait-resize-edge.is-right,
+.hero-portrait-resize-edge.is-left {
+  top: 1rem;
+  bottom: 1rem;
+  width: 0.8rem;
+  cursor: ew-resize;
+}
+
+.hero-portrait-resize-edge.is-right { right: -0.4rem; }
+.hero-portrait-resize-edge.is-left { left: -0.4rem; }
+
+.hero-portrait-resize-edge[class*="top-"] { top: -0.45rem; }
+.hero-portrait-resize-edge[class*="bottom-"] { bottom: -0.45rem; }
+.hero-portrait-resize-edge[class*="-left"] { left: -0.45rem; }
+.hero-portrait-resize-edge[class*="-right"] { right: -0.45rem; }
+
+.hero-portrait-resize-edge[class*="top-"],
+.hero-portrait-resize-edge[class*="bottom-"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+
+.hero-portrait-resize-edge.is-top-left,
+.hero-portrait-resize-edge.is-bottom-right { cursor: nwse-resize; }
+
+.hero-portrait-resize-edge.is-top-right,
+.hero-portrait-resize-edge.is-bottom-left { cursor: nesw-resize; }
+
+.hero-doodle-invite {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 15;
 }
 
 .hero-photo-blob {
@@ -677,9 +750,8 @@ body {
   position: relative;
   z-index: 2;
   width: 100%;
-  height: clamp(25rem, 54vh, 33rem);
+  height: var(--hero-portrait-user-height, clamp(25rem, 54vh, 33rem));
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
   border-radius: var(--radius-utility);
   background: var(--surface-2);
   box-shadow: 0 30px 70px -60px color-mix(in srgb, var(--text) 65%, transparent);
@@ -1267,13 +1339,13 @@ body {
    Positioned by ScrollThread.tsx in document coordinates. */
 /* Sphere gradient + specular glow shared with .nav-dot (defined there). */
 .scroll-thread-ball {
-  --ball-color: var(--ink-strong);
+  --ball-color: var(--text);
   position: absolute;
   top: 0;
   left: 0;
   z-index: 1;
-  width: 12px;
-  height: 12px;
+  width: 18px;
+  height: 18px;
   border-radius: 999px;
   opacity: 0;
   transition: opacity 0.35s ease;
@@ -2983,15 +3055,15 @@ body {
 }
 
 .doodle-studio {
-  position: fixed;
+  position: absolute;
   right: 1.25rem;
   bottom: 4.75rem;
   z-index: 70;
   width: min(22rem, calc(100vw - 2.5rem));
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-  border-radius: 1.5rem;
-  padding: 1rem;
+  border-radius: 1.25rem;
+  padding: 0.6rem 0.75rem 0.7rem;
   background: color-mix(in srgb, var(--surface) 90%, transparent);
   box-shadow: 0 24px 70px -30px rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(20px);
@@ -3012,7 +3084,7 @@ body {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 0.15rem 0.15rem 0.9rem;
+  padding: 0 0 0.25rem;
   cursor: grab;
   touch-action: none;
   user-select: none;
@@ -3022,31 +3094,19 @@ body {
   cursor: grabbing;
 }
 
-.doodle-studio-heading small,
 .doodle-studio-heading strong {
   display: block;
-}
-
-.doodle-studio-heading small {
-  color: var(--ink);
-  font-size: 0.62rem;
-  font-weight: 900;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.doodle-studio-heading strong {
-  margin-top: 0.14rem;
   color: var(--text);
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 900;
+  line-height: 1.65rem;
 }
 
 .doodle-studio-heading-actions button,
 .doodle-send-close {
   display: inline-flex;
-  width: 2rem;
-  height: 2rem;
+  width: 1.65rem;
+  height: 1.65rem;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
@@ -3086,7 +3146,7 @@ body {
 .doodle-tool-grid button {
   display: grid;
   min-width: 0;
-  height: 3.6rem;
+  height: 3rem;
   place-items: center;
   align-content: center;
   gap: 0.28rem;
@@ -3119,9 +3179,9 @@ body {
   grid-template-columns: 3.3rem 1fr;
   align-items: center;
   gap: 0.65rem;
-  margin-top: 0.7rem;
+  margin-top: 0.5rem;
   border-top: 1px solid var(--border);
-  padding-top: 0.7rem;
+  padding-top: 0.5rem;
 }
 
 .doodle-setting-row>span,
@@ -3139,8 +3199,8 @@ body {
 }
 
 .doodle-swatches button {
-  width: 1.48rem;
-  height: 1.48rem;
+  width: 1.35rem;
+  height: 1.35rem;
   border: 3px solid var(--surface);
   border-radius: 50%;
   background: var(--swatch);
@@ -3222,14 +3282,14 @@ body {
 
 .doodle-studio-actions {
   display: grid;
-  grid-template-columns: auto auto 1fr;
+  grid-template-columns: auto auto auto minmax(5rem, 1fr);
   gap: 0.4rem;
-  margin-top: 0.85rem;
+  margin-top: 0.65rem;
 }
 
 .doodle-studio-actions button {
   display: inline-flex;
-  height: 2.5rem;
+  height: 2.3rem;
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
@@ -3239,6 +3299,7 @@ body {
   color: var(--muted);
   font-size: 0.65rem;
   font-weight: 600;
+  white-space: nowrap;
   transition: transform 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
 }
 
@@ -3263,37 +3324,10 @@ body {
   color: white;
 }
 
-.doodle-studio-restore {
-  position: fixed;
-  right: 1.25rem;
-  bottom: 4.75rem;
-  z-index: 70;
-  display: inline-flex;
-  height: 2.6rem;
-  align-items: center;
-  gap: 0.42rem;
-  border: 1px solid color-mix(in srgb, var(--ink) 45%, var(--border));
-  border-radius: 999px;
-  padding: 0 0.9rem;
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
-  color: var(--ink-strong);
-  font-size: 0.7rem;
-  font-weight: 700;
-  box-shadow: 0 14px 36px -20px rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(14px);
-  transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
-  animation: doodle-studio-in 0.25s ease both;
-}
-
-.doodle-studio-restore:hover {
+.doodle-studio-actions .doodle-resize-button.is-selected {
   border-color: var(--ink);
-  background: var(--surface);
-  transform: translateY(-2px);
-}
-
-.doodle-studio-restore svg {
-  width: 0.9rem;
-  height: 0.9rem;
+  background: color-mix(in srgb, var(--ink) 10%, var(--surface));
+  color: var(--ink-strong);
 }
 
 .doodle-send-backdrop {
@@ -3718,28 +3752,6 @@ body {
   }
 }
 
-.doodle-hint {
-  position: fixed;
-  z-index: 70;
-  width: 22rem;
-  color: var(--ink-strong);
-  font-size: 0.72rem;
-  font-style: italic;
-  text-align: center;
-  transform: rotate(-2deg);
-  transition: right 0.25s ease, bottom 0.25s ease;
-}
-
-.doodle-hint-above-studio {
-  right: 1.25rem;
-  bottom: 24.5rem;
-}
-
-.doodle-hint-above-tools {
-  right: 1.25rem;
-  bottom: 8rem;
-}
-
 @media (max-width: 1280px) {
 
   .doodle-featured,
@@ -3768,6 +3780,10 @@ body {
 
 @media (max-width: 900px) {
 
+  .hero-photo-composition {
+    margin-right: auto;
+  }
+
   .hero-editorial,
   .hero-editorial-layout {
     min-height: auto;
@@ -3789,13 +3805,13 @@ body {
   }
 
   .hero-portrait-wrap {
-    max-width: 30rem;
+    max-width: 38rem;
     margin: 4rem auto 0;
     justify-self: auto;
   }
 
   .hero-portrait-frame {
-    height: 34rem;
+    height: var(--hero-portrait-user-height, clamp(36rem, 88vw, 42rem));
   }
 
   .hero-scroll-cue {
@@ -3873,9 +3889,9 @@ body {
 
   /* Keep the header as the only continuously scrolling blurred surface.
      These controls already use an opaque-enough surface on small screens. */
+  .hero-doodle-invite,
   .doodle-tool,
-  .doodle-studio,
-  .doodle-studio-restore {
+  .doodle-studio {
     backdrop-filter: none;
   }
 
@@ -3991,11 +4007,14 @@ body {
   }
 
   .hero-portrait-wrap {
+    width: calc(100% + 1rem);
     margin-top: 3rem;
+    margin-right: -0.5rem;
+    margin-left: -0.5rem;
   }
 
   .hero-portrait-frame {
-    height: min(112vw, 30rem);
+    height: var(--hero-portrait-user-height, min(125vw, 36rem));
   }
 
   .hero-portrait-footer {
@@ -4040,24 +4059,20 @@ body {
     bottom: 4.75rem;
     left: 0.75rem;
     width: auto;
-    padding: 0.8rem;
-  }
-
-  .doodle-studio-restore {
-    right: 0.75rem;
+    padding: 0.7rem;
   }
 
   .doodle-studio-heading {
-    padding-bottom: 0.65rem;
+    padding-bottom: 0.45rem;
   }
 
   .doodle-tool-grid button {
-    height: 3.2rem;
+    height: 2.8rem;
   }
 
   .doodle-setting-row {
-    margin-top: 0.55rem;
-    padding-top: 0.55rem;
+    margin-top: 0.4rem;
+    padding-top: 0.4rem;
   }
 
   .doodle-form-grid {
@@ -4066,24 +4081,6 @@ body {
 
   .doodle-send-panel {
     border-radius: 1.5rem;
-  }
-
-  .doodle-hint {
-    right: 0.75rem;
-    display: block;
-    width: calc(100% - 1.5rem);
-    font-size: 0.68rem;
-    line-height: 1.45;
-    pointer-events: none;
-    transform: none;
-  }
-
-  .doodle-hint-above-studio {
-    bottom: 24.5rem;
-  }
-
-  .doodle-hint-above-tools {
-    bottom: 7.75rem;
   }
 
   .section-doodle {

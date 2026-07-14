@@ -12,7 +12,7 @@ type Point = { x: number; y: number; loops?: number; radius?: number };
 const BALL_HANDOFF_FALLBACK_MS = 9000;
 const BALL_CATCHUP_MS = 1400;
 const SAMPLE_STEP = 8;
-const BALL_R = 6;
+const BALL_R = 9;
 
 const SAMPLE_STEP_LOW_POWER = 14;
 
@@ -414,6 +414,9 @@ export function ScrollThread() {
     const startBall = () => {
       if (reducedMotionRef.current || ballModeRef.current !== "hidden") return;
       if (!measuredRef.current) measure(true);
+      // The timeout fallback can fire while the longer nav physics sequence is
+      // still running. Explicitly retire that ball before revealing this one.
+      window.dispatchEvent(new Event("scroll-ball-start"));
       ballModeRef.current = "catchup";
       const startTime = performance.now();
       const tick = (now: number) => {
