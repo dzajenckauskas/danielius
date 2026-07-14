@@ -34,10 +34,13 @@ type DrawingAction = {
   closed?: boolean;
   fillColor?: string;
   rotation?: number;
+  shapeSeed?: number;
 };
 
 const COLORS = ["#3d5b57", "#b59bd7", "#8fbccc", "#d891aa", "#d2ae6c", "#191a1c"];
-const WEIGHTS = [2, 4, 7];
+const MIN_WEIGHT = 1;
+const MAX_WEIGHT = 12;
+const DEFAULT_WEIGHT = 2;
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 const TOOLS: { id: Tool; label: string; icon: typeof Pencil }[] = [
   { id: "pen", label: "Pen", icon: Pencil },
@@ -48,6 +51,11 @@ const TOOLS: { id: Tool; label: string; icon: typeof Pencil }[] = [
 ];
 
 const PORTRAIT_SELECTOR = "[data-doodle-portrait]";
+
+function seededRandom(seed: number, offset: number) {
+  const value = Math.sin((seed + offset) * 12_989.8) * 43_758.5453;
+  return value - Math.floor(value);
+}
 
 function defaultPortraitDoodle(rect: DOMRect): DrawingAction[] {
   const pageLeft = rect.left + window.scrollX;
@@ -191,11 +199,41 @@ function drawAction(context: CanvasRenderingContext2D, action: DrawingAction, pr
   if (action.tool === "blob") {
     const x = left;
     const y = top;
+    const seed = action.shapeSeed ?? 0.5;
+    const vary = (offset: number, min: number, max: number) => (
+      min + seededRandom(seed, offset) * (max - min)
+    );
+    const startX = vary(1, 0.38, 0.62);
+    const rightY = vary(2, 0.48, 0.7);
+    const bottomX = vary(3, 0.28, 0.55);
+    const leftY = vary(4, 0.52, 0.76);
+
     context.globalAlpha = 0.58;
-    context.moveTo(x + width * 0.5, y);
-    context.bezierCurveTo(x + width * 0.9, y - height * 0.04, x + width * 1.08, y + height * 0.32, x + width * 0.9, y + height * 0.62);
-    context.bezierCurveTo(x + width * 0.72, y + height * 1.04, x + width * 0.2, y + height * 1.08, x + width * 0.06, y + height * 0.68);
-    context.bezierCurveTo(x - width * 0.09, y + height * 0.28, x + width * 0.15, y + height * 0.04, x + width * 0.5, y);
+    context.moveTo(x + width * startX, y);
+    context.bezierCurveTo(
+      x + width * vary(5, 0.74, 1.02),
+      y - height * vary(6, 0.01, 0.1),
+      x + width * vary(7, 0.98, 1.14),
+      y + height * vary(8, 0.2, 0.42),
+      x + width * vary(9, 0.84, 0.98),
+      y + height * rightY,
+    );
+    context.bezierCurveTo(
+      x + width * vary(10, 0.68, 0.94),
+      y + height * vary(11, 0.9, 1.1),
+      x + width * vary(12, 0.14, 0.36),
+      y + height * vary(13, 0.96, 1.12),
+      x + width * bottomX,
+      y + height * vary(14, 0.92, 1.04),
+    );
+    context.bezierCurveTo(
+      x - width * vary(15, 0.02, 0.12),
+      y + height * leftY,
+      x + width * vary(16, 0.08, 0.3),
+      y + height * vary(17, 0.01, 0.14),
+      x + width * startX,
+      y,
+    );
     context.fill();
   } else if (action.tool === "circle") {
     context.ellipse(left + width / 2, top + height / 2, width / 2, height / 2, action.rotation ?? -0.04, 0, Math.PI * 2);
@@ -240,7 +278,7 @@ export function DoodleLayer() {
   const [studioOffset, setStudioOffset] = useState({ x: 0, y: 0 });
   const [tool, setTool] = useState<Tool>("pen");
   const [color, setColor] = useState(COLORS[0]);
-  const [weight, setWeight] = useState(WEIGHTS[0]);
+  const [weight, setWeight] = useState(DEFAULT_WEIGHT);
   const [historySize, setHistorySize] = useState(0);
   const [sendOpen, setSendOpen] = useState(false);
   const [sendState, setSendState] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -406,7 +444,13 @@ export function DoodleLayer() {
   const startDrawing = (event: React.PointerEvent<HTMLCanvasElement>) => {
     const point = pointFromEvent(event);
     drawingRef.current = true;
-    draftRef.current = { tool, color, width: weight, points: [point] };
+    draftRef.current = {
+      tool,
+      color,
+      width: weight,
+      points: [point],
+      shapeSeed: tool === "blob" ? Math.random() : undefined,
+    };
     event.currentTarget.setPointerCapture(event.pointerId);
     redraw();
   };
@@ -685,13 +729,23 @@ export function DoodleLayer() {
 
           {tool !== "blob" && (
             <div className="doodle-setting-row">
-              <span>Weight</span>
-              <div className="doodle-weights">
-                {WEIGHTS.map((value) => (
-                  <button key={value} type="button" className={weight === value ? "is-selected" : ""} onClick={() => setWeight(value)} aria-label={`${value} pixel line weight`} aria-pressed={weight === value}>
-                    <i style={{ height: value }} />
-                  </button>
-                ))}
+              <label htmlFor="doodle-line-weight">Weight</label>
+              <div className="doodle-weight-control">
+                <input
+                  id="doodle-line-weight"
+                  type="range"
+                  min={MIN_WEIGHT}
+                  max={MAX_WEIGHT}
+                  step={1}
+                  value={weight}
+                  onChange={(event) => setWeight(Number(event.currentTarget.value))}
+                  style={{
+                    "--weight-progress": `${((weight - MIN_WEIGHT) / (MAX_WEIGHT - MIN_WEIGHT)) * 100}%`,
+                  } as React.CSSProperties}
+                  aria-label="Line weight"
+                  aria-valuetext={`${weight} pixels`}
+                />
+                <output htmlFor="doodle-line-weight">{weight}px</output>
               </div>
             </div>
           )}

@@ -2406,13 +2406,6 @@ body {
   align-self: start;
 }
 
-.education-editorial-heading>svg {
-  width: 1.2rem;
-  height: 1.2rem;
-  margin-bottom: 1.1rem;
-  color: var(--ink);
-}
-
 .education-editorial-heading h2 {
   max-width: 24rem;
   margin-top: 1.1rem;
@@ -3121,14 +3114,14 @@ body {
   padding-top: 0.7rem;
 }
 
-.doodle-setting-row>span {
+.doodle-setting-row>span,
+.doodle-setting-row>label {
   color: var(--subtle);
   font-size: 0.64rem;
   font-weight: 600;
 }
 
-.doodle-swatches,
-.doodle-weights {
+.doodle-swatches {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3153,26 +3146,68 @@ body {
   box-shadow: 0 0 0 1px var(--ink);
 }
 
-.doodle-weights button {
-  display: flex;
-  width: 3.7rem;
-  height: 1.8rem;
+.doodle-weight-control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2rem;
   align-items: center;
-  justify-content: center;
-  border: 1px solid transparent;
-  border-radius: 999px;
+  gap: 0.65rem;
 }
 
-.doodle-weights button.is-selected {
-  border-color: var(--border);
-  background: var(--surface-2);
+.doodle-weight-control input {
+  width: 100%;
+  height: 1rem;
+  margin: 0;
+  appearance: none;
+  cursor: pointer;
+  background: transparent;
 }
 
-.doodle-weights i {
-  display: block;
-  width: 1.55rem;
+.doodle-weight-control input::-webkit-slider-runnable-track {
+  height: 0.3rem;
   border-radius: 999px;
-  background: var(--text);
+  background: linear-gradient(to right,
+      var(--ink) 0 var(--weight-progress),
+      var(--border) var(--weight-progress) 100%);
+}
+
+.doodle-weight-control input::-webkit-slider-thumb {
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.35rem;
+  appearance: none;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--text) 20%, transparent);
+}
+
+.doodle-weight-control input::-moz-range-track {
+  height: 0.3rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--border);
+}
+
+.doodle-weight-control input::-moz-range-progress {
+  height: 0.3rem;
+  border-radius: 999px;
+  background: var(--ink);
+}
+
+.doodle-weight-control input::-moz-range-thumb {
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--text) 20%, transparent);
+}
+
+.doodle-weight-control output {
+  color: var(--text);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+  text-align: right;
 }
 
 .doodle-studio-actions {
@@ -3434,6 +3469,17 @@ body {
   gap: 0.5rem;
 }
 
+.doodle-tool,
+.doodle-studio button,
+.doodle-send-panel button {
+  cursor: pointer;
+}
+
+.doodle-studio button:disabled,
+.doodle-send-panel button:disabled {
+  cursor: not-allowed;
+}
+
 .doodle-tool {
   display: inline-flex;
   min-width: 2.75rem;
@@ -3544,22 +3590,27 @@ body {
 }
 
 .doodle-theme-toggle {
+  width: 2.75rem;
   min-width: 2.75rem;
   padding: 0;
 }
 
 .theme-toggle-icon {
   display: inline-flex;
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 1.125rem;
+  height: 1.125rem;
+  flex: 0 0 1.125rem;
   align-items: center;
   justify-content: center;
+  transform-box: border-box;
+  transform-origin: 50% 50%;
   transition: color 0.3s ease;
 }
 
 .theme-toggle-icon svg {
-  width: 1.15rem;
-  height: 1.15rem;
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
   stroke-width: 2.25;
 }
 
