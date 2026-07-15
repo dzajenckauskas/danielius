@@ -4,82 +4,124 @@
 
 ### Front-end Engineer · React · Next.js · TypeScript
 
-I build maintainable enterprise platforms and customer-facing products—from complex ERP workflows to multi-application marketplaces.
+I turn complex business workflows into reliable, accessible products—and build the shared systems that keep them maintainable at scale.
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-zajenckauskas.lt-111111?style=for-the-badge)](https://zajenckauskas.lt)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/danielius-zajenckauskas/)
-[![Email](https://img.shields.io/badge/Email-Say%20hello-6B7280?style=for-the-badge)](mailto:danielius@zajenckauskas.lt)
+[![Portfolio](https://img.shields.io/badge/Portfolio-zajenckauskas.lt-4F736E?style=for-the-badge&logo=safari&logoColor=white)](https://zajenckauskas.lt)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Let's_connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/danielius-zajenckauskas/)
+[![Email](https://img.shields.io/badge/Email-Say_hello-55585C?style=for-the-badge&logo=gmail&logoColor=white)](mailto:danielius@zajenckauskas.lt)
 
 </div>
 
----
+## Hello
 
-## About
+I am a front-end engineer based in Vilnius, Lithuania. My work spans enterprise ERP, finance, payroll and HR platforms alongside e-commerce, healthcare, real-estate and service products.
 
-I am a front-end engineer based in Vilnius, Lithuania, working across enterprise ERP, finance, payroll and HR software as well as e-commerce, healthcare and real-estate products.
+I work beyond individual screens: shared component packages, configuration-driven forms and data tables, headless CMS architecture, API integrations, PDF reports, transactional email and automated testing. Recent work includes a **35-application enterprise ecosystem** and an independently developed **multi-application marketplace**.
 
-My work goes beyond individual screens: shared component packages, config-driven forms and data tables, Strapi content architecture, REST and GraphQL integrations, PDF reports, transactional email and automated testing. A background in visual design helps me bring strong information hierarchy and product judgement to technically complex work.
+Before moving into software engineering, I worked in graphic design. That background still shapes how I approach information hierarchy, responsive behaviour, accessibility and the small interaction details that make complex products feel clear.
+
+## What I focus on
+
+- Translating dense business rules into understandable product workflows
+- Building reusable, type-safe foundations across applications and teams
+- Designing resilient API integrations with explicit loading, validation and failure states
+- Creating accessible, responsive interfaces that hold up under real content
+- Supporting critical journeys with focused unit, integration and end-to-end tests
 
 ## Toolbox
+
+**Core**
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
-![Strapi](https://img.shields.io/badge/Strapi-4945FF?style=flat-square&logo=strapi&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=111111)
+![HTML](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS-1572B6?style=flat-square&logo=css3&logoColor=white)
+
+**Product systems**
+
 ![Material UI](https://img.shields.io/badge/Material_UI-007FFF?style=flat-square&logo=mui&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![Strapi](https://img.shields.io/badge/Strapi-4945FF?style=flat-square&logo=strapi&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=flat-square&logo=graphql&logoColor=white)
 ![Stripe](https://img.shields.io/badge/Stripe-635BFF?style=flat-square&logo=stripe&logoColor=white)
+
+**Quality and delivery**
+
 ![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)
+![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
+
+## Experience
+
+### Front-end Engineer · Lobasoft
+
+`March 2024 – present` · Vilnius, Lithuania · Hybrid
+
+Building and modernising a 35-application enterprise platform spanning ERP, financials, payroll, HR, audit and employee self-service. I develop shared TypeScript packages and configuration-driven interfaces, deliver document and communication workflows, and strengthen accessibility, error handling and automated coverage.
+
+### Front-end Developer · Ideaformus
+
+`November 2021 – March 2024` · Vilnius, Lithuania
+
+Delivered customer-facing websites, bespoke e-commerce products and CMS, ERP and CRM interfaces. Built reusable React systems, modelled content in Strapi, integrated REST and GraphQL services, and shipped multilingual checkout, PDF catalogue and transactional-email workflows.
+
+### Freelance Graphic Designer
+
+`2016 – present`
+
+Branding, packaging, editorial and digital-design work that continues to inform my product judgement, typography and interface craft.
 
 ## Selected work
 
-### [Musės — Fly Tying Market](https://muses.lt)
-
-A multi-application marketplace with customer, seller, support and administration workflows. Built with Next.js, React, TypeScript, Strapi, PostgreSQL and Stripe.
-
-`Multi-seller commerce` · `Payments` · `Seller finance` · `2FA` · `Shared packages`
-
 ### [Lobasoft Enterprise Platform](https://zajenckauskas.lt/projects/lobasoft-enterprise-platform)
 
-A 35-application enterprise ecosystem spanning ERP, financials, payroll, HR, audit and employee self-service workflows.
+A 35-application enterprise ecosystem covering ERP, financials, payroll, HR, audit and employee self-service.
 
-`React` · `TypeScript` · `React PDF` · `React Email` · `OData / REST` · `Playwright`
+`React` · `TypeScript` · `Material UI` · `React PDF` · `React Email` · `OData / REST` · `Playwright`
+
+### [Musės — Fly Tying Market](https://muses.lt)
+
+An independently developed marketplace connecting customer, seller, support and administration applications through shared domain packages.
+
+`Next.js` · `React` · `TypeScript` · `Strapi` · `PostgreSQL` · `Stripe` · `Vitest` · `Playwright`
 
 ### [Deliver1](https://deliver1.co.uk)
 
-An international removals platform with instant quotations, structured booking, Stripe payments, phone verification and customer issue tracking.
+An international-removals platform with instant quotations, structured booking, payments, phone verification and customer issue tracking.
 
-`Next.js` · `Strapi` · `Stripe` · `Firebase` · `Nodemailer`
+`Next.js` · `TypeScript` · `Strapi` · `Stripe` · `Firebase` · `PostgreSQL`
 
 ### [Ortopedijos Paslaugų Klinika](https://www.opklinika.lt)
 
-A healthcare content and product platform with a Strapi-managed catalogue and branded, data-driven PDF generation.
+A healthcare content and product platform with a CMS-managed catalogue and branded, data-driven PDF generation.
 
-`Next.js` · `Strapi` · `React PDF` · `SendGrid` · `Vitest`
+`Next.js` · `TypeScript` · `Strapi` · `React PDF` · `SendGrid` · `Vitest`
+
+## A note on source code
+
+Much of my professional work is private because it belongs to employers or clients and contains product-specific business logic. My [portfolio case studies](https://zajenckauskas.lt/projects) document the problems, my contribution, technical decisions, quality work and outcomes without exposing confidential code or data.
+
+For a relevant opportunity, I can provide a guided architecture walkthrough or a focused, sanitised code sample where the applicable agreement allows it.
+
+## Education and languages
+
+- **Front-End Developer Programme** · Baltic Institute of Technology, 2021
+- **BA in Graphic Design** · Vilnius College of Design, 2018
+- **Lithuanian** · Native
+- **English** · Fluent professional proficiency
 
 ---
 
-## Engineering focus
-
-- Translating complex business rules into clear, dependable interfaces
-- Reusable component systems and shared TypeScript packages
-- Headless CMS architecture with Strapi
-- PDF reporting and transactional email workflows
-- Accessible, responsive UX backed by automated tests
-
-## Private commercial work
-
-Most commercial source code is private because it belongs to clients or contains product-specific business logic. The portfolio therefore presents precise case studies covering the problem, my contribution, front-end decisions, quality checks and outcomes without exposing confidential code or data.
-
-For a relevant role, I can provide a guided architecture walkthrough or a focused, sanitised code sample where the applicable client agreement allows it.
-
-**[Request a private walkthrough](mailto:danielius@zajenckauskas.lt?subject=Private%20code%20walkthrough)**
-
 <div align="center">
 
-Open to selected front-end opportunities where product quality and maintainable engineering matter.
+### Open to selected front-end opportunities
 
-**[View portfolio](https://zajenckauskas.lt) · [Connect on LinkedIn](https://www.linkedin.com/in/danielius-zajenckauskas/)**
+I am most interested in teams that value thoughtful product work, dependable engineering and maintainable systems.
+
+**[Explore my work](https://zajenckauskas.lt) · [Connect on LinkedIn](https://www.linkedin.com/in/danielius-zajenckauskas/) · [Send an email](mailto:danielius@zajenckauskas.lt)**
 
 </div>
