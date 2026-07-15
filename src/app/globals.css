@@ -661,8 +661,13 @@ body {
   cursor: ns-resize;
 }
 
-.hero-portrait-resize-edge.is-top { top: -0.4rem; }
-.hero-portrait-resize-edge.is-bottom { bottom: -0.4rem; }
+.hero-portrait-resize-edge.is-top {
+  top: -0.4rem;
+}
+
+.hero-portrait-resize-edge.is-bottom {
+  bottom: -0.4rem;
+}
 
 .hero-portrait-resize-edge.is-right,
 .hero-portrait-resize-edge.is-left {
@@ -672,13 +677,29 @@ body {
   cursor: ew-resize;
 }
 
-.hero-portrait-resize-edge.is-right { right: -0.4rem; }
-.hero-portrait-resize-edge.is-left { left: -0.4rem; }
+.hero-portrait-resize-edge.is-right {
+  right: -0.4rem;
+}
 
-.hero-portrait-resize-edge[class*="top-"] { top: -0.45rem; }
-.hero-portrait-resize-edge[class*="bottom-"] { bottom: -0.45rem; }
-.hero-portrait-resize-edge[class*="-left"] { left: -0.45rem; }
-.hero-portrait-resize-edge[class*="-right"] { right: -0.45rem; }
+.hero-portrait-resize-edge.is-left {
+  left: -0.4rem;
+}
+
+.hero-portrait-resize-edge[class*="top-"] {
+  top: -0.45rem;
+}
+
+.hero-portrait-resize-edge[class*="bottom-"] {
+  bottom: -0.45rem;
+}
+
+.hero-portrait-resize-edge[class*="-left"] {
+  left: -0.45rem;
+}
+
+.hero-portrait-resize-edge[class*="-right"] {
+  right: -0.45rem;
+}
 
 .hero-portrait-resize-edge[class*="top-"],
 .hero-portrait-resize-edge[class*="bottom-"] {
@@ -691,10 +712,14 @@ body {
 }
 
 .hero-portrait-resize-edge.is-top-left,
-.hero-portrait-resize-edge.is-bottom-right { cursor: nwse-resize; }
+.hero-portrait-resize-edge.is-bottom-right {
+  cursor: nwse-resize;
+}
 
 .hero-portrait-resize-edge.is-top-right,
-.hero-portrait-resize-edge.is-bottom-left { cursor: nesw-resize; }
+.hero-portrait-resize-edge.is-bottom-left {
+  cursor: nesw-resize;
+}
 
 .hero-doodle-invite {
   position: absolute;
@@ -3474,8 +3499,53 @@ body {
 }
 
 .doodle-captcha {
-  min-height: 65px;
-  margin-top: 1rem;
+  width: 300px;
+  max-width: 100%;
+  min-height: 0;
+  margin-top: 0.7rem;
+  overflow: hidden;
+}
+
+.doodle-captcha-status {
+  display: inline-flex;
+  min-height: 2rem;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 35%, var(--border));
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  background: color-mix(in srgb, var(--ink) 7%, var(--surface));
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.doodle-captcha-status svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex: 0 0 0.9rem;
+  color: var(--ink);
+}
+
+.doodle-captcha-status.is-checking svg {
+  animation: doodle-captcha-spin 0.9s linear infinite;
+}
+
+.doodle-captcha-status.is-error {
+  border-color: color-mix(in srgb, #b64c5e 40%, var(--border));
+  background: color-mix(in srgb, #b64c5e 7%, var(--surface));
+  color: #b64c5e;
+}
+
+.doodle-captcha-status.is-error svg {
+  color: currentColor;
+}
+
+@keyframes doodle-captcha-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .doodle-captcha-error {
@@ -4118,10 +4188,60 @@ body {
 
   .doodle-form-grid {
     grid-template-columns: 1fr;
+    gap: 0.55rem;
+    margin-top: 0.9rem;
+  }
+
+  .doodle-send-backdrop {
+    padding: 0.5rem;
   }
 
   .doodle-send-panel {
-    border-radius: 1.5rem;
+    max-height: none;
+    overflow: visible;
+    border-radius: 1.35rem;
+    padding: 1.15rem;
+  }
+
+  .doodle-send-close {
+    top: 0.7rem;
+    right: 0.7rem;
+  }
+
+  .doodle-send-panel h2 {
+    margin-top: 0.35rem;
+    padding-right: 1.5rem;
+    font-size: clamp(2rem, 10vw, 2.65rem);
+  }
+
+  .doodle-send-panel h2+p {
+    margin-top: 0.65rem;
+    font-size: 0.8rem;
+    line-height: 1.42;
+  }
+
+  .doodle-send-panel form>label {
+    margin-top: 0.6rem;
+  }
+
+  .doodle-send-panel input,
+  .doodle-send-panel textarea {
+    padding: 0.55rem 0.7rem;
+  }
+
+  .doodle-send-panel textarea {
+    min-height: 4.4rem;
+    max-height: 4.4rem;
+    resize: none;
+  }
+
+  .doodle-captcha,
+  .doodle-send-panel form>.primary-button {
+    margin-top: 0.7rem;
+  }
+
+  .doodle-privacy-note {
+    margin-top: 0.5rem;
   }
 
   .section-doodle {
