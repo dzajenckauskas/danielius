@@ -19,10 +19,10 @@ const SAMPLE_STEP_LOW_POWER = 14;
 // The trace records how you scrolled: a slow ball presses down and draws a
 // solid line; a fast one skims and leaves spaced skip-marks. Gap size scales
 // with drawing speed (path px/s, smoothed) between these two thresholds.
-const SPEED_SOLID = 250;
-const SPEED_SKIM = 3000;
+const SPEED_SOLID = 500;
+const SPEED_SKIM = 4000;
 const DASH_BASE = 10;
-const GAP_MAX = 26;
+const GAP_MAX = 20;
 
 function connect(path: string, from: Point, to: Point, character: number) {
   const distance = Math.max(to.y - from.y, 80);
@@ -164,10 +164,16 @@ export function ScrollThread() {
     if (drawn + 40 > patternLenRef.current && patternLenRef.current < totalRef.current + 40) {
       const pattern = patternRef.current;
       const skim = Math.max(0, Math.min(1, (speedRef.current - SPEED_SOLID) / (SPEED_SKIM - SPEED_SOLID)));
-      const dash = DASH_BASE + skim * 8;
-      const dashGap = skim * GAP_MAX < 1.5 ? 0 : skim * GAP_MAX;
+      const baseGap = skim * GAP_MAX;
       const pathElement = pathRef.current;
       while (patternLenRef.current < Math.min(drawn + 40, totalRef.current + 40)) {
+        // Mild per-segment jitter on top of the speed-driven gap, so it
+        // doesn't track speed with mechanical uniformity but still stays
+        // speed-led overall.
+        const roll = Math.random();
+        const gapMultiplier = roll < 0.12 ? 0 : 0.8 + Math.random() * 0.4;
+        const dash = DASH_BASE + skim * 8 + (Math.random() - 0.5) * 2;
+        const dashGap = baseGap * gapMultiplier < 1.5 ? 0 : baseGap * gapMultiplier;
         if (dashGap === 0 && pattern.length >= 2 && pattern[pattern.length - 1] === 0) {
           pattern[pattern.length - 2] += dash;
         } else {
