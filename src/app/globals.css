@@ -610,15 +610,30 @@ body {
   justify-self: end;
 }
 
+.hero-portrait-wrap.is-resize-mode {
+  z-index: 45;
+}
+
 .hero-portrait-stage {
   position: relative;
 }
 
 .hero-photo-composition {
   position: relative;
-  width: min(var(--hero-portrait-user-width, 100%), calc(100vw - 2.5rem));
+  width: var(--hero-portrait-user-width, 100%);
   margin-left: auto;
   transform: translate3d(var(--hero-portrait-user-x, 0), var(--hero-portrait-user-y, 0), 0);
+}
+
+.hero-photo-composition.is-resize-mode {
+  z-index: 10;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.hero-photo-composition.is-resize-mode:active {
+  cursor: grabbing;
 }
 
 .hero-portrait-resize-edges {
@@ -3042,10 +3057,13 @@ body {
 }
 
 .doodle-canvas {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  z-index: 40;
+  z-index: 50;
+  display: block;
   pointer-events: none;
+  will-change: transform;
+  backface-visibility: hidden;
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 32 32'%3E%3Cg fill='none' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 27l2.2-7.2L21.8 4.2a2.4 2.4 0 013.4 0l2.6 2.6a2.4 2.4 0 010 3.4L12.2 25.8 4 27z' fill='%23faf9f6' stroke='%23faf9f6' stroke-width='4'/%3E%3Cpath d='M6.2 20L12 25.8M20.2 5.8l6 6M4 27l2.2-7.2L21.8 4.2a2.4 2.4 0 013.4 0l2.6 2.6a2.4 2.4 0 010 3.4L12.2 25.8 4 27z' stroke='%23191a1c' stroke-width='1.8'/%3E%3Cpath d='M4 27l4.1-1.1-3-3z' fill='%23191a1c' stroke='%23191a1c' stroke-width='1'/%3E%3C/g%3E%3C/svg%3E") 3 20, crosshair;
   touch-action: none;
 }
@@ -3064,7 +3082,7 @@ body {
   border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
   border-radius: 1.25rem;
   padding: 0.6rem 0.75rem 0.7rem;
-  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  background: color-mix(in srgb, var(--surface) 96%, var(--bg));
   box-shadow: 0 24px 70px -30px rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(20px);
   animation: doodle-studio-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -3123,6 +3141,10 @@ body {
 
 .doodle-studio-heading-actions button {
   cursor: pointer;
+}
+
+.doodle-studio-minimize {
+  display: none !important;
 }
 
 .doodle-studio-heading-actions button:hover,
@@ -3510,7 +3532,13 @@ body {
   bottom: 1.25rem;
   z-index: 70;
   display: flex;
+  flex-direction: column;
   gap: 0.5rem;
+}
+
+.doodle-studio-restore svg {
+  width: 1rem;
+  height: 1rem;
 }
 
 .doodle-tool,
@@ -3779,6 +3807,10 @@ body {
 }
 
 @media (max-width: 900px) {
+
+  .doodle-canvas-active {
+    touch-action: pan-y;
+  }
 
   .hero-photo-composition {
     margin-right: auto;
@@ -4060,7 +4092,15 @@ body {
     bottom: 4.75rem;
     left: 0.75rem;
     width: auto;
+    max-height: calc(100dvh - 7rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
     padding: 0.7rem;
+  }
+
+  .doodle-studio-minimize {
+    display: inline-flex !important;
   }
 
   .doodle-studio-heading {

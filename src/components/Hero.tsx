@@ -52,6 +52,16 @@ export function Hero() {
     offsetY: number;
     direction: ResizeDirection;
   } | null>(null);
+  const dragStartRef = useRef<{
+    pointerX: number;
+    pointerY: number;
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
+    offsetX: number;
+    offsetY: number;
+  } | null>(null);
   const [portraitSize, setPortraitSize] = useState<{
     width: number;
     height: number;
@@ -67,6 +77,13 @@ export function Hero() {
     window.addEventListener("portrait-resize-mode", handleResizeMode);
     return () => window.removeEventListener("portrait-resize-mode", handleResizeMode);
   }, []);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      window.dispatchEvent(new Event("portrait-geometry-change"));
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [portraitSize]);
 
   const startPortraitResize = (event: React.PointerEvent<HTMLButtonElement>, direction: ResizeDirection) => {
     const composition = portraitCompositionRef.current;
@@ -88,6 +105,7 @@ export function Hero() {
       direction,
     };
     event.currentTarget.setPointerCapture(event.pointerId);
+    event.stopPropagation();
     event.preventDefault();
   };
 
@@ -101,39 +119,76 @@ export function Hero() {
     const resizingRight = start.direction.includes("right");
     const resizingTop = start.direction.includes("top");
     const resizingBottom = start.direction.includes("bottom");
-    const maxWidth = resizingLeft
-      ? Math.max(260, start.right - 20)
-      : resizingRight
-        ? Math.max(260, window.innerWidth - start.left - 20)
-        : start.width;
-    const availableHeight = resizingTop
-      ? start.bottom - 20
-      : resizingBottom
-        ? window.innerHeight - start.top - 20
-        : start.height;
-    const maxHeight = Math.max(start.height, availableHeight, 340);
-    const nextWidth = Math.min(
-      maxWidth,
-      Math.max(260, start.width + (resizingLeft ? -deltaX : resizingRight ? deltaX : 0)),
-    );
-    const nextHeight = Math.min(
-      maxHeight,
-      Math.max(340, start.height + (resizingTop ? -deltaY : resizingBottom ? deltaY : 0)),
-    );
+    const margin = 12;
+    const minWidth = Math.min(260, window.innerWidth - margin * 2);
+    const minHeight = 280;
+    const leftLimit = Math.min(margin, start.left);
+    const rightLimit = Math.max(window.innerWidth - margin, start.right);
+    const topLimit = Math.min(margin, start.top);
+    const bottomLimit = Math.max(window.innerHeight - margin, start.bottom);
+    const nextLeft = resizingLeft
+      ? Math.min(start.right - minWidth, Math.max(leftLimit, start.left + deltaX))
+      : start.left;
+    const nextRight = resizingRight
+      ? Math.max(start.left + minWidth, Math.min(rightLimit, start.right + deltaX))
+      : start.right;
+    const nextTop = resizingTop
+      ? Math.min(start.bottom - minHeight, Math.max(topLimit, start.top + deltaY))
+      : start.top;
+    const nextBottom = resizingBottom
+      ? Math.max(start.top + minHeight, Math.min(bottomLimit, start.bottom + deltaY))
+      : start.bottom;
     setPortraitSize({
-      width: nextWidth,
-      height: nextHeight,
-      offsetX: resizingLeft
-        ? start.offsetX + start.width - nextWidth
-        : start.offsetX,
-      offsetY: resizingTop
-        ? start.offsetY + start.height - nextHeight
-        : start.offsetY,
+      width: nextRight - nextLeft,
+      height: nextBottom - nextTop,
+      offsetX: start.offsetX + nextRight - start.right,
+      offsetY: start.offsetY + nextTop - start.top,
     });
   };
 
   const finishPortraitResize = () => {
     resizeStartRef.current = null;
+  };
+
+  const startPortraitDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!portraitResizeEnabled || (event.target as HTMLElement).closest(".hero-portrait-resize-edge")) return;
+    const frame = portraitCompositionRef.current?.querySelector<HTMLElement>("[data-doodle-portrait]");
+    if (!frame) return;
+    const rect = frame.getBoundingClientRect();
+    dragStartRef.current = {
+      pointerX: event.clientX,
+      pointerY: event.clientY,
+      left: rect.left,
+      right: rect.right,
+      top: rect.top,
+      bottom: rect.bottom,
+      offsetX: portraitSize?.offsetX ?? 0,
+      offsetY: portraitSize?.offsetY ?? 0,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.preventDefault();
+  };
+
+  const dragPortrait = (event: React.PointerEvent<HTMLDivElement>) => {
+    const start = dragStartRef.current;
+    if (!start) return;
+    const margin = 12;
+    const desiredX = event.clientX - start.pointerX;
+    const desiredY = event.clientY - start.pointerY;
+    const minX = Math.min(margin - start.left, window.innerWidth - margin - start.right);
+    const maxX = Math.max(margin - start.left, window.innerWidth - margin - start.right);
+    const minY = Math.min(margin - start.top, window.innerHeight - margin - start.bottom);
+    const maxY = Math.max(margin - start.top, window.innerHeight - margin - start.bottom);
+    setPortraitSize((current) => ({
+      width: current?.width ?? start.right - start.left,
+      height: current?.height ?? start.bottom - start.top,
+      offsetX: start.offsetX + Math.min(maxX, Math.max(minX, desiredX)),
+      offsetY: start.offsetY + Math.min(maxY, Math.max(minY, desiredY)),
+    }));
+  };
+
+  const finishPortraitDrag = () => {
+    dragStartRef.current = null;
   };
 
   return (
@@ -182,12 +237,16 @@ export function Hero() {
           </Reveal>
         </div>
 
-        <Reveal delay={0.12} className="hero-portrait-wrap">
+        <Reveal delay={0.12} className={`hero-portrait-wrap ${portraitResizeEnabled ? "is-resize-mode" : ""}`}>
           <div className="hero-portrait-stage" data-thread-anchor data-thread-x="490">
             <div
               ref={portraitCompositionRef}
-              className="hero-photo-composition"
+              className={`hero-photo-composition ${portraitResizeEnabled ? "is-resize-mode" : ""}`}
               data-doodle-control-anchor
+              onPointerDown={startPortraitDrag}
+              onPointerMove={dragPortrait}
+              onPointerUp={finishPortraitDrag}
+              onPointerCancel={finishPortraitDrag}
               style={portraitSize ? {
                 "--hero-portrait-user-width": `${portraitSize.width}px`,
                 "--hero-portrait-user-height": `${portraitSize.height}px`,
@@ -206,6 +265,7 @@ export function Hero() {
                   width={720}
                   height={820}
                   priority
+                  draggable={false}
                   sizes="(max-width: 900px) 100vw, 44vw"
                   style={{ filter: "var(--photo-filter)" }}
                 />

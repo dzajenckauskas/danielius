@@ -6,6 +6,8 @@ import { createPortal } from "react-dom";
 import {
   Circle,
   Eraser,
+  Maximize2,
+  Minimize2,
   Pencil,
   Send,
   Scaling,
@@ -37,6 +39,7 @@ type DrawingAction = {
   fillColor?: string;
   rotation?: number;
   shapeSeed?: number;
+  portraitBound?: boolean;
 };
 
 const COLORS = ["#3d5b57", "#b59bd7", "#8fbccc", "#d891aa", "#d2ae6c", "#191a1c"];
@@ -271,13 +274,21 @@ export function DoodleLayer() {
   const pathname = usePathname();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const studioRef = useRef<HTMLElement>(null);
+  const studioWidthRef = useRef(320);
+  const studioWidthCapturedRef = useRef(false);
   const actionsRef = useRef<DrawingAction[]>([]);
   const draftRef = useRef<DrawingAction | null>(null);
   const drawingRef = useRef(false);
   const resizeFrameRef = useRef<number | null>(null);
-  const scrollFrameRef = useRef<number | null>(null);
-  const scrollSettleTimerRef = useRef<number | null>(null);
-  const canvasScrollOriginRef = useRef({ x: 0, y: 0 });
+  const parallaxFrameRef = useRef<number | null>(null);
+  const canvasParallaxOffsetRef = useRef(0);
+  const canvasPageOriginRef = useRef({ x: 0, y: 0 });
+  const previousPortraitRectRef = useRef<{
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  } | null>(null);
   const defaultAnimationFrameRef = useRef<number | null>(null);
   const defaultAnimationProgressRef = useRef(1);
   const defaultActionCountRef = useRef(0);
@@ -294,8 +305,10 @@ export function DoodleLayer() {
     height: number;
   } | null>(null);
   const [active, setActive] = useState(false);
+  const [studioMinimized, setStudioMinimized] = useState(false);
   const [portraitResizeEnabled, setPortraitResizeEnabled] = useState(false);
   const [heroInView, setHeroInView] = useState(false);
+  const [doodleSurface, setDoodleSurface] = useState<HTMLElement | null>(null);
   const [doodleAnchor, setDoodleAnchor] = useState<HTMLElement | null>(null);
   const [studioOffset, setStudioOffset] = useState({ x: 0, y: 0 });
   const [studioPlacement, setStudioPlacement] = useState({
@@ -329,16 +342,20 @@ export function DoodleLayer() {
     const canvas = canvasRef.current;
     const context = canvas?.getContext("2d");
     if (!canvas || !context) return;
-    canvas.style.transform = "";
-    canvas.style.willChange = "auto";
-    canvasScrollOriginRef.current = { x: window.scrollX, y: window.scrollY };
     context.save();
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.restore();
     const ratio = canvas.clientWidth ? canvas.width / canvas.clientWidth : 1;
     context.save();
-    context.setTransform(ratio, 0, 0, ratio, -window.scrollX * ratio, -window.scrollY * ratio);
+    context.setTransform(
+      ratio,
+      0,
+      0,
+      ratio,
+      -canvasPageOriginRef.current.x * ratio,
+      -canvasPageOriginRef.current.y * ratio,
+    );
     const defaultCount = Math.min(defaultActionCountRef.current, actionsRef.current.length);
     actionsRef.current.forEach((action, index) => {
       const actionProgress = index < defaultCount
@@ -352,15 +369,32 @@ export function DoodleLayer() {
 
   const prepareCanvas = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const portrait = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR);
+    const surface = document.querySelector<HTMLElement>(".hero-editorial");
+    if (!canvas || !portrait || !surface) return;
+    const portraitRect = portrait.getBoundingClientRect();
+    const rect = surface.getBoundingClientRect();
+    const pageLeft = rect.left + window.scrollX;
+    const pageTop = rect.top + window.scrollY;
+    if (!previousPortraitRectRef.current) {
+      previousPortraitRectRef.current = {
+        left: portraitRect.left + window.scrollX,
+        top: portraitRect.top + window.scrollY,
+        width: portraitRect.width,
+        height: portraitRect.height,
+      };
+    }
     const isMobile = window.innerWidth <= 900
       || window.matchMedia("(pointer: coarse)").matches;
     const maxRatio = isMobile ? 1.5 : 2;
     const ratio = Math.max(Math.min(window.devicePixelRatio || 1, maxRatio), 1);
-    canvas.width = Math.floor(window.innerWidth * ratio);
-    canvas.height = Math.floor(window.innerHeight * ratio);
-    canvas.style.width = `${window.innerWidth}px`;
-    canvas.style.height = `${window.innerHeight}px`;
+    canvasPageOriginRef.current = { x: pageLeft, y: pageTop };
+    canvas.width = Math.max(1, Math.floor(rect.width * ratio));
+    canvas.height = Math.max(1, Math.floor(rect.height * ratio));
+    canvas.style.left = "0px";
+    canvas.style.top = "0px";
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
     canvas.getContext("2d")?.setTransform(ratio, 0, 0, ratio, 0, 0);
     redraw();
   }, [redraw]);
@@ -386,14 +420,24 @@ export function DoodleLayer() {
 
   useEffect(() => {
     if (pathname !== "/") {
+      studioWidthCapturedRef.current = false;
       setHeroInView(false);
+      setDoodleSurface(null);
       setDoodleAnchor(null);
       setActive(false);
       return;
     }
 
     const hero = document.querySelector<HTMLElement>(".hero-editorial");
-    setDoodleAnchor(document.querySelector<HTMLElement>("[data-doodle-control-anchor]"));
+    const anchor = document.querySelector<HTMLElement>("[data-doodle-control-anchor]");
+    setDoodleSurface(hero);
+    setDoodleAnchor(anchor);
+    if (anchor) {
+      studioWidthRef.current = Math.min(
+        anchor.getBoundingClientRect().width,
+        window.innerWidth - 24,
+      );
+    }
     if (!hero) {
       setHeroInView(false);
       return;
@@ -470,7 +514,7 @@ export function DoodleLayer() {
 
     const updatePlacement = () => {
       const portrait = doodleAnchor.getBoundingClientRect();
-      const studioWidth = Math.min(portrait.width, window.innerWidth - 24);
+      const studioWidth = Math.min(studioWidthRef.current, window.innerWidth - 24);
 
       setStudioPlacement({
         left: Math.min(
@@ -487,10 +531,12 @@ export function DoodleLayer() {
     const observer = new ResizeObserver(updatePlacement);
     observer.observe(doodleAnchor);
     window.addEventListener("resize", updatePlacement);
+    window.addEventListener("portrait-geometry-change", updatePlacement);
 
     return () => {
       observer.disconnect();
       window.removeEventListener("resize", updatePlacement);
+      window.removeEventListener("portrait-geometry-change", updatePlacement);
     };
   }, [active, doodleAnchor]);
 
@@ -507,61 +553,74 @@ export function DoodleLayer() {
         );
         const frame = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR);
 
-        if (frame && defaultCount > 0) {
-          const userActions = actionsRef.current.slice(defaultCount);
-          const remappedDefaults = defaultPortraitDoodle(
-            frame.getBoundingClientRect(),
-          ).slice(0, defaultCount);
+        if (frame) {
+          const rect = frame.getBoundingClientRect();
+          const nextRect = {
+            left: rect.left + window.scrollX,
+            top: rect.top + window.scrollY,
+            width: rect.width,
+            height: rect.height,
+          };
+          const previousRect = previousPortraitRectRef.current;
+          let userActions = actionsRef.current.slice(defaultCount);
+
+          if (previousRect && userActions.length > 0) {
+            const scaleX = nextRect.width / Math.max(previousRect.width, 1);
+            const scaleY = nextRect.height / Math.max(previousRect.height, 1);
+            userActions = userActions.map((action) => action.portraitBound ? {
+              ...action,
+              width: action.width * Math.sqrt(scaleX * scaleY),
+              points: action.points.map((point) => ({
+                x: nextRect.left + ((point.x - previousRect.left) / Math.max(previousRect.width, 1)) * nextRect.width,
+                y: nextRect.top + ((point.y - previousRect.top) / Math.max(previousRect.height, 1)) * nextRect.height,
+              })),
+            } : action);
+          }
+
+          const remappedDefaults = defaultCount > 0
+            ? defaultPortraitDoodle(rect).slice(0, defaultCount)
+            : [];
           actionsRef.current = [...remappedDefaults, ...userActions];
           defaultActionCountRef.current = remappedDefaults.length;
+          previousPortraitRectRef.current = nextRect;
         }
 
         prepareCanvas();
-        setStudioOffset({ x: 0, y: 0 });
       });
+    };
+    const updateParallax = () => {
+      const canvas = canvasRef.current;
+      const hero = document.querySelector<HTMLElement>(".hero-editorial");
+      if (!canvas || !hero) return;
+      const heroTop = hero.getBoundingClientRect().top + window.scrollY;
+      const relativeScroll = window.scrollY - heroTop;
+      const offset = Math.max(-12, Math.min(40, relativeScroll * 0.045));
+      canvasParallaxOffsetRef.current = offset;
+      canvas.style.transform = `translate3d(0, ${offset}px, 0)`;
     };
     const handleScroll = () => {
-      if (scrollFrameRef.current !== null) return;
-      scrollFrameRef.current = window.requestAnimationFrame(() => {
-        scrollFrameRef.current = null;
-        const useCompositorScroll = window.innerWidth <= 900
-          || window.matchMedia("(pointer: coarse)").matches;
-        if (!useCompositorScroll) {
-          redraw();
-          return;
-        }
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const origin = canvasScrollOriginRef.current;
-        canvas.style.willChange = "transform";
-        canvas.style.transform = `translate3d(${origin.x - window.scrollX}px, ${origin.y - window.scrollY}px, 0)`;
-
-        if (scrollSettleTimerRef.current !== null) {
-          window.clearTimeout(scrollSettleTimerRef.current);
-        }
-        scrollSettleTimerRef.current = window.setTimeout(() => {
-          scrollSettleTimerRef.current = null;
-          redraw();
-        }, 90);
+      if (parallaxFrameRef.current !== null) return;
+      parallaxFrameRef.current = window.requestAnimationFrame(() => {
+        parallaxFrameRef.current = null;
+        updateParallax();
       });
     };
+    updateParallax();
     window.addEventListener("resize", handleResize);
+    window.addEventListener("portrait-geometry-change", handleResize);
     window.addEventListener("scroll", handleScroll, { passive: true });
     const portrait = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR);
     const portraitResizeObserver = portrait ? new ResizeObserver(handleResize) : null;
     if (portrait && portraitResizeObserver) portraitResizeObserver.observe(portrait);
     return () => {
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("portrait-geometry-change", handleResize);
       window.removeEventListener("scroll", handleScroll);
       portraitResizeObserver?.disconnect();
       if (resizeFrameRef.current !== null) window.cancelAnimationFrame(resizeFrameRef.current);
       resizeFrameRef.current = null;
-      if (scrollFrameRef.current !== null) window.cancelAnimationFrame(scrollFrameRef.current);
-      scrollFrameRef.current = null;
-      if (scrollSettleTimerRef.current !== null) {
-        window.clearTimeout(scrollSettleTimerRef.current);
-      }
-      scrollSettleTimerRef.current = null;
+      if (parallaxFrameRef.current !== null) window.cancelAnimationFrame(parallaxFrameRef.current);
+      parallaxFrameRef.current = null;
     };
   }, [active, historySize, prepareCanvas, redraw]);
 
@@ -595,15 +654,15 @@ export function DoodleLayer() {
   }, [active, redraw, sendOpen]);
 
   const pointFromEvent = (event: React.PointerEvent<HTMLCanvasElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
     return {
-      x: event.clientX - rect.left + window.scrollX,
-      y: event.clientY - rect.top + window.scrollY,
+      x: event.clientX + window.scrollX,
+      y: event.clientY + window.scrollY - canvasParallaxOffsetRef.current,
     };
   };
 
   const startDrawing = (event: React.PointerEvent<HTMLCanvasElement>) => {
     const point = pointFromEvent(event);
+    const portrait = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR)?.getBoundingClientRect();
     drawingRef.current = true;
     draftRef.current = {
       tool,
@@ -611,8 +670,17 @@ export function DoodleLayer() {
       width: weight,
       points: [point],
       shapeSeed: tool === "blob" ? Math.random() : undefined,
+      portraitBound: Boolean(
+        portrait
+        && event.clientX >= portrait.left
+        && event.clientX <= portrait.right
+        && event.clientY >= portrait.top
+        && event.clientY <= portrait.bottom
+      ),
     };
-    event.currentTarget.setPointerCapture(event.pointerId);
+    if (event.pointerType !== "touch") {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
     redraw();
   };
 
@@ -629,6 +697,13 @@ export function DoodleLayer() {
     draftRef.current = null;
     drawingRef.current = false;
     setHistorySize(actionsRef.current.length);
+    redraw();
+  };
+
+  const cancelDrawing = () => {
+    if (!drawingRef.current) return;
+    draftRef.current = null;
+    drawingRef.current = false;
     redraw();
   };
 
@@ -1021,17 +1096,20 @@ export function DoodleLayer() {
 
   return (
     <>
-      <canvas
-        ref={canvasRef}
-        className={`doodle-canvas ${active && !portraitResizeEnabled ? "doodle-canvas-active" : ""}`}
-        aria-label="Doodle canvas"
-        onPointerDown={startDrawing}
-        onPointerMove={draw}
-        onPointerUp={finishDrawing}
-        onPointerCancel={finishDrawing}
-      />
+      {doodleSurface && createPortal(
+        <canvas
+          ref={canvasRef}
+          className={`doodle-canvas ${active && !portraitResizeEnabled ? "doodle-canvas-active" : ""}`}
+          aria-label="Doodle canvas"
+          onPointerDown={startDrawing}
+          onPointerMove={draw}
+          onPointerUp={finishDrawing}
+          onPointerCancel={cancelDrawing}
+        />,
+        doodleSurface,
+      )}
 
-      {active && studioPlacement.ready && (
+      {active && !studioMinimized && studioPlacement.ready && (
         <aside
           ref={studioRef}
           className="doodle-studio"
@@ -1055,6 +1133,7 @@ export function DoodleLayer() {
           >
             <strong>Doodle studio</strong>
             <div className="doodle-studio-heading-actions">
+              <button type="button" className="doodle-studio-minimize" onClick={() => setStudioMinimized(true)} aria-label="Minimize doodle studio" title="Minimize studio"><Minimize2 /></button>
               <button type="button" onClick={() => { setPortraitResizeEnabled(false); setActive(false); }} aria-label="Close doodle studio and exit drawing mode" title="Exit drawing mode"><X /></button>
             </div>
           </div>
@@ -1165,12 +1244,25 @@ export function DoodleLayer() {
       )}
 
       <div className="doodle-tools" aria-label="Page tools">
+        {active && studioMinimized && (
+          <button type="button" className="doodle-tool doodle-studio-restore" onClick={() => setStudioMinimized(false)} aria-label="Restore doodle studio" title="Restore doodle studio">
+            <Maximize2 aria-hidden="true" />
+          </button>
+        )}
         <ThemeToggle />
       </div>
       {heroInView && !active && doodleAnchor && createPortal(
         (
           <button type="button" onClick={() => {
             setPortraitResizeEnabled(false);
+            setStudioMinimized(false);
+            if (!studioWidthCapturedRef.current) {
+              studioWidthRef.current = Math.min(
+                doodleAnchor.getBoundingClientRect().width,
+                window.innerWidth - 24,
+              );
+              studioWidthCapturedRef.current = true;
+            }
             setStudioPlacement((current) => ({ ...current, ready: false }));
             setActive(true);
           }} className="doodle-tool doodle-tool-invite hero-doodle-invite" aria-label="Draw on my portrait" aria-pressed="false">
