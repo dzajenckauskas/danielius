@@ -12,8 +12,10 @@
     <radialGradient id="bounce" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(23 47) scale(14 5)"><stop stop-color="#fff" stop-opacity=".34"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
     <filter id="shadow" x="-55%" y="-45%" width="210%" height="230%"><feDropShadow dx="0" dy="5" stdDeviation="4.5" flood-opacity=".46"/></filter>
   </defs>
-  <circle cx="32" cy="30" r="23" fill="url(#sphere)" filter="url(#shadow)"/>
-  <circle cx="32" cy="30" r="23" fill="url(#edge-shade)"/>
-  <ellipse cx="22" cy="20" rx="11" ry="9" fill="url(#highlight)"/>
-  <ellipse cx="23" cy="47" rx="14" ry="5" fill="url(#bounce)"/>
+  <g id="favicon-ball">
+    <circle cx="32" cy="30" r="23" fill="url(#sphere)" filter="url(#shadow)"/>
+    <circle cx="32" cy="30" r="23" fill="url(#edge-shade)"/>
+    <ellipse cx="22" cy="20" rx="11" ry="9" fill="url(#highlight)"/>
+    <ellipse cx="23" cy="47" rx="14" ry="5" fill="url(#bounce)"/>
+  </g>
 </svg>

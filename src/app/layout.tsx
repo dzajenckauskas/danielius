@@ -9,6 +9,7 @@ import { profile } from "@/data/profile";
 import { DoodleLayer } from "@/components/DoodleLayer";
 import { ScrollThread } from "@/components/ScrollThread";
 import { ScrollProgress } from "@/components/ScrollProgress";
+import { AnimatedFavicon } from "@/components/AnimatedFavicon";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://zajenckauskas.lt"),
@@ -49,8 +50,8 @@ export const metadata: Metadata = {
   category: "technology",
   icons: {
     icon: [
-      { url: "/favicon-light.svg?v=5", type: "image/svg+xml", media: "(prefers-color-scheme: light)" },
-      { url: "/favicon-dark.svg?v=5", type: "image/svg+xml", media: "(prefers-color-scheme: dark)" },
+      { url: "/favicon-light.svg?v=6", type: "image/svg+xml", media: "(prefers-color-scheme: light)" },
+      { url: "/favicon-dark.svg?v=6", type: "image/svg+xml", media: "(prefers-color-scheme: dark)" },
     ],
   },
 };
@@ -77,6 +78,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen font-sans">
         <Providers>
+          <AnimatedFavicon />
           <ScrollProgress />
           <div className="page-wash" aria-hidden="true" />
           <div data-page-shell className="flex min-h-screen flex-col">
