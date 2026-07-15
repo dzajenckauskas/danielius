@@ -9,6 +9,7 @@ import {
 } from "@/lib/doodle-form";
 import { verifyTurnstileToken } from "@/lib/turnstile";
 import { generateDoodlePortraitPdf } from "@/lib/generateDoodlePortraitPdf";
+import { buildOwnerDoodleEmail, buildVisitorDoodleEmail } from "@/lib/doodle-emails";
 
 export const runtime = "nodejs";
 
@@ -19,16 +20,6 @@ const MAX_ARTWORK_BYTES = 3_000_000;
 const MAX_COMPOSITE_BYTES = 6_000_000;
 const MAX_PORTRAIT_CARD_BYTES = 8_000_000;
 const DEFAULT_DOODLE_RECIPIENT = "danielius@zajenckauskas.lt";
-
-function escapeHtml(value: string) {
-  return value.replace(/[&<>"']/g, (character) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;",
-  })[character] ?? character);
-}
 
 function getClientIp(request: Request) {
   return request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
@@ -181,21 +172,19 @@ export async function POST(request: Request) {
   try {
     const portraitPdf = await generateDoodlePortraitPdf(portraitCardBuffer);
     const attachmentTimestamp = Date.now();
+    const ownerEmail = buildOwnerDoodleEmail({
+      name: values.name,
+      email: values.email,
+      message: values.message,
+      page,
+    });
     await transporter.sendMail({
       from,
       to: recipient,
       replyTo: values.email,
-      subject: `[DOODLE] A doodle from ${values.name}`,
+      subject: ownerEmail.subject,
       headers: { "X-Doodle-Submission": "true" },
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:620px;margin:auto;color:#191a1c">
-          <p style="color:#4f736e;font-size:12px;letter-spacing:.16em;text-transform:uppercase">Creative contact</p>
-          <h1 style="font-size:28px">${escapeHtml(values.name)} sent you a doodle</h1>
-          <p><strong>Reply to:</strong> ${escapeHtml(values.email)}</p>
-          <p style="white-space:pre-wrap">${escapeHtml(values.message)}</p>
-          ${page ? `<p style="color:#777;font-size:12px">Drawn on ${escapeHtml(page)}</p>` : ""}
-          <p>The transparent doodle, portrait preview and finished portrait-card PDF are attached.</p>
-        </div>`,
+      html: ownerEmail.html,
       attachments: [
         {
           filename: `doodle-transparent-${attachmentTimestamp}.png`,
@@ -216,29 +205,21 @@ export async function POST(request: Request) {
     });
 
     try {
+      const visitorEmail = buildVisitorDoodleEmail({
+        name: values.name,
+        portfolioUrl,
+      });
       await transporter.sendMail({
         from,
         to: values.email,
         replyTo: recipient,
-        subject: "Thanks for doodling me!",
+        subject: visitorEmail.subject,
         headers: {
           "Auto-Submitted": "auto-replied",
           "X-Auto-Response-Suppress": "All",
           Precedence: "bulk",
         },
-        html: `
-          <div style="margin:0;padding:32px 16px;background-color:#f4f1ed;color:#191a1c;font-family:Arial,sans-serif">
-            <div style="max-width:560px;margin:0 auto;overflow:hidden;border:1px solid #ded9d2;border-radius:22px;background-color:#fffefd">
-              <div style="height:8px;background:linear-gradient(90deg,#b59bd7,#8fbccc,#d891aa,#d2ae6c)"></div>
-              <div style="padding:34px 34px 30px">
-                <p style="margin:0;color:#527770;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase">Doodle received</p>
-                <h1 style="margin:12px 0 16px;color:#191a1c;font-size:30px;line-height:1.08">Thanks for doodling me, ${escapeHtml(values.name)}!</h1>
-                <p style="margin:0;color:#55595d;font-size:16px;line-height:1.6">Your doodle made it safely to my inbox. I attached our finished portrait as a small keepsake.</p>
-                ${portfolioUrl ? `<p style="margin:24px 0 0"><a href="${escapeHtml(portfolioUrl)}" style="display:inline-block;border-radius:11px;padding:12px 17px;background-color:#3d5b57;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none">Visit my portfolio</a></p>` : ""}
-                <p style="margin:28px 0 0;color:#777b7e;font-size:12px;line-height:1.5">Danielius Zajenčkauskas · Front-end Engineer</p>
-              </div>
-            </div>
-          </div>`,
+        html: visitorEmail.html,
         attachments: [
           {
             filename: `your-doodle-with-Danielius-${attachmentTimestamp}.pdf`,
