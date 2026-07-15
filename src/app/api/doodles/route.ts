@@ -17,8 +17,8 @@ const deliveryWindows = new Map<string, number[]>();
 const DELIVERY_LIMIT = 5;
 const DELIVERY_WINDOW_MS = 10 * 60 * 1000;
 const MAX_ARTWORK_BYTES = 3_000_000;
-const MAX_COMPOSITE_BYTES = 6_000_000;
-const MAX_PORTRAIT_CARD_BYTES = 8_000_000;
+const MAX_COMPOSITE_BYTES = 4_000_000;
+const MAX_PORTRAIT_CARD_BYTES = 3_000_000;
 const DEFAULT_DOODLE_RECIPIENT = "danielius@zajenckauskas.lt";
 
 function getClientIp(request: Request) {
@@ -37,6 +37,13 @@ function isPng(buffer: Buffer) {
     && buffer[5] === 0x0a
     && buffer[6] === 0x1a
     && buffer[7] === 0x0a;
+}
+
+function isJpeg(buffer: Buffer) {
+  return buffer.length >= 3
+    && buffer[0] === 0xff
+    && buffer[1] === 0xd8
+    && buffer[2] === 0xff;
 }
 
 export async function POST(request: Request) {
@@ -94,20 +101,20 @@ export async function POST(request: Request) {
   }
 
   const composite = typeof body.composite === "string" ? body.composite : "";
-  if (!composite.startsWith("data:image/png;base64,")) {
+  if (!composite.startsWith("data:image/jpeg;base64,")) {
     return NextResponse.json({ error: "The portrait preview is missing or invalid." }, { status: 400 });
   }
-  const compositeBuffer = Buffer.from(composite.slice("data:image/png;base64,".length), "base64");
-  if (!isPng(compositeBuffer) || compositeBuffer.length > MAX_COMPOSITE_BYTES) {
+  const compositeBuffer = Buffer.from(composite.slice("data:image/jpeg;base64,".length), "base64");
+  if (!isJpeg(compositeBuffer) || compositeBuffer.length > MAX_COMPOSITE_BYTES) {
     return NextResponse.json({ error: "The portrait preview is invalid or too large to send." }, { status: 400 });
   }
 
   const portraitCard = typeof body.portraitCard === "string" ? body.portraitCard : "";
-  if (!portraitCard.startsWith("data:image/png;base64,")) {
+  if (!portraitCard.startsWith("data:image/jpeg;base64,")) {
     return NextResponse.json({ error: "The portrait card is missing or invalid." }, { status: 400 });
   }
-  const portraitCardBuffer = Buffer.from(portraitCard.slice("data:image/png;base64,".length), "base64");
-  if (!isPng(portraitCardBuffer) || portraitCardBuffer.length > MAX_PORTRAIT_CARD_BYTES) {
+  const portraitCardBuffer = Buffer.from(portraitCard.slice("data:image/jpeg;base64,".length), "base64");
+  if (!isJpeg(portraitCardBuffer) || portraitCardBuffer.length > MAX_PORTRAIT_CARD_BYTES) {
     return NextResponse.json({ error: "The portrait card is invalid or too large to send." }, { status: 400 });
   }
 
@@ -192,9 +199,9 @@ export async function POST(request: Request) {
           contentType: "image/png",
         },
         {
-          filename: `doodle-on-portrait-${attachmentTimestamp}.png`,
+          filename: `doodle-on-portrait-${attachmentTimestamp}.jpg`,
           content: compositeBuffer,
-          contentType: "image/png",
+          contentType: "image/jpeg",
         },
         {
           filename: `Danielius-Zajenckauskas-doodle-${attachmentTimestamp}.pdf`,

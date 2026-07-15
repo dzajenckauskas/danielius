@@ -56,6 +56,10 @@ const TOOLS: { id: Tool; label: string; icon: typeof Pencil }[] = [
 ];
 
 const PORTRAIT_SELECTOR = "[data-doodle-portrait]";
+// The composite and portrait-card exports are fully opaque (photo + flattened
+// doodle), so JPEG compresses them far smaller than PNG without a visible
+// quality loss at this size. The artwork export keeps transparency and stays PNG.
+const PHOTO_EXPORT_QUALITY = 0.88;
 
 function seededRandom(seed: number, offset: number) {
   const value = Math.sin((seed + offset) * 12_989.8) * 43_758.5453;
@@ -831,7 +835,7 @@ export function DoodleLayer() {
     context.translate(-(rect.left + window.scrollX), -(rect.top + window.scrollY));
     actionsRef.current.forEach((action) => drawAction(context, action));
     context.restore();
-    return output.toDataURL("image/png");
+    return output.toDataURL("image/jpeg", PHOTO_EXPORT_QUALITY);
   }, []);
 
   const exportPortraitCard = useCallback(async (composite: string) => {
@@ -983,7 +987,7 @@ export function DoodleLayer() {
     context.fill();
     context.restore();
 
-    return output.toDataURL("image/png");
+    return output.toDataURL("image/jpeg", PHOTO_EXPORT_QUALITY);
   }, []);
 
   useEffect(() => {

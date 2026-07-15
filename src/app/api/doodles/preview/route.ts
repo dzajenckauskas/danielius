@@ -3,19 +3,14 @@ import { generateDoodlePortraitPdf } from "@/lib/generateDoodlePortraitPdf";
 
 export const runtime = "nodejs";
 
-const PNG_PREFIX = "data:image/png;base64,";
-const MAX_PORTRAIT_CARD_BYTES = 8_000_000;
+const JPEG_PREFIX = "data:image/jpeg;base64,";
+const MAX_PORTRAIT_CARD_BYTES = 3_000_000;
 
-function isPng(buffer: Buffer) {
-  return buffer.length >= 8
-    && buffer[0] === 0x89
-    && buffer[1] === 0x50
-    && buffer[2] === 0x4e
-    && buffer[3] === 0x47
-    && buffer[4] === 0x0d
-    && buffer[5] === 0x0a
-    && buffer[6] === 0x1a
-    && buffer[7] === 0x0a;
+function isJpeg(buffer: Buffer) {
+  return buffer.length >= 3
+    && buffer[0] === 0xff
+    && buffer[1] === 0xd8
+    && buffer[2] === 0xff;
 }
 
 export function GET(request: Request) {
@@ -45,12 +40,12 @@ export async function POST(request: Request) {
   }
 
   const portraitCard = typeof body.portraitCard === "string" ? body.portraitCard : "";
-  if (!portraitCard.startsWith(PNG_PREFIX)) {
+  if (!portraitCard.startsWith(JPEG_PREFIX)) {
     return NextResponse.json({ error: "The portrait preview is missing." }, { status: 400 });
   }
 
-  const portraitCardBuffer = Buffer.from(portraitCard.slice(PNG_PREFIX.length), "base64");
-  if (!isPng(portraitCardBuffer) || portraitCardBuffer.length > MAX_PORTRAIT_CARD_BYTES) {
+  const portraitCardBuffer = Buffer.from(portraitCard.slice(JPEG_PREFIX.length), "base64");
+  if (!isJpeg(portraitCardBuffer) || portraitCardBuffer.length > MAX_PORTRAIT_CARD_BYTES) {
     return NextResponse.json({ error: "The portrait preview is invalid or too large." }, { status: 400 });
   }
 
