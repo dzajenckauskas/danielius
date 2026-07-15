@@ -214,6 +214,10 @@ export function ScrollThread() {
     // show/hide fires resize/RO constantly) — a rebuild resets the laid ink
     // and re-runs the expensive path sampling.
     const svgWidth = Math.max(svg.clientWidth, 1);
+    // The SVG uses a fixed 1000-unit-wide viewBox, so a fixed stroke value
+    // becomes progressively thicker on wide screens. Keep the visible thread
+    // at the same roughly one-pixel weight used on mobile instead.
+    path.style.strokeWidth = `${1000 / svgWidth}`;
     if (!force
       && Math.abs(geometryRef.current.width - svgWidth) < 2
       && Math.abs(geometryRef.current.height - documentHeight) < 8) {

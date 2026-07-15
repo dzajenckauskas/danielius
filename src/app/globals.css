@@ -1369,7 +1369,7 @@ body {
 .scroll-thread-path {
   color: var(--ink-strong);
   stroke: currentColor;
-  stroke-width: 1.6;
+  stroke-width: 1;
   stroke-linecap: round;
   stroke-linejoin: round;
   opacity: 0.28;
@@ -4251,7 +4251,6 @@ body {
 
   .scroll-thread-path {
     opacity: 0.32;
-    stroke-width: 2.1;
   }
 
   .section-blob-about {
