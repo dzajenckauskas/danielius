@@ -260,7 +260,6 @@ export function Hero() {
               <div className="hero-portrait-frame" data-doodle-portrait>
                 <Image
                   src="/avatar.png"
-                  // src="/avatar.jpg"
                   alt={profile.name}
                   width={720}
                   height={820}

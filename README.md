@@ -38,7 +38,7 @@ All site copy lives in [`src/data/profile.ts`](src/data/profile.ts) — name, ta
 about, skills, experience, education, languages and interests. Edit there; the
 components read from it.
 
-Profile photo: [`public/avatar.jpg`](public/avatar.jpg). Replace to swap the headshot.
+Profile photo: [`public/avatar.png`](public/avatar.png). Replace to swap the headshot.
 
 To show a LinkedIn icon, set `linkedin` in `profile.ts` to your profile URL.
 
