@@ -56,9 +56,10 @@ function enclosedNote(items: string) {
 // instead of left to each mail client's own rendering of "dashed".
 const FOOTER_DIVIDER = `background-image:repeating-linear-gradient(to right, ${color.border} 0 6px, transparent 6px 20px);background-repeat:repeat-x;background-size:100% 1px;height:1px;line-height:1px;font-size:0`;
 
-// Small crisp-edged accent shapes (near-zero blur), distinct from the big
-// soft radial washes on the card — mirrors the site's low-blur accent blobs
-// (hero-photo-blob-front-accent / -back-accent in globals.css).
+// Small soft accent shapes on the card. The feathered edge comes from a
+// radial-gradient fade rather than filter:blur() — mail apps (notably the
+// Gmail mobile app) strip the CSS filter property, which left these as flat
+// hard-edged blobs there even though it rendered fine on desktop webmail.
 function accentBlob(options: {
   top?: string;
   bottom?: string;
@@ -77,7 +78,7 @@ function accentBlob(options: {
     options.left ? `left:${options.left};` : "",
     options.right ? `right:${options.right};` : "",
   ].join("");
-  return `<div style="position:absolute;${position}width:${options.width};height:${options.height};border-radius:${options.radius};background-color:${options.bg};opacity:${options.opacity};filter:blur(2px);transform:rotate(${options.rotate});pointer-events:none"></div>`;
+  return `<div style="position:absolute;${position}width:${options.width};height:${options.height};border-radius:${options.radius};background-image:radial-gradient(circle at 42% 38%, ${options.bg} 0%, ${options.bg} 28%, transparent 72%);opacity:${options.opacity};transform:rotate(${options.rotate});pointer-events:none"></div>`;
 }
 
 type ShellOptions = {
@@ -135,8 +136,8 @@ function renderShell({ preheader, eyebrow, content, footnote }: ShellOptions) {
                   <div style="${FOOTER_DIVIDER}">&nbsp;</div>
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:17px">
                     <tr>
-                      <td style="font-family:${monoStack};font-size:10px;letter-spacing:.14em;line-height:1.8;text-transform:uppercase;color:${color.subtle}">Danielius Zajenčkauskas<br>Front-end Engineer</td>
-                      <td align="right" valign="bottom"><a href="${SITE_URL}" style="font-family:${fontStack};font-size:12px;font-weight:600;color:${color.inkStrong};text-decoration:none">${SITE_LABEL}&nbsp;&#8599;</a></td>
+                      <td style="font-family:${monoStack};font-size:10px;letter-spacing:.14em;line-height:1.8;color:${color.subtle}"><span style="text-transform:uppercase">Danielius Zajenčkauskas</span><br>Front-end Engineer</td>
+                      <td align="right" valign="bottom"><a href="${SITE_URL}" style="font-family:${fontStack};font-size:12px;font-weight:600;color:${color.inkStrong};text-decoration:none">${SITE_LABEL}&nbsp;&#8599;&#65038;</a></td>
                     </tr>
                   </table>
                 </div>
