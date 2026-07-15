@@ -4148,11 +4148,11 @@ body {
     line-height: 1.65;
   }
 
-  .doodle-tool-label {
+  .doodle-tool:not(.doodle-tool-invite) .doodle-tool-label {
     display: none;
   }
 
-  .doodle-tool {
+  .doodle-tool:not(.doodle-tool-invite) {
     padding: 0;
   }
 
