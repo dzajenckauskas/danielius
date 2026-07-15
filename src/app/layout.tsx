@@ -38,17 +38,20 @@ export const metadata: Metadata = {
     siteName: profile.name,
     locale: "en_GB",
     type: "website",
-    images: [{ url: "/avatar.jpg", width: 640, height: 640, alt: profile.name }],
+    images: [{ url: "/avatar.png", width: 640, height: 640, alt: profile.name }],
   },
   twitter: {
     card: "summary",
     title: `${profile.name} — ${profile.role}`,
     description: profile.tagline,
-    images: ["/avatar.jpg"],
+    images: ["/avatar.png"],
   },
   category: "technology",
   icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    icon: [
+      { url: "/favicon-light.svg?v=5", type: "image/svg+xml", media: "(prefers-color-scheme: light)" },
+      { url: "/favicon-dark.svg?v=5", type: "image/svg+xml", media: "(prefers-color-scheme: dark)" },
+    ],
   },
 };
 
