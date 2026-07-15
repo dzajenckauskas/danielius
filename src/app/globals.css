@@ -4007,10 +4007,10 @@ body {
   }
 
   .hero-portrait-wrap {
-    width: calc(100% + 1rem);
+    width: 100%;
     margin-top: 3rem;
-    margin-right: -0.5rem;
-    margin-left: -0.5rem;
+    margin-right: 0;
+    margin-left: 0;
   }
 
   .hero-portrait-frame {
@@ -4018,11 +4018,12 @@ body {
   }
 
   .hero-portrait-footer {
-    display: block;
+    align-items: center;
+    gap: 0.75rem;
   }
 
   .hero-socials {
-    margin-top: 1rem;
+    margin-top: 0;
   }
 
   .home-contact-section {
