@@ -1079,10 +1079,16 @@ export function DoodleLayer() {
           page: window.location.href,
         }),
       });
-      const result = (await response.json()) as {
-        error?: string;
-        fieldErrors?: Partial<Record<keyof DoodleFormValues, string>>;
-      };
+      if (response.status === 413) {
+        throw new Error("Your doodle is too large to send. Try a simpler drawing and send again.");
+      }
+
+      let result: { error?: string; fieldErrors?: Partial<Record<keyof DoodleFormValues, string>> } = {};
+      try {
+        result = await response.json();
+      } catch {
+        throw new Error("The doodle could not be sent. Please try again.");
+      }
       if (result.fieldErrors) setFieldErrors(result.fieldErrors);
       if (!response.ok) throw new Error(result.error || "The doodle could not be sent.");
       setSendState("sent");
