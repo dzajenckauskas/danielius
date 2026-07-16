@@ -58,9 +58,9 @@ const TOOLS: { id: Tool; label: string; icon: typeof Pencil }[] = [
 
 const PORTRAIT_SELECTOR = "[data-doodle-portrait]";
 // How strongly to lift the default doodle on tall (mobile) frames, per unit of
-// (imageAspect − frameAspect). Tuned so phones lift ~0.02 (image-normalized) and
+// (imageAspect − frameAspect). Tuned so phones lift ~0.01 (image-normalized) and
 // desktop stays at 0. See defaultPortraitDoodle.
-const DEFAULT_DOODLE_MOBILE_LIFT = 0.18;
+const DEFAULT_DOODLE_MOBILE_LIFT = 0.09;
 // The composite and portrait-card exports are fully opaque (photo + flattened
 // doodle), so JPEG compresses them far smaller than PNG without a visible
 // quality loss at this size. The artwork export keeps transparency and stays PNG.
@@ -564,14 +564,24 @@ export function DoodleLayer() {
       const canvas = canvasRef.current;
       const hero = document.querySelector<HTMLElement>(".hero-editorial");
       if (!canvas || !hero) return;
-      // On mobile the portrait travels the full height of the viewport, so any
-      // parallax offset between the doodle canvas and the (non-parallaxed) photo
-      // visibly slides the glasses off the face as you scroll. Keep them locked.
       const isMobile = window.innerWidth <= 900
         || window.matchMedia("(pointer: coarse)").matches;
-      const heroTop = hero.getBoundingClientRect().top + window.scrollY;
-      const relativeScroll = window.scrollY - heroTop;
-      const offset = isMobile ? 0 : Math.max(-12, Math.min(40, relativeScroll * 0.045));
+      let offset: number;
+      if (isMobile) {
+        // On mobile the portrait travels the full viewport, so the original
+        // heroTop-based parallax left the glasses badly off the face at most
+        // scroll positions. Anchor the parallax to the portrait's distance from
+        // the viewport centre instead: it reads zero when the portrait is
+        // centred (glasses land on the eyes) and floats gently either side.
+        const portrait = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR) ?? hero;
+        const rect = portrait.getBoundingClientRect();
+        const distanceFromCentre = rect.top + rect.height / 2 - window.innerHeight / 2;
+        offset = Math.max(-14, Math.min(14, distanceFromCentre * 0.05));
+      } else {
+        const heroTop = hero.getBoundingClientRect().top + window.scrollY;
+        const relativeScroll = window.scrollY - heroTop;
+        offset = Math.max(-12, Math.min(40, relativeScroll * 0.045));
+      }
       canvasParallaxOffsetRef.current = offset;
       canvas.style.transform = `translate3d(0, ${offset}px, 0)`;
     };
