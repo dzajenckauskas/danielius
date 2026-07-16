@@ -24,6 +24,8 @@ import {
   getDoodleFormValues,
   getYupFieldErrors,
 } from "@/lib/doodle-form";
+import { expandStrokes, normalizeStrokes } from "@/lib/doodle-strokes";
+import { defaultDoodle } from "@/data/defaultDoodle";
 import * as yup from "yup";
 
 type Point = { x: number; y: number };
@@ -66,43 +68,15 @@ function seededRandom(seed: number, offset: number) {
 }
 
 function defaultPortraitDoodle(rect: DOMRect): DrawingAction[] {
-  const pageLeft = rect.left + window.scrollX;
-  const pageTop = rect.top + window.scrollY;
-  const point = (x: number, y: number): Point => ({
-    x: pageLeft + rect.width * x,
-    y: pageTop + rect.height * y,
+  // Expand the portable default doodle (normalized 0..1 points) into absolute
+  // page-pixel strokes for the current portrait frame. Swapping the default for
+  // a visitor's sent doodle is just a matter of replacing `defaultDoodle`.
+  return expandStrokes(defaultDoodle, {
+    pageLeft: rect.left + window.scrollX,
+    pageTop: rect.top + window.scrollY,
+    width: rect.width,
+    height: rect.height,
   });
-  const ink = "#3d5b57";
-
-  const stroke = (
-    width: number,
-    points: Array<[number, number]>,
-    smooth = true,
-    closed = false,
-  ): DrawingAction => ({
-    tool: "pen",
-    color: ink,
-    width,
-    smooth,
-    closed,
-    points: points.map(([x, y]) => point(x, y)),
-  });
-
-  // Hand-drawn round eyeglasses traced pixel-for-pixel from the supplied
-  // doodle (asymmetric lenses, notched nose bridge, and both temple arms)
-  // and centred over the portrait's eyes, mirroring the reference placement.
-  return [
-    // Left lens — traced rim.
-    stroke(2.4, [[0.527, 0.403], [0.526, 0.413], [0.525, 0.422], [0.524, 0.432], [0.521, 0.440], [0.518, 0.448], [0.514, 0.457], [0.508, 0.464], [0.500, 0.468], [0.493, 0.471], [0.486, 0.474], [0.478, 0.475], [0.470, 0.475], [0.464, 0.475], [0.456, 0.475], [0.450, 0.475], [0.444, 0.472], [0.438, 0.470], [0.433, 0.465], [0.428, 0.461], [0.423, 0.457], [0.419, 0.453], [0.415, 0.448], [0.412, 0.443], [0.408, 0.439], [0.405, 0.433], [0.402, 0.427], [0.400, 0.422], [0.397, 0.416], [0.396, 0.410], [0.395, 0.403], [0.395, 0.396], [0.395, 0.391], [0.397, 0.383], [0.399, 0.378], [0.401, 0.371], [0.403, 0.365], [0.407, 0.359], [0.411, 0.354], [0.415, 0.348], [0.419, 0.344], [0.426, 0.340], [0.432, 0.337], [0.438, 0.334], [0.444, 0.333], [0.450, 0.331], [0.456, 0.330], [0.464, 0.330], [0.470, 0.331], [0.477, 0.333], [0.484, 0.335], [0.492, 0.337], [0.499, 0.340], [0.508, 0.343], [0.518, 0.347], [0.524, 0.360], [0.526, 0.375], [0.527, 0.385], [0.527, 0.395], [0.527, 0.403]], true, true),
-    // Right lens — traced rim.
-    stroke(2.4, [[0.692, 0.402], [0.690, 0.409], [0.689, 0.416], [0.687, 0.423], [0.684, 0.430], [0.681, 0.436], [0.677, 0.441], [0.673, 0.447], [0.670, 0.453], [0.666, 0.458], [0.661, 0.463], [0.655, 0.467], [0.650, 0.471], [0.643, 0.472], [0.636, 0.474], [0.630, 0.472], [0.624, 0.471], [0.618, 0.468], [0.612, 0.464], [0.607, 0.460], [0.602, 0.457], [0.597, 0.453], [0.594, 0.448], [0.589, 0.444], [0.585, 0.440], [0.580, 0.434], [0.576, 0.429], [0.574, 0.423], [0.571, 0.416], [0.570, 0.409], [0.573, 0.402], [0.575, 0.395], [0.579, 0.389], [0.584, 0.383], [0.589, 0.381], [0.590, 0.375], [0.594, 0.371], [0.597, 0.367], [0.600, 0.362], [0.602, 0.358], [0.607, 0.355], [0.611, 0.351], [0.616, 0.348], [0.619, 0.345], [0.624, 0.341], [0.630, 0.340], [0.635, 0.338], [0.641, 0.338], [0.647, 0.340], [0.654, 0.341], [0.658, 0.344], [0.665, 0.347], [0.670, 0.351], [0.674, 0.355], [0.679, 0.361], [0.683, 0.367], [0.687, 0.372], [0.689, 0.379], [0.692, 0.386], [0.692, 0.395], [0.692, 0.402]], true, true),
-    // Nose bridge — up, down into the central notch, over the hump, into the right lens.
-    stroke(2.2, [[0.515, 0.342], [0.520, 0.345], [0.524, 0.350], [0.527, 0.356], [0.530, 0.354], [0.535, 0.349], [0.539, 0.343], [0.544, 0.339], [0.550, 0.337], [0.554, 0.336], [0.559, 0.337], [0.564, 0.339], [0.569, 0.342], [0.573, 0.351]]),
-    // Left temple arm.
-    stroke(2, [[0.291, 0.366], [0.297, 0.364], [0.305, 0.367], [0.316, 0.368], [0.328, 0.370], [0.341, 0.373], [0.355, 0.374], [0.371, 0.374], [0.386, 0.374]]),
-    // Right temple arm.
-    stroke(2, [[0.698, 0.402], [0.706, 0.404], [0.714, 0.405], [0.722, 0.406], [0.730, 0.408], [0.736, 0.409]]),
-  ];
 }
 
 function drawAction(context: CanvasRenderingContext2D, action: DrawingAction, progress = 1) {
@@ -783,6 +757,21 @@ export function DoodleLayer() {
     return output.toDataURL("image/png");
   };
 
+  // Serialize the drawing as portable, frame-relative vector strokes. This is
+  // the doodle's true source: it can be replayed exactly (see expandStrokes)
+  // and dropped into src/data/defaultDoodle.ts to become the site default.
+  const exportStrokes = () => {
+    const frame = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR);
+    if (!frame || !actionsRef.current.length) return [];
+    const rect = frame.getBoundingClientRect();
+    return normalizeStrokes(actionsRef.current, {
+      pageLeft: rect.left + window.scrollX,
+      pageTop: rect.top + window.scrollY,
+      width: rect.width,
+      height: rect.height,
+    });
+  };
+
   const exportPortraitComposite = useCallback(async () => {
     const frame = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR);
     const image = frame?.querySelector<HTMLImageElement>("img");
@@ -1045,6 +1034,7 @@ export function DoodleLayer() {
       const artwork = exportArtwork();
       const composite = await exportPortraitComposite();
       const portraitCard = await exportPortraitCard(composite);
+      const strokes = exportStrokes();
       const response = await fetch("/api/doodles", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1056,6 +1046,7 @@ export function DoodleLayer() {
           artwork,
           composite,
           portraitCard,
+          strokes,
           page: window.location.href,
         }),
       });
