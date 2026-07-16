@@ -6,7 +6,8 @@ import { Providers } from "./providers";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { profile } from "@/data/profile";
-import { DoodleLayer } from "@/components/DoodleLayer";
+import { DoodleStudioGate } from "@/components/DoodleStudioGate";
+import { PageTools } from "@/components/PageTools";
 import { ScrollThread } from "@/components/ScrollThread";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { AnimatedFavicon } from "@/components/AnimatedFavicon";
@@ -87,7 +88,8 @@ export default function RootLayout({
             <Footer />
           </div>
           <ScrollThread />
-          <DoodleLayer />
+          <PageTools />
+          <DoodleStudioGate />
         </Providers>
       </body>
     </html>

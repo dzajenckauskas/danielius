@@ -17,7 +17,6 @@ import {
   Undo2,
   X,
 } from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { TurnstileWidget } from "@/components/TurnstileWidget";
 import {
   DoodleFormValues,
@@ -315,6 +314,7 @@ export function DoodleLayer() {
   const [heroInView, setHeroInView] = useState(false);
   const [doodleSurface, setDoodleSurface] = useState<HTMLElement | null>(null);
   const [doodleAnchor, setDoodleAnchor] = useState<HTMLElement | null>(null);
+  const [toolsAnchor, setToolsAnchor] = useState<HTMLElement | null>(null);
   const [studioOffset, setStudioOffset] = useState({ x: 0, y: 0 });
   const [studioPlacement, setStudioPlacement] = useState({
     left: 0,
@@ -342,6 +342,10 @@ export function DoodleLayer() {
       }));
     };
   }, [active, portraitResizeEnabled]);
+
+  useEffect(() => {
+    setToolsAnchor(document.querySelector<HTMLElement>("[data-page-tools]"));
+  }, []);
 
   const redraw = useCallback(() => {
     const canvas = canvasRef.current;
@@ -1268,14 +1272,12 @@ export function DoodleLayer() {
         </div>
       )}
 
-      <div className="doodle-tools" aria-label="Page tools">
-        {active && studioMinimized && (
-          <button type="button" className="doodle-tool doodle-studio-restore" onClick={() => setStudioMinimized(false)} aria-label="Restore doodle studio" title="Restore doodle studio">
-            <Maximize2 aria-hidden="true" />
-          </button>
-        )}
-        <ThemeToggle />
-      </div>
+      {active && studioMinimized && toolsAnchor && createPortal(
+        <button type="button" className="doodle-tool doodle-studio-restore" onClick={() => setStudioMinimized(false)} aria-label="Restore doodle studio" title="Restore doodle studio">
+          <Maximize2 aria-hidden="true" />
+        </button>,
+        toolsAnchor,
+      )}
       {heroInView && !active && doodleAnchor && createPortal(
         (
           <button type="button" onClick={() => {
