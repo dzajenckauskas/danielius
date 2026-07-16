@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
  * content fades/slides up on load and always ends visible, so there's no
  * dependency on JS or IntersectionObserver. `delay` staggers grouped items.
  */
+
 export function Reveal({
   children,
   delay = 0,
