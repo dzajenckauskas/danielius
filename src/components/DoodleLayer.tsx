@@ -58,9 +58,9 @@ const TOOLS: { id: Tool; label: string; icon: typeof Pencil }[] = [
 
 const PORTRAIT_SELECTOR = "[data-doodle-portrait]";
 // How strongly to lift the default doodle on tall (mobile) frames, per unit of
-// (imageAspect − frameAspect). Tuned so phones lift ~0.02 (image-normalized) and
+// (imageAspect − frameAspect). Tuned so phones lift ~0.01 (image-normalized) and
 // desktop stays at 0. See defaultPortraitDoodle.
-const DEFAULT_DOODLE_MOBILE_LIFT = 0.18;
+const DEFAULT_DOODLE_MOBILE_LIFT = 0.09;
 // The composite and portrait-card exports are fully opaque (photo + flattened
 // doodle), so JPEG compresses them far smaller than PNG without a visible
 // quality loss at this size. The artwork export keeps transparency and stays PNG.
@@ -564,14 +564,24 @@ export function DoodleLayer() {
       const canvas = canvasRef.current;
       const hero = document.querySelector<HTMLElement>(".hero-editorial");
       if (!canvas || !hero) return;
-      // On mobile the portrait travels the full height of the viewport, so any
-      // parallax offset between the doodle canvas and the (non-parallaxed) photo
-      // visibly slides the glasses off the face as you scroll. Keep them locked.
       const isMobile = window.innerWidth <= 900
         || window.matchMedia("(pointer: coarse)").matches;
-      const heroTop = hero.getBoundingClientRect().top + window.scrollY;
-      const relativeScroll = window.scrollY - heroTop;
-      const offset = isMobile ? 0 : Math.max(-12, Math.min(40, relativeScroll * 0.045));
+      let offset: number;
+      if (isMobile) {
+        // On mobile the portrait travels the full viewport, so the original
+        // heroTop-based parallax left the glasses badly off the face at most
+        // scroll positions. Anchor the parallax to the portrait's distance from
+        // the viewport centre instead: it reads zero when the portrait is
+        // centred (glasses land on the eyes) and floats gently either side.
+        const portrait = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR) ?? hero;
+        const rect = portrait.getBoundingClientRect();
+        const distanceFromCentre = rect.top + rect.height / 2 - window.innerHeight / 2;
+        offset = Math.max(-14, Math.min(14, distanceFromCentre * 0.05));
+      } else {
+        const heroTop = hero.getBoundingClientRect().top + window.scrollY;
+        const relativeScroll = window.scrollY - heroTop;
+        offset = Math.max(-12, Math.min(40, relativeScroll * 0.045));
+      }
       canvasParallaxOffsetRef.current = offset;
       canvas.style.transform = `translate3d(0, ${offset}px, 0)`;
     };
@@ -833,13 +843,19 @@ export function DoodleLayer() {
     portrait.src = composite;
     await portrait.decode();
 
+    // The composite already is the on-screen framed portrait with the doodle,
+    // so preserve its exact framing: draw it full-bleed at its own aspect ratio
+    // and layer the hero's soft blobs on top to match the live view.
+    const aspect = portrait.naturalWidth && portrait.naturalHeight
+      ? portrait.naturalWidth / portrait.naturalHeight
+      : PORTRAIT_IMAGE_ASPECT;
     const output = document.createElement("canvas");
-    output.width = 900;
-    output.height = 1070;
+    output.width = 1000;
+    output.height = Math.round(1000 / aspect);
     const context = output.getContext("2d");
     if (!context) return "";
-
-    const photo = { x: 0, y: 0, width: 900, height: 1070, radius: 0 };
+    const W = output.width;
+    const H = output.height;
     const blobRgba = (color: string, a: number) => {
       const hex = parseInt(color.slice(1), 16);
       return `rgba(${(hex >> 16) & 255}, ${(hex >> 8) & 255}, ${hex & 255}, ${a})`;
@@ -878,75 +894,24 @@ export function DoodleLayer() {
     };
 
     context.fillStyle = "#faf9f6";
-    context.fillRect(0, 0, output.width, output.height);
+    context.fillRect(0, 0, W, H);
 
-    context.save();
-    context.beginPath();
-    context.roundRect(photo.x, photo.y, photo.width, photo.height, photo.radius);
-    context.clip();
-    const imageScale = Math.max(photo.width / portrait.naturalWidth, photo.height / portrait.naturalHeight);
-    const imageWidth = portrait.naturalWidth * imageScale;
-    const imageHeight = portrait.naturalHeight * imageScale;
-    context.drawImage(
-      portrait,
-      photo.x + (photo.width - imageWidth) / 2,
-      photo.y + (photo.height - imageHeight) / 2,
-      imageWidth,
-      imageHeight,
-    );
-    context.restore();
+    // Identical framing: the composite is the framed portrait + doodle exactly
+    // as seen on the site, drawn full-bleed (no re-crop).
+    context.drawImage(portrait, 0, 0, W, H);
 
-    // With a full-bleed portrait, the atmosphere sits over the edge of the image.
-    drawSoftBlob(150, 884, 610, 190, "#8fbccc", 44, 0.3, -0.08);
-    drawSoftBlob(824, 86, 138, 94, "#d891aa", 13, 0.6, -0.28);
-    drawSoftBlob(-90, 418, 310, 420, "#b59bd7", 25, 0.62, 0.22);
-
-    context.save();
-    context.strokeStyle = "#9dafac";
-    context.globalAlpha = 0.5;
-    context.lineWidth = 2;
-    context.setLineDash([18, 18]);
-    context.beginPath();
-    context.moveTo(4, 575);
-    context.bezierCurveTo(82, 670, 118, 796, 208, 910);
-    context.bezierCurveTo(252, 968, 286, 1025, 304, 1050);
-    context.stroke();
-    context.restore();
-
-    context.save();
-    context.translate(220, 940);
-    context.rotate(0.22);
-    context.globalAlpha = 0.86;
-    context.fillStyle = "#d2ae6c";
-    context.beginPath();
-    context.moveTo(-42, -24);
-    context.bezierCurveTo(-24, -48, 20, -42, 52, -16);
-    context.bezierCurveTo(68, 2, 48, 40, 17, 48);
-    context.bezierCurveTo(-17, 52, -57, 22, -42, -24);
-    context.closePath();
-    context.fill();
-    context.restore();
+    // Soft atmosphere mirroring the hero's blobs (same colours as globals.css).
+    drawSoftBlob(-0.07 * W, 0.28 * H, 0.34 * W, 0.42 * H, "#b59bd7", 20, 0.5, 0.37);
+    drawSoftBlob(0.80 * W, -0.03 * H, 0.26 * W, 0.17 * H, "#d891aa", 14, 0.42, -0.3);
+    drawSoftBlob(-0.02 * W, 0.80 * H, 0.5 * W, 0.28 * H, "#8fbccc", 40, 0.3, -0.13);
+    drawSoftBlob(0.09 * W, 0.82 * H, 0.17 * W, 0.15 * H, "#d2ae6c", 5, 0.8, 0.24);
 
     context.save();
     context.fillStyle = "#3d5b57";
-    context.font = "300 12px 'Geist Mono', monospace";
+    context.font = "300 14px 'Geist Mono', monospace";
     context.textAlign = "right";
     context.textBaseline = "middle";
-    context.fillText("zajenckauskas.lt ↗", 872, 1038);
-    context.restore();
-
-    context.save();
-    context.shadowColor = "rgba(25, 26, 28, 0.34)";
-    context.shadowBlur = 18;
-    context.shadowOffsetY = 5;
-    const ballGradient = context.createRadialGradient(294, 1040, 2, 304, 1050, 17);
-    ballGradient.addColorStop(0, "#657a76");
-    ballGradient.addColorStop(0.24, "#344945");
-    ballGradient.addColorStop(1, "#17191a");
-    context.fillStyle = ballGradient;
-    context.beginPath();
-    context.arc(304, 1050, 14, 0, Math.PI * 2);
-    context.fill();
+    context.fillText("zajenckauskas.lt ↗", W - 28, H - 26);
     context.restore();
 
     return output.toDataURL("image/jpeg", PHOTO_EXPORT_QUALITY);
