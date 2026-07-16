@@ -835,6 +835,10 @@ export function DoodleLayer() {
     if (!context) return "";
 
     const photo = { x: 0, y: 0, width: 900, height: 1070, radius: 0 };
+    const blobRgba = (color: string, a: number) => {
+      const hex = parseInt(color.slice(1), 16);
+      return `rgba(${(hex >> 16) & 255}, ${(hex >> 8) & 255}, ${hex & 255}, ${a})`;
+    };
     const drawSoftBlob = (
       x: number,
       y: number,
@@ -845,57 +849,27 @@ export function DoodleLayer() {
       alpha: number,
       rotation = 0,
     ) => {
-      const drawLayer = (scale: number, layerBlur: number, layerAlpha: number) => {
-        const halfWidth = width / 2;
-        const halfHeight = height / 2;
-        context.save();
-        context.translate(x + halfWidth, y + halfHeight);
-        context.rotate(rotation);
-        context.scale(scale, scale);
-        context.filter = `blur(${layerBlur}px)`;
-        context.globalAlpha = layerAlpha;
-        context.fillStyle = color;
-        context.beginPath();
-        context.moveTo(-halfWidth * 0.96, -halfHeight * 0.08);
-        context.bezierCurveTo(
-          -halfWidth * 1.04,
-          -halfHeight * 0.58,
-          -halfWidth * 0.48,
-          -halfHeight * 1.02,
-          halfWidth * 0.06,
-          -halfHeight * 0.9,
-        );
-        context.bezierCurveTo(
-          halfWidth * 0.58,
-          -halfHeight * 0.82,
-          halfWidth * 1.02,
-          -halfHeight * 0.34,
-          halfWidth * 0.86,
-          halfHeight * 0.18,
-        );
-        context.bezierCurveTo(
-          halfWidth * 0.75,
-          halfHeight * 0.68,
-          halfWidth * 0.32,
-          halfHeight * 1.02,
-          -halfWidth * 0.18,
-          halfHeight * 0.88,
-        );
-        context.bezierCurveTo(
-          -halfWidth * 0.72,
-          halfHeight * 0.98,
-          -halfWidth * 1.03,
-          halfHeight * 0.5,
-          -halfWidth * 0.96,
-          -halfHeight * 0.08,
-        );
-        context.closePath();
-        context.fill();
-        context.restore();
-      };
-
-      drawLayer(1.06, blur, alpha * 0.48);
-      drawLayer(0.9, Math.max(3, blur * 0.38), alpha * 0.52);
+      // Soft, feathered atmosphere built from a radial gradient rather than
+      // `context.filter = blur(...)`. iOS Safari ignores canvas filters when the
+      // keepsake is exported on the visitor's phone, which flattened these blobs
+      // into hard-edged shapes; a gradient fades to transparent on every engine.
+      const halfWidth = width / 2;
+      const halfHeight = height / 2;
+      const radius = halfWidth * (1.08 + blur / 260);
+      context.save();
+      context.translate(x + halfWidth, y + halfHeight);
+      context.rotate(rotation);
+      context.scale(1, halfHeight / halfWidth);
+      const gradient = context.createRadialGradient(0, 0, 0, 0, 0, radius);
+      gradient.addColorStop(0, blobRgba(color, alpha));
+      gradient.addColorStop(0.45, blobRgba(color, alpha * 0.62));
+      gradient.addColorStop(0.75, blobRgba(color, alpha * 0.22));
+      gradient.addColorStop(1, blobRgba(color, 0));
+      context.fillStyle = gradient;
+      context.beginPath();
+      context.arc(0, 0, radius, 0, Math.PI * 2);
+      context.fill();
+      context.restore();
     };
 
     context.fillStyle = "#faf9f6";
