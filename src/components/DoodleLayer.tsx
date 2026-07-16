@@ -564,9 +564,14 @@ export function DoodleLayer() {
       const canvas = canvasRef.current;
       const hero = document.querySelector<HTMLElement>(".hero-editorial");
       if (!canvas || !hero) return;
+      // On mobile the portrait travels the full height of the viewport, so any
+      // parallax offset between the doodle canvas and the (non-parallaxed) photo
+      // visibly slides the glasses off the face as you scroll. Keep them locked.
+      const isMobile = window.innerWidth <= 900
+        || window.matchMedia("(pointer: coarse)").matches;
       const heroTop = hero.getBoundingClientRect().top + window.scrollY;
       const relativeScroll = window.scrollY - heroTop;
-      const offset = Math.max(-12, Math.min(40, relativeScroll * 0.045));
+      const offset = isMobile ? 0 : Math.max(-12, Math.min(40, relativeScroll * 0.045));
       canvasParallaxOffsetRef.current = offset;
       canvas.style.transform = `translate3d(0, ${offset}px, 0)`;
     };
