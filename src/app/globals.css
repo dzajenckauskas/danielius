@@ -1332,6 +1332,12 @@ body {
 .scroll-thread-path {
   color: var(--ink-strong);
   stroke: currentColor;
+  /* non-scaling-stroke keeps the visible thread a constant screen-pixel width
+     in every direction. Without it the SVG's non-uniform scaling (fixed
+     1000-wide viewBox vs. pixel-wide element) makes horizontal runs — like the
+     sweep under the name at the top — render far thicker than vertical ones,
+     so the thread looked flattened up top and thin below. */
+  vector-effect: non-scaling-stroke;
   stroke-width: 1;
   stroke-linecap: round;
   stroke-linejoin: round;
