@@ -10,6 +10,7 @@ import {
 import { verifyTurnstileToken } from "@/lib/turnstile";
 import { generateDoodlePortraitPdf } from "@/lib/generateDoodlePortraitPdf";
 import { buildOwnerDoodleEmail, buildVisitorDoodleEmail } from "@/lib/doodle-emails";
+import { isNormalizedStrokeArray } from "@/lib/doodle-strokes";
 
 export const runtime = "nodejs";
 
@@ -19,6 +20,7 @@ const DELIVERY_WINDOW_MS = 10 * 60 * 1000;
 const MAX_ARTWORK_BYTES = 3_000_000;
 const MAX_COMPOSITE_BYTES = 4_000_000;
 const MAX_PORTRAIT_CARD_BYTES = 3_000_000;
+const MAX_STROKES_BYTES = 1_000_000;
 const DEFAULT_DOODLE_RECIPIENT = "danielius@zajenckauskas.lt";
 
 function getClientIp(request: Request) {
@@ -118,6 +120,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "The portrait card is invalid or too large to send." }, { status: 400 });
   }
 
+  // Optional: the doodle's portable vector source. Validated but non-fatal —
+  // the raster attachments already carry the keepsake, and this only adds the
+  // replayable JSON that can become the site default.
+  let strokesBuffer: Buffer | null = null;
+  if (body.strokes != null && isNormalizedStrokeArray(body.strokes)) {
+    const serialized = JSON.stringify(body.strokes, null, 2);
+    if (Buffer.byteLength(serialized) <= MAX_STROKES_BYTES) {
+      strokesBuffer = Buffer.from(serialized);
+    }
+  }
+
   const turnstileToken = typeof body.turnstileToken === "string" ? body.turnstileToken.trim() : "";
   if (!turnstileToken) {
     return NextResponse.json({ error: "Complete the bot check before sending." }, { status: 400 });
@@ -208,6 +221,13 @@ export async function POST(request: Request) {
           content: portraitPdf,
           contentType: "application/pdf",
         },
+        ...(strokesBuffer
+          ? [{
+              filename: `doodle-source-${attachmentTimestamp}.json`,
+              content: strokesBuffer,
+              contentType: "application/json",
+            }]
+          : []),
       ],
     });
 
