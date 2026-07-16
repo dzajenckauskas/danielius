@@ -43,6 +43,14 @@ jobs:
         env:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
 
+      - name: Validate deploy key
+        run: |
+          if ! ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null; then
+            echo "::error::DEPLOY_SSH_KEY secret is not a valid private key (failed to parse)." \
+                 "Re-upload it with 'gh secret set DEPLOY_SSH_KEY < path/to/key' to avoid newline/formatting corruption."
+            exit 1
+          fi
+
       - name: Deploy via SSH (3 attempts, 20 s apart)
         # GitHub Actions runners rotate across a large Azure IP pool. Some IPs are
         # blocked by the server firewall (i/o timeout = silent DROP, not REJECT).
