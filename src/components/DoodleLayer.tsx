@@ -277,6 +277,7 @@ function drawAction(context: CanvasRenderingContext2D, action: DrawingAction, pr
 export function DoodleLayer() {
   const pathname = usePathname();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const hitAreaRef = useRef<HTMLDivElement>(null);
   const studioRef = useRef<HTMLElement>(null);
   const studioWidthRef = useRef(320);
   const studioWidthCapturedRef = useRef(false);
@@ -378,6 +379,13 @@ export function DoodleLayer() {
     if (!canvas || !portrait || !surface) return;
     const portraitRect = portrait.getBoundingClientRect();
     const rect = surface.getBoundingClientRect();
+    const hitArea = hitAreaRef.current;
+    if (hitArea) {
+      hitArea.style.left = `${portraitRect.left - rect.left}px`;
+      hitArea.style.top = `${portraitRect.top - rect.top}px`;
+      hitArea.style.width = `${portraitRect.width}px`;
+      hitArea.style.height = `${portraitRect.height}px`;
+    }
     const pageLeft = rect.left + window.scrollX;
     const pageTop = rect.top + window.scrollY;
     if (!previousPortraitRectRef.current) {
@@ -657,14 +665,14 @@ export function DoodleLayer() {
     return () => window.removeEventListener("keydown", handleKeyboardShortcut);
   }, [active, redraw, sendOpen]);
 
-  const pointFromEvent = (event: React.PointerEvent<HTMLCanvasElement>) => {
+  const pointFromEvent = (event: React.PointerEvent<HTMLDivElement>) => {
     return {
       x: event.clientX + window.scrollX,
       y: event.clientY + window.scrollY - canvasParallaxOffsetRef.current,
     };
   };
 
-  const startDrawing = (event: React.PointerEvent<HTMLCanvasElement>) => {
+  const startDrawing = (event: React.PointerEvent<HTMLDivElement>) => {
     const point = pointFromEvent(event);
     const portrait = document.querySelector<HTMLElement>(PORTRAIT_SELECTOR)?.getBoundingClientRect();
     drawingRef.current = true;
@@ -688,7 +696,7 @@ export function DoodleLayer() {
     redraw();
   };
 
-  const draw = (event: React.PointerEvent<HTMLCanvasElement>) => {
+  const draw = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!drawingRef.current || !draftRef.current) return;
     const next = pointFromEvent(event);
     draftRef.current.points = tool === "pen" ? [...draftRef.current.points, next] : [draftRef.current.points[0], next];
@@ -1107,15 +1115,22 @@ export function DoodleLayer() {
   return (
     <>
       {doodleSurface && createPortal(
-        <canvas
-          ref={canvasRef}
-          className={`doodle-canvas ${active && !portraitResizeEnabled ? "doodle-canvas-active" : ""}`}
-          aria-label="Doodle canvas"
-          onPointerDown={startDrawing}
-          onPointerMove={draw}
-          onPointerUp={finishDrawing}
-          onPointerCancel={cancelDrawing}
-        />,
+        <>
+          <canvas
+            ref={canvasRef}
+            className="doodle-canvas"
+            aria-label="Doodle canvas"
+          />
+          <div
+            ref={hitAreaRef}
+            className={`doodle-hit-area ${active && !portraitResizeEnabled ? "doodle-hit-area-active" : ""}`}
+            aria-hidden="true"
+            onPointerDown={startDrawing}
+            onPointerMove={draw}
+            onPointerUp={finishDrawing}
+            onPointerCancel={cancelDrawing}
+          />
+        </>,
         doodleSurface,
       )}
 
