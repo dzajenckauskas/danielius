@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import "./globals.css";
@@ -11,6 +12,23 @@ import { PageTools } from "@/components/PageTools";
 import { ScrollThread } from "@/components/ScrollThread";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { AnimatedFavicon } from "@/components/AnimatedFavicon";
+
+// Self-hosted via next/font so the @font-face rules are inlined into the
+// document head (no separate render-blocking CSS request for them) and the
+// hero headline's weight (Black, the LCP element) is preloaded automatically.
+// Italic isn't used anywhere in the UI (only the PDF resume renders italic
+// text, and it reads the .otf files directly) so only roman weights are
+// loaded here — next/font preloads everything in `src`, and there's no
+// point shipping italic files nothing on the site ever displays.
+const neris = localFont({
+  src: [
+    { path: "../../public/fonts/neris/Neris-Light.woff2", weight: "300", style: "normal" },
+    { path: "../../public/fonts/neris/Neris-SemiBold.woff2", weight: "600", style: "normal" },
+    { path: "../../public/fonts/neris/Neris-Black.woff2", weight: "900", style: "normal" },
+  ],
+  variable: "--font-neris",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://zajenckauskas.lt"),
@@ -63,20 +81,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      className={`${neris.variable} ${GeistSans.variable} ${GeistMono.variable}`}
       suppressHydrationWarning
     >
-      <head>
-        {/* The hero headline (LCP element) renders in Neris Black; preload it
-            so the browser doesn't discover it late via CSS. */}
-        <link
-          rel="preload"
-          href="/fonts/neris/Neris-Black.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-      </head>
       <body className="min-h-screen font-sans">
         <Providers>
           <AnimatedFavicon />

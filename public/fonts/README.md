@@ -6,18 +6,23 @@ body, buttons) will switch from the Poppins fallback to Neris automatically — 
 code changes needed.
 
 Preferred format is `.woff2` (smallest). `.woff`, `.otf` or `.ttf` also work —
-if you use a different extension, update the `src` url in
-`src/app/globals.css` (the `@font-face` block) to match.
+if you use a different extension, update the `src` list in the `localFont()`
+call in `src/app/layout.tsx` to match. Fonts are self-hosted via `next/font`
+(not a manual `@font-face` block), which inlines the font-face CSS into the
+document head and preloads the files automatically.
 
-Expected files:
+Expected files (web, roman weights only — italic is never rendered in the UI):
 
 | File                        | Weight | Style   |
 |-----------------------------|--------|---------|
 | `Neris-Light.woff2`         | 300    | normal  |
-| `Neris-LightItalic.woff2`   | 300    | italic  |
 | `Neris-SemiBold.woff2`      | 600    | normal  |
-| `Neris-SemiBoldItalic.woff2`| 600    | italic  |
 | `Neris-Black.woff2`         | 900    | normal  |
+
+The CV/resume PDF is generated separately (`src/components/resume/ResumeDocument.tsx`)
+and reads `.otf` files directly, since `@react-pdf/renderer` can't embed woff2:
+`Neris-Light.otf`, `Neris-SemiBold.otf`, `Neris-Black.otf`, `Neris-LightItalic.otf`
+(the PDF's only italic use is the CV's date ranges).
 
 > Your **name** in the hero is an exact vector extracted from the CV, so it looks
 > identical whether or not Neris is installed.
