@@ -24,7 +24,7 @@ import {
   getDoodleFormValues,
   getYupFieldErrors,
 } from "@/lib/doodle-form";
-import { expandStrokes, normalizeStrokes } from "@/lib/doodle-strokes";
+import { expandImageStrokes, normalizeStrokes, PORTRAIT_IMAGE_ASPECT } from "@/lib/doodle-strokes";
 import { defaultDoodle } from "@/data/defaultDoodle";
 import * as yup from "yup";
 
@@ -57,6 +57,10 @@ const TOOLS: { id: Tool; label: string; icon: typeof Pencil }[] = [
 ];
 
 const PORTRAIT_SELECTOR = "[data-doodle-portrait]";
+// How strongly to lift the default doodle on tall (mobile) frames, per unit of
+// (imageAspect − frameAspect). Tuned so phones lift ~0.02 (image-normalized) and
+// desktop stays at 0. See defaultPortraitDoodle.
+const DEFAULT_DOODLE_MOBILE_LIFT = 0.18;
 // The composite and portrait-card exports are fully opaque (photo + flattened
 // doodle), so JPEG compresses them far smaller than PNG without a visible
 // quality loss at this size. The artwork export keeps transparency and stays PNG.
@@ -68,14 +72,28 @@ function seededRandom(seed: number, offset: number) {
 }
 
 function defaultPortraitDoodle(rect: DOMRect): DrawingAction[] {
-  // Expand the portable default doodle (normalized 0..1 points) into absolute
-  // page-pixel strokes for the current portrait frame. Swapping the default for
-  // a visitor's sent doodle is just a matter of replacing `defaultDoodle`.
-  return expandStrokes(defaultDoodle, {
+  // Expand the portable default doodle into absolute page-pixel strokes. Its
+  // points are anchored to the portrait image (not the frame), so the glasses
+  // keep their aspect ratio and stay locked to the eyes on every screen size.
+  const image = document.querySelector<HTMLImageElement>(`${PORTRAIT_SELECTOR} img`);
+  const imageAspect = image?.naturalWidth && image?.naturalHeight
+    ? image.naturalWidth / image.naturalHeight
+    : PORTRAIT_IMAGE_ASPECT;
+  // On tall (mobile) frames the glasses read a touch low; lift them in
+  // proportion to how much taller-than-the-image the frame is. Wide desktop
+  // frames (aspect >= image aspect) get zero nudge, so that placement is kept.
+  const frameAspect = rect.height ? rect.width / rect.height : imageAspect;
+  const verticalNudge = Math.min(
+    0.045,
+    Math.max(0, imageAspect - frameAspect) * DEFAULT_DOODLE_MOBILE_LIFT,
+  );
+  return expandImageStrokes(defaultDoodle, {
     pageLeft: rect.left + window.scrollX,
     pageTop: rect.top + window.scrollY,
-    width: rect.width,
-    height: rect.height,
+    frameWidth: rect.width,
+    frameHeight: rect.height,
+    imageAspect,
+    verticalNudge,
   });
 }
 
