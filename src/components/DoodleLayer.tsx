@@ -921,9 +921,9 @@ export function DoodleLayer() {
 
     // Ochre: solid rounded-square accent (matching the hero's ochre shape), low.
     {
-      const ochreW = 0.14 * W;
-      const ochreH = 0.125 * H;
-      const ochreX = 0.28 * W;
+      const ochreW = 0.11 * W;
+      const ochreH = 0.1 * H;
+      const ochreX = 0.29 * W;
       const ochreY = 0.92 * H;
       context.save();
       context.translate(ochreX + ochreW / 2, ochreY + ochreH / 2);
