@@ -879,22 +879,23 @@ export function DoodleLayer() {
       blur: number,
       alpha: number,
       rotation = 0,
+      core = 0,
     ) => {
-      // Soft, feathered atmosphere built from a radial gradient rather than
-      // `context.filter = blur(...)`. iOS Safari ignores canvas filters when the
-      // keepsake is exported on the visitor's phone, which flattened these blobs
-      // into hard-edged shapes; a gradient fades to transparent on every engine.
+      // Radial-gradient blob (no `context.filter = blur(...)`, which iOS Safari
+      // ignores when the keepsake is exported on the visitor's phone). `core` is
+      // the fraction of the radius that stays fully opaque before fading, so a
+      // higher core reads as a more defined, less-blurred shape.
       const halfWidth = width / 2;
       const halfHeight = height / 2;
-      const radius = halfWidth * (1.08 + blur / 260);
+      const radius = halfWidth * (1.06 + blur / 260);
       context.save();
       context.translate(x + halfWidth, y + halfHeight);
       context.rotate(rotation);
       context.scale(1, halfHeight / halfWidth);
       const gradient = context.createRadialGradient(0, 0, 0, 0, 0, radius);
       gradient.addColorStop(0, blobRgba(color, alpha));
-      gradient.addColorStop(0.45, blobRgba(color, alpha * 0.62));
-      gradient.addColorStop(0.75, blobRgba(color, alpha * 0.22));
+      gradient.addColorStop(core, blobRgba(color, alpha));
+      gradient.addColorStop(core + (1 - core) * 0.55, blobRgba(color, alpha * 0.5));
       gradient.addColorStop(1, blobRgba(color, 0));
       context.fillStyle = gradient;
       context.beginPath();
@@ -910,11 +911,46 @@ export function DoodleLayer() {
     // as seen on the site, drawn full-bleed (no re-crop).
     context.drawImage(portrait, 0, 0, W, H);
 
-    // Soft atmosphere mirroring the hero's blobs (same colours as globals.css).
-    drawSoftBlob(-0.07 * W, 0.28 * H, 0.34 * W, 0.42 * H, "#b59bd7", 20, 0.5, 0.37);
+    // Atmosphere mirroring the hero blobs (same colours as globals.css).
+    // Lilac: large, defined, over the lower-left edge.
+    drawSoftBlob(-0.16 * W, 0.44 * H, 0.44 * W, 0.46 * H, "#b59bd7", 4, 0.66, 0.16, 0.5);
+    // Blue: faint wash along the base.
+    drawSoftBlob(-0.02 * W, 0.82 * H, 0.5 * W, 0.26 * H, "#8fbccc", 40, 0.26, -0.13);
+    // Rose: soft accent, top-right (kept as-is).
     drawSoftBlob(0.80 * W, -0.03 * H, 0.26 * W, 0.17 * H, "#d891aa", 14, 0.42, -0.3);
-    drawSoftBlob(-0.02 * W, 0.80 * H, 0.5 * W, 0.28 * H, "#8fbccc", 40, 0.3, -0.13);
-    drawSoftBlob(0.09 * W, 0.82 * H, 0.17 * W, 0.15 * H, "#d2ae6c", 5, 0.8, 0.24);
+    // Ochre: solid (no blur), low in the bottom-left corner.
+    drawSoftBlob(0.02 * W, 0.86 * H, 0.19 * W, 0.16 * H, "#d2ae6c", 0, 0.85, 0.24, 0.82);
+
+    // Dashed thread + ball, echoing the hero's connecting line.
+    context.save();
+    context.strokeStyle = "#8a938f";
+    context.globalAlpha = 0.55;
+    context.lineWidth = Math.max(1.2, W * 0.0018);
+    context.setLineDash([W * 0.016, W * 0.016]);
+    context.beginPath();
+    context.moveTo(W * 0.52, H * 0.015);
+    context.lineTo(W * 0.512, H * 0.9);
+    context.stroke();
+    context.restore();
+
+    context.save();
+    context.shadowColor = "rgba(25, 26, 28, 0.34)";
+    context.shadowBlur = W * 0.018;
+    context.shadowOffsetY = W * 0.005;
+    const ballRadius = W * 0.014;
+    const ballX = W * 0.512;
+    const ballY = H * 0.9;
+    const ballGradient = context.createRadialGradient(
+      ballX - ballRadius * 0.3, ballY - ballRadius * 0.3, 1, ballX, ballY, ballRadius,
+    );
+    ballGradient.addColorStop(0, "#657a76");
+    ballGradient.addColorStop(0.24, "#344945");
+    ballGradient.addColorStop(1, "#17191a");
+    context.fillStyle = ballGradient;
+    context.beginPath();
+    context.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
+    context.fill();
+    context.restore();
 
     // The signature is already baked into the composite, so it shows through here.
     return output.toDataURL("image/jpeg", PHOTO_EXPORT_QUALITY);
