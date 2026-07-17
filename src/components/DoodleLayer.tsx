@@ -913,13 +913,30 @@ export function DoodleLayer() {
 
     // Atmosphere mirroring the hero blobs (same colours as globals.css).
     // Lilac: large, defined, over the left edge.
-    drawSoftBlob(-0.16 * W, 0.31 * H, 0.44 * W, 0.46 * H, "#b59bd7", 2, 0.66, 0.16, 0.6);
+    drawSoftBlob(-0.19 * W, 0.29 * H, 0.50 * W, 0.52 * H, "#b59bd7", 2, 0.66, 0.16, 0.6);
     // Blue: faint wash along the base.
     drawSoftBlob(-0.02 * W, 0.82 * H, 0.5 * W, 0.26 * H, "#8fbccc", 40, 0.26, -0.13);
     // Rose: soft accent, upper-right.
-    drawSoftBlob(0.80 * W, 0.06 * H, 0.26 * W, 0.17 * H, "#d891aa", 14, 0.42, -0.3);
-    // Ochre: solid (no blur), low along the bottom.
-    drawSoftBlob(0.26 * W, 0.87 * H, 0.16 * W, 0.135 * H, "#d2ae6c", 0, 0.85, 0.24, 0.82);
+    drawSoftBlob(0.84 * W, 0.06 * H, 0.26 * W, 0.17 * H, "#d891aa", 14, 0.42, -0.3);
+
+    // Ochre: solid rounded-square accent (matching the hero's ochre shape), low.
+    {
+      const ochreW = 0.17 * W;
+      const ochreH = 0.15 * H;
+      const ochreX = 0.27 * W;
+      const ochreY = 0.9 * H;
+      context.save();
+      context.translate(ochreX + ochreW / 2, ochreY + ochreH / 2);
+      context.rotate(0.2);
+      context.globalAlpha = 0.85;
+      context.fillStyle = "#d2ae6c";
+      context.beginPath();
+      context.roundRect(-ochreW / 2, -ochreH / 2, ochreW, ochreH, [
+        ochreW * 0.5, ochreW * 0.3, ochreW * 0.5, ochreW * 0.3,
+      ]);
+      context.fill();
+      context.restore();
+    }
 
     // Dashed thread + ball, echoing the hero's connecting line.
     context.save();
