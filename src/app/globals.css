@@ -1191,9 +1191,8 @@ body {
 
 .doodle-about {
   --doodle-rotation: -8deg;
-  right: 1.5rem;
-  top: -1.8rem;
-  z-index: 2;
+  left: -4.5rem;
+  top: 0.5rem;
 }
 
 .doodle-skills {
@@ -1274,8 +1273,8 @@ body {
 }
 
 .doodle-accent-about {
-  right: 3.75rem;
-  top: 0.9rem;
+  left: -2.8rem;
+  top: 2.4rem;
   background: var(--hero-blob-ochre);
   opacity: 0.4;
   transform: rotate(19deg);
