@@ -912,14 +912,14 @@ export function DoodleLayer() {
     context.drawImage(portrait, 0, 0, W, H);
 
     // Atmosphere mirroring the hero blobs (same colours as globals.css).
-    // Lilac: large, defined, over the lower-left edge.
-    drawSoftBlob(-0.16 * W, 0.44 * H, 0.44 * W, 0.46 * H, "#b59bd7", 4, 0.66, 0.16, 0.5);
+    // Lilac: large, defined, over the left edge.
+    drawSoftBlob(-0.16 * W, 0.38 * H, 0.44 * W, 0.46 * H, "#b59bd7", 2, 0.66, 0.16, 0.6);
     // Blue: faint wash along the base.
     drawSoftBlob(-0.02 * W, 0.82 * H, 0.5 * W, 0.26 * H, "#8fbccc", 40, 0.26, -0.13);
     // Rose: soft accent, top-right (kept as-is).
     drawSoftBlob(0.80 * W, -0.03 * H, 0.26 * W, 0.17 * H, "#d891aa", 14, 0.42, -0.3);
     // Ochre: solid (no blur), low in the bottom-left corner.
-    drawSoftBlob(0.02 * W, 0.86 * H, 0.19 * W, 0.16 * H, "#d2ae6c", 0, 0.85, 0.24, 0.82);
+    drawSoftBlob(0.07 * W, 0.86 * H, 0.16 * W, 0.135 * H, "#d2ae6c", 0, 0.85, 0.24, 0.82);
 
     // Dashed thread + ball, echoing the hero's connecting line.
     context.save();
