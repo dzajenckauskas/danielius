@@ -249,6 +249,11 @@ export async function POST(request: Request) {
         html: visitorEmail.html,
         attachments: [
           {
+            filename: `your-doodle-with-Danielius-${attachmentTimestamp}.jpg`,
+            content: compositeBuffer,
+            contentType: "image/jpeg",
+          },
+          {
             filename: `your-doodle-with-Danielius-${attachmentTimestamp}.pdf`,
             content: portraitPdf,
             contentType: "application/pdf",

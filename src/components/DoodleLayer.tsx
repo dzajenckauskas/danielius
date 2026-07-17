@@ -833,6 +833,16 @@ export function DoodleLayer() {
     context.translate(-(rect.left + window.scrollX), -(rect.top + window.scrollY));
     actionsRef.current.forEach((action) => drawAction(context, action));
     context.restore();
+
+    // Signature, matching the keepsake card, so the shared JPG is branded too.
+    context.save();
+    context.fillStyle = "#3d5b57";
+    context.font = `300 ${Math.max(11, Math.round(rect.width * 0.02))}px 'Geist Mono', monospace`;
+    context.textAlign = "right";
+    context.textBaseline = "middle";
+    context.fillText("zajenckauskas.lt ↗", rect.width - rect.width * 0.035, rect.height - rect.width * 0.045);
+    context.restore();
+
     return output.toDataURL("image/jpeg", PHOTO_EXPORT_QUALITY);
   }, []);
 
@@ -906,14 +916,7 @@ export function DoodleLayer() {
     drawSoftBlob(-0.02 * W, 0.80 * H, 0.5 * W, 0.28 * H, "#8fbccc", 40, 0.3, -0.13);
     drawSoftBlob(0.09 * W, 0.82 * H, 0.17 * W, 0.15 * H, "#d2ae6c", 5, 0.8, 0.24);
 
-    context.save();
-    context.fillStyle = "#3d5b57";
-    context.font = "300 14px 'Geist Mono', monospace";
-    context.textAlign = "right";
-    context.textBaseline = "middle";
-    context.fillText("zajenckauskas.lt ↗", W - 28, H - 26);
-    context.restore();
-
+    // The signature is already baked into the composite, so it shows through here.
     return output.toDataURL("image/jpeg", PHOTO_EXPORT_QUALITY);
   }, []);
 
