@@ -923,7 +923,7 @@ export function DoodleLayer() {
     {
       const ochreW = 0.11 * W;
       const ochreH = 0.1 * H;
-      const ochreX = 0.29 * W;
+      const ochreX = 0.29 * W - 15;
       const ochreY = 0.92 * H + 20;
       context.save();
       context.translate(ochreX + ochreW / 2, ochreY + ochreH / 2);
