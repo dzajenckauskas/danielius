@@ -938,7 +938,8 @@ export function DoodleLayer() {
       context.restore();
     }
 
-    // Dashed thread + ball, echoing the hero's connecting line.
+    // Dashed thread running across the image, echoing the hero's connecting
+    // line (no ball on the keepsake).
     context.save();
     context.strokeStyle = "#8a938f";
     context.globalAlpha = 0.55;
@@ -946,27 +947,8 @@ export function DoodleLayer() {
     context.setLineDash([W * 0.016, W * 0.016]);
     context.beginPath();
     context.moveTo(W * 0.52, H * 0.015);
-    context.lineTo(W * 0.512, H * 0.9);
+    context.lineTo(W * 0.505, H * 0.985);
     context.stroke();
-    context.restore();
-
-    context.save();
-    context.shadowColor = "rgba(25, 26, 28, 0.34)";
-    context.shadowBlur = W * 0.018;
-    context.shadowOffsetY = W * 0.005;
-    const ballRadius = W * 0.014;
-    const ballX = W * 0.512;
-    const ballY = H * 0.9;
-    const ballGradient = context.createRadialGradient(
-      ballX - ballRadius * 0.3, ballY - ballRadius * 0.3, 1, ballX, ballY, ballRadius,
-    );
-    ballGradient.addColorStop(0, "#657a76");
-    ballGradient.addColorStop(0.24, "#344945");
-    ballGradient.addColorStop(1, "#17191a");
-    context.fillStyle = ballGradient;
-    context.beginPath();
-    context.arc(ballX, ballY, ballRadius, 0, Math.PI * 2);
-    context.fill();
     context.restore();
 
     // The signature is already baked into the composite, so it shows through here.
