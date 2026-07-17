@@ -1191,9 +1191,8 @@ body {
 
 .doodle-about {
   --doodle-rotation: -8deg;
-  right: 1.5rem;
-  top: -1.8rem;
-  z-index: 2;
+  left: -4.5rem;
+  top: 0.5rem;
 }
 
 .doodle-skills {
@@ -1274,8 +1273,8 @@ body {
 }
 
 .doodle-accent-about {
-  right: 3.75rem;
-  top: 0.9rem;
+  left: -2.8rem;
+  top: 2.4rem;
   background: var(--hero-blob-ochre);
   opacity: 0.4;
   transform: rotate(19deg);
@@ -2436,10 +2435,23 @@ body {
 }
 
 .experience-card>svg {
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 2.6rem;
+  height: 2.6rem;
   margin-bottom: auto;
   color: var(--ink);
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  opacity: 0.82;
+}
+
+.experience-card>svg path {
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  animation: section-sketch-in 1.3s cubic-bezier(0.22, 1, 0.36, 1) 0.35s forwards;
 }
 
 .experience-card>p:first-of-type {
