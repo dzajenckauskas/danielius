@@ -4597,6 +4597,62 @@ body {
   background-size: 100% 1.5px;
 }
 
+/*
+ * Mobile-only motion trim (performance).
+ * Desktop scores well and its look is deliberately tuned, so nothing here
+ * touches the desktop rules. On phones these ambient loops and entrance
+ * animations are barely perceptible but keep the main thread and compositor
+ * busy, which is the main drag on the mobile Lighthouse score. We stop the
+ * looping decoration and make the entrances instant, always restoring the
+ * final visible state so nothing disappears.
+ *
+ * Intentionally LEFT RUNNING on mobile (the signature motion the site is
+ * known for): the scroll-thread draw + ball drop (.scroll-thread*) and the
+ * JS-driven doodle parallax on the portrait — neither is a keyframe here.
+ */
+@media (max-width: 900px) {
+  /* Ambient loops that never settle — stop them. */
+  .parallax-blob {
+    animation: none;
+  }
+
+  .section-doodle {
+    animation: none;
+    transform: rotate(var(--doodle-rotation));
+  }
+
+  .hero-letter {
+    animation: none;
+  }
+
+  .hero-availability-dot::after {
+    animation: none;
+    opacity: 0.3;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Low-value one-shot entrances — show the final state instantly so they
+     aren't competing with hydration. */
+  .reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .hero-letter-shell {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .nav-name-letter-shell,
+  .nav-name-letter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
