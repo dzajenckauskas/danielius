@@ -264,6 +264,7 @@ export function Hero() {
                   width={720}
                   height={820}
                   priority
+                  quality={72}
                   draggable={false}
                   sizes="(max-width: 900px) 100vw, 44vw"
                   style={{ filter: "var(--photo-filter)" }}

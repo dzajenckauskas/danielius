@@ -7,11 +7,7 @@ import { Providers } from "./providers";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { profile } from "@/data/profile";
-import { DoodleStudioGate } from "@/components/DoodleStudioGate";
-import { PageTools } from "@/components/PageTools";
-import { ScrollThread } from "@/components/ScrollThread";
-import { ScrollProgress } from "@/components/ScrollProgress";
-import { AnimatedFavicon } from "@/components/AnimatedFavicon";
+import { DeferredEnhancements } from "@/components/DeferredEnhancements";
 
 // Self-hosted via next/font so the @font-face rules are inlined into the
 // document head (no separate render-blocking CSS request for them) and the
@@ -127,17 +123,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
         <Providers>
-          <AnimatedFavicon />
-          <ScrollProgress />
           <div className="page-wash" aria-hidden="true" />
           <div data-page-shell className="flex min-h-screen flex-col">
             <Nav />
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
-          <ScrollThread />
-          <PageTools />
-          <DoodleStudioGate />
+          <DeferredEnhancements />
         </Providers>
       </body>
     </html>

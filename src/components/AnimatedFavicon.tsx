@@ -75,6 +75,35 @@ const WORKER_SOURCE = `
 
 export function AnimatedFavicon() {
   useEffect(() => {
+    // The favicon animation is pure decoration — spinning up the Web Worker,
+    // fetching the SVG and building the blob-URL frames during the load window
+    // would compete with hydration and inflate Total Blocking Time. Defer the
+    // whole setup to idle time so it never touches the critical path.
+    let cleanup: (() => void) | undefined;
+    let idleId: number | undefined;
+    const win = window as typeof window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    const start = () => {
+      idleId = undefined;
+      cleanup = setup();
+    };
+    if (typeof win.requestIdleCallback === "function") {
+      idleId = win.requestIdleCallback(start, { timeout: 2000 });
+    } else {
+      idleId = window.setTimeout(start, 1200);
+    }
+
+    return () => {
+      if (idleId !== undefined) {
+        if (typeof win.cancelIdleCallback === "function") win.cancelIdleCallback(idleId);
+        else window.clearTimeout(idleId);
+      }
+      cleanup?.();
+    };
+
+    function setup() {
     const darkMode = window.matchMedia("(prefers-color-scheme: dark)");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const icon = document.createElement("link");
@@ -192,6 +221,7 @@ export function AnimatedFavicon() {
       reducedMotion.removeEventListener("change", handleReducedMotion);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
+    }
   }, []);
 
   return null;
