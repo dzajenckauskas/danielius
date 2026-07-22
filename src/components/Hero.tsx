@@ -202,8 +202,8 @@ export function Hero() {
           <Reveal delay={0.06}>
             <h1 className="sr-only">{profile.name}</h1>
             <div className="hero-name" aria-hidden="true" data-thread-anchor data-thread-x="310">
-              <NameLine>DANIELIUS</NameLine>
-              <NameLine offset={9}>ZAJENČKAUSKAS</NameLine>
+              <NameLine>Danielius</NameLine>{" "}
+              <NameLine offset={9}>Zajenčkauskas</NameLine>
             </div>
           </Reveal>
 

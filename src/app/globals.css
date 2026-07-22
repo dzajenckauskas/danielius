@@ -992,6 +992,9 @@ body {
   font-size: clamp(1.25rem, 5.8vw, 2.5rem);
   font-weight: 900;
   line-height: 1.05;
+  /* Rendered uppercase, but the DOM text stays title-case so search engines
+     read "Danielius Zajenčkauskas", not "DANIELIUSZAJENČKAUSKAS". */
+  text-transform: uppercase;
   text-align: center;
 }
 
