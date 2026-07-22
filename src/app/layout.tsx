@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
@@ -51,6 +51,7 @@ export const metadata: Metadata = {
     "Vilnius",
   ],
   alternates: { canonical: "/" },
+  manifest: "/manifest.webmanifest",
   openGraph: {
     title: `${profile.name} — ${profile.role}`,
     description: profile.tagline,
@@ -58,21 +59,38 @@ export const metadata: Metadata = {
     siteName: profile.name,
     locale: "en_GB",
     type: "website",
-    images: [{ url: "/avatar.png", width: 640, height: 640, alt: profile.name }],
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: `${profile.name} — ${profile.role}` }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: `${profile.name} — ${profile.role}`,
     description: profile.tagline,
-    images: ["/avatar.png"],
+    images: ["/og.png"],
   },
   category: "technology",
+  appleWebApp: {
+    capable: true,
+    title: profile.name,
+    statusBarStyle: "default",
+  },
   icons: {
     icon: [
+      { url: "/favicon.ico", sizes: "48x48" },
       { url: "/favicon-light.svg?v=6", type: "image/svg+xml", media: "(prefers-color-scheme: light)" },
       { url: "/favicon-dark.svg?v=6", type: "image/svg+xml", media: "(prefers-color-scheme: dark)" },
+      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
     ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: ["/favicon.ico"],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f7f5f2" },
+    { media: "(prefers-color-scheme: dark)", color: "#1b212c" },
+  ],
 };
 
 export default function RootLayout({
