@@ -2,7 +2,8 @@
 
 Personal website / portfolio for **Danielius Zajenckauskas** — Front-End Developer.
 
-Built with Next.js 15 (App Router), TypeScript, Tailwind CSS v4, next-themes and Framer Motion.
+Built with Next.js 15 (App Router), TypeScript, Tailwind CSS v4 and next-themes. Motion is
+hand-rolled CSS/canvas (see `Reveal.tsx`, `DoodleLayer.tsx`) rather than a motion library.
 
 ## Development
 

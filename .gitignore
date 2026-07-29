@@ -29,3 +29,10 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# testing
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/coverage/
