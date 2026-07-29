@@ -208,7 +208,7 @@ export const projects: Project[] = [
       "The platform is structured as an npm-workspaces monorepo spanning five applications and six shared packages, allowing domain types, authentication, forms, internationalisation and back-office UI patterns to evolve consistently.",
     ],
     contribution: [
-      "Designed and built the whole marketplace — the Next.js storefront plus dedicated admin, seller, support and API apps — backed by custom Strapi content types and services, with AI-assisted engineering workflows.",
+      "Delivered a five-application marketplace — the Next.js storefront plus dedicated admin, seller, support and API apps — backed by custom Strapi content types and services, with AI-assisted engineering workflows.",
       "Built shared packages for domain types, authentication, forms, localisation, themes and reusable back-office components.",
       "Implemented multi-seller catalogue, variant and stock workflows plus Stripe checkout with webhook deduplication and stock restoration safeguards.",
       "Developed seller onboarding, wallets, payouts, statements, reconciliation and dispute-management workflows.",
