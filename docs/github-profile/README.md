@@ -28,6 +28,10 @@ Before moving into software engineering, I worked in graphic design. That backgr
 - Creating accessible, responsive interfaces that hold up under real content
 - Supporting critical journeys with focused unit, integration and end-to-end tests
 
+## AI-assisted engineering
+
+I build with AI coding agents as a core part of my workflow, and hold their output to the same bar as any other code — reviewed, tested, and true to the architecture. I direct agents through issue-driven sprints, code review and CI gates, so speed never comes at the cost of quality. My [Toolkit](https://github.com/dzajenckauskas/toolkit) project is planned, built and shipped this way end to end.
+
 ## Toolbox
 
 **Core**
@@ -77,6 +81,18 @@ Branding, packaging, editorial and digital-design work that continues to inform 
 
 ## Selected work
 
+### [Toolkit — free, private browser tools](https://toolkit.zajenckauskas.lt) · [source](https://github.com/dzajenckauskas/toolkit)
+
+An **open-source** hub of 48 privacy-first tools that run entirely in the browser — no account, no upload, no paywall. Built as a Turborepo monorepo with a registry-driven catalog, strict types and a full CI/CD pipeline. My most complete **public** code sample.
+
+`Next.js` · `React` · `TypeScript (strict)` · `Turborepo` · `Emotion` · `Vitest` · `Playwright`
+
+### [This portfolio](https://zajenckauskas.lt) · [source](https://github.com/dzajenckauskas/danielius)
+
+The site you're on: a Next.js App Router build with generated case studies, a PDF résumé, structured data and OG metadata, and a hand-rolled canvas doodle studio with its own spam-resistant email pipeline. Public, so you can read the same code that's live in production.
+
+`Next.js` · `TypeScript` · `Tailwind CSS` · `React PDF` · `Nodemailer` · `Vitest` · `Playwright`
+
 ### [Lobasoft Enterprise Platform](https://zajenckauskas.lt/projects/lobasoft-enterprise-platform)
 
 A 35-application enterprise ecosystem covering ERP, financials, payroll, HR, audit and employee self-service.
@@ -105,7 +121,7 @@ A healthcare content and product platform with a CMS-managed catalogue and brand
 
 Much of my professional work is private because it belongs to employers or clients and contains product-specific business logic. My [portfolio case studies](https://zajenckauskas.lt/projects) document the problems, my contribution, technical decisions, quality work and outcomes without exposing confidential code or data.
 
-For a relevant opportunity, I can provide a guided architecture walkthrough or a focused, sanitised code sample where the applicable agreement allows it.
+For a relevant opportunity, I can provide a guided architecture walkthrough or a focused, sanitised code sample where the applicable agreement allows it. That said, my **[Toolkit](https://github.com/dzajenckauskas/toolkit)** project is fully open-source, so you can browse real, current code today.
 
 ## Education and languages
 
