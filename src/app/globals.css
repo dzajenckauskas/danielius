@@ -1710,6 +1710,10 @@ body {
   margin-top: 2rem;
 }
 
+.featured-work-all {
+  margin-top: 2rem;
+}
+
 /* Homepage sections use the same editorial rhythm and width as Selected work. */
 .home-editorial-section {
   display: grid;
@@ -2358,7 +2362,8 @@ body {
   font-size: 0.66rem;
 }
 
-.projects-explorer-tags .is-private {
+.projects-explorer-tags .is-private,
+.projects-explorer-tags .is-open-source {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
@@ -4611,6 +4616,7 @@ body {
  * JS-driven doodle parallax on the portrait — neither is a keyframe here.
  */
 @media (max-width: 900px) {
+
   /* Ambient loops that never settle — stop them. */
   .parallax-blob {
     animation: none;

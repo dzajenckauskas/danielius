@@ -106,6 +106,19 @@ export function AnimatedFavicon() {
     function setup() {
     const darkMode = window.matchMedia("(prefers-color-scheme: dark)");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    // Take over from the server-rendered SVG favicon links. Recent Chrome
+    // versions prefer a media-matched static <link rel="icon"> over a
+    // dynamically-updated one, which silently ignores our per-frame href swaps
+    // (the animation appears dead). Detach the static SVG icons while we drive
+    // the favicon; restore them on cleanup so it still works with JS disabled.
+    const staticIcons = Array.from(
+      document.querySelectorAll<HTMLLinkElement>(
+        'link[rel~="icon"][type="image/svg+xml"]:not([data-animated-favicon])',
+      ),
+    );
+    staticIcons.forEach((link) => link.remove());
+
     const icon = document.createElement("link");
     icon.rel = "icon";
     icon.type = "image/svg+xml";
@@ -217,6 +230,7 @@ export function AnimatedFavicon() {
       URL.revokeObjectURL(workerUrl);
       revokeFrames();
       icon.remove();
+      staticIcons.forEach((link) => document.head.appendChild(link));
       darkMode.removeEventListener("change", loadTheme);
       reducedMotion.removeEventListener("change", handleReducedMotion);
       document.removeEventListener("visibilitychange", handleVisibility);

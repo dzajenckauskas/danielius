@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, LockKeyhole } from "lucide-react";
+import { ArrowUpRight, Github, LockKeyhole } from "lucide-react";
 import { SectionDoodle } from "@/components/SectionDoodle";
 import { projects } from "@/data/projects";
 
@@ -66,6 +66,11 @@ export function FeaturedProjects() {
               </a>
             ))}
           </nav>
+
+          <Link href="/projects" className="link-button featured-work-all">
+            View all projects
+            <ArrowUpRight aria-hidden="true" />
+          </Link>
         </div>
 
         <div className="featured-work-cards">
@@ -106,6 +111,12 @@ export function FeaturedProjects() {
                     <span className="featured-source-tag">
                       <LockKeyhole aria-hidden="true" />
                       Private source
+                    </span>
+                  )}
+                  {!project.sourceAccess && project.repository && (
+                    <span className="featured-source-tag">
+                      <Github aria-hidden="true" />
+                      Open source
                     </span>
                   )}
                 </div>

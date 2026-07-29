@@ -37,17 +37,17 @@ export const projects: Project[] = [
     location: "Vilnius, Lithuania · Hybrid",
     role: "Front-end Engineer",
     summary:
-      "A multi-application business platform covering ERP, financials, payroll, HR, audit and employee self-service workflows.",
+      "A 35-app enterprise platform for ERP, financials, payroll, HR and audit workflows.",
     about: [
       "Lobasoft is a large enterprise software ecosystem composed of 35 React applications and 12 shared packages. Its products support data-heavy operational workflows across finance, accounting, payroll, HR, audit, document management and employee self-service.",
       "The front-end is organised as a Turborepo monorepo with reusable UI, form, data, document and domain packages. A config-driven architecture turns resource definitions into consistent forms, lists, filters, actions and detail views while still supporting specialised product workflows.",
     ],
     contribution: [
-      "Built and modernised config-driven forms, data tables, filters and action workflows shared across ERP, payroll, projects and financial applications.",
-      "Developed React PDF reports and document previews for invoices, packing lists, audit requests and HR processes.",
-      "Created React Email templates for approval, rejection, signing and employee-notification workflows across HR self-service products.",
-      "Implemented document upload, qualified-signing and process-driven interfaces with detailed validation and backend error handling.",
-      "Strengthened shared TypeScript packages, responsive behaviour and focused Playwright coverage across a large npm-workspaces codebase.",
+      "Owned the platform's front-end end to end, building and modernising config-driven forms, data tables, lists and multi-step action workflows across the accounting, payroll, HR and financial applications.",
+      "Delivered accounting workflows on the front end — purchase and sales orders, invoice submission and approval, and on-demand document rendering.",
+      "Built employee self-service document workflows: submission, qualified and non-qualified e-signing by employees and managers, with matching email notifications (React Email).",
+      "Developed time-tracking and timesheet interfaces, and React PDF documents for invoices, orders and HR processes.",
+      "Contributed the shared platform and design-system packages (forms, data tables, lists, documents, theme) that drive config-driven screens across ~35 apps — 12 shared packages, strict TypeScript and Playwright coverage, working front-end against established API contracts.",
     ],
     caseStudy: {
       challenge:
@@ -82,6 +82,58 @@ export const projects: Project[] = [
     accent: "sage",
   },
   {
+    slug: "toolkit",
+    name: "Toolkit",
+    domain: "toolkit.zajenckauskas.lt",
+    url: "https://toolkit.zajenckauskas.lt",
+    repository: "https://github.com/dzajenckauskas/toolkit",
+    year: "2026",
+    period: "2026 – Present",
+    engagement: "Open-source project",
+    location: "Independent · Remote",
+    role: "Creator & Maintainer",
+    summary:
+      "An open-source hub of 48 privacy-first browser tools — image, text, developer, design and PDF utilities — that run entirely on the user's device.",
+    about: [
+      "Toolkit is a free, client-side tool hub: dozens of small utilities under one roof, each running locally with no account, no upload and no paywall. Images are processed with the Canvas API and hashing and encryption with the Web Crypto API, so nothing ever leaves the browser.",
+      "It is built as a Turborepo monorepo with a registry-driven catalog: a single source of truth powers the home page, keyboard command palette, navigation, sitemap and per-tool SEO, so adding a tool is a pure function, a component, a route and one registry entry.",
+    ],
+    contribution: [
+      "Designed and built a Turborepo monorepo (an app plus shared ui, lib and tools packages) with strict TypeScript and compiler-enforced boundaries.",
+      "Implemented 48 client-side tools on the Canvas and Web Crypto APIs, including a unified image editor with compress, resize, crop and rotate operations.",
+      "Built a registry-driven catalog with a keyboard command palette, a generated sitemap and per-page SEO metadata.",
+      "Set up the full CI/CD pipeline — lint, typecheck, unit and end-to-end tests, build and automated production deployment on every push to main.",
+      "Recorded architecture decisions as ADRs, including the deliberate choice of a package monorepo over Module Federation micro-frontends.",
+    ],
+    caseStudy: {
+      challenge:
+        "Ship and maintain a broad, growing suite of tools as one cohesive, high-quality product — entirely client-side, with no backend to lean on.",
+      decisions: [
+        "Made a tool registry the single source of truth so the catalog, search, navigation and SEO stay in sync as tools are added.",
+        "Chose a Turborepo package split (ui / lib / tools) over micro-frontends, keeping boundaries compiler-enforced without runtime fragility (ADR-009).",
+      ],
+      quality: [
+        "Covered the pure logic with 261 Vitest unit tests and the tools in the browser with 77 Playwright end-to-end tests.",
+        "Kept main continuously deployable behind a CI pipeline that must pass lint, types, tests and build before release.",
+      ],
+      outcome:
+        "A live, open-source product that doubles as a public, readable code sample — new tools ship through one well-tested pattern.",
+    },
+    stack: [
+      "Next.js 15",
+      "React 19",
+      "TypeScript",
+      "Turborepo",
+      "Emotion",
+      "Canvas API",
+      "Web Crypto",
+      "Vitest",
+      "Playwright",
+      "GitHub Actions",
+    ],
+    accent: "sand",
+  },
+  {
     slug: "tezaurus",
     name: "Tezaurus",
     domain: "tezaurus.lt",
@@ -92,13 +144,13 @@ export const projects: Project[] = [
     location: "Vilnius, Lithuania · Hybrid",
     role: "Front-end Engineer",
     summary:
-      "A multilingual corporate and client self-service platform for an audit and accounting group, serving three branded websites from one codebase.",
+      "A multilingual self-service platform for an audit group — three branded sites from one codebase.",
     about: [
       "Tezaurus is the web platform of UAB „Tezaurus auditas“, a Lithuanian audit, accounting and payroll group with more than three decades of practice. Beyond presenting services and generating leads, the platform lets clients register, subscribe to services, place orders and settle payments in authenticated self-service flows.",
       "The codebase is white-label by design: a single Next.js application powers tezaurus.lt and two sibling brands, with theming, analytics, push notifications and social integrations resolved per brand at build time. Marketing content is managed in an in-house headless CMS and delivered over GraphQL.",
     ],
     contribution: [
-      "Built the multilingual (LT/EN) Next.js App Router front-end with locale-prefixed routing and CMS-managed services, pricing, team, career and article content.",
+      "Led the multilingual (LT/EN) Next.js App Router front-end, with locale-prefixed routing and CMS-managed services, pricing, team, career and article content.",
       "Implemented the white-label architecture that ships three branded websites from one component tree, each with its own theme, analytics and integration configuration.",
       "Developed account journeys covering registration, email confirmation, password recovery and Dokobit e-identity sign-in on top of next-auth.",
       "Built subscription and order checkout with coupons, Braintree payment methods and an invoice-payment fallback, plus proforma, invoice and contract-conditions PDFs rendered with React PDF.",
@@ -156,7 +208,7 @@ export const projects: Project[] = [
       "The platform is structured as an npm-workspaces monorepo spanning five applications and six shared packages, allowing domain types, authentication, forms, internationalisation and back-office UI patterns to evolve consistently.",
     ],
     contribution: [
-      "Designed the Next.js storefront and dedicated admin, seller and support applications, backed by custom Strapi content types and services.",
+      "Designed and built the whole marketplace — the Next.js storefront plus dedicated admin, seller, support and API apps — backed by custom Strapi content types and services, with AI-assisted engineering workflows.",
       "Built shared packages for domain types, authentication, forms, localisation, themes and reusable back-office components.",
       "Implemented multi-seller catalogue, variant and stock workflows plus Stripe checkout with webhook deduplication and stock restoration safeguards.",
       "Developed seller onboarding, wallets, payouts, statements, reconciliation and dispute-management workflows.",
@@ -205,13 +257,13 @@ export const projects: Project[] = [
     location: "United Kingdom · Remote",
     role: "Front-end Engineer",
     summary:
-      "A customer-facing international removals platform supporting quotations and relocations by road, sea and air.",
+      "An international-removals platform with instant quotes and multi-step booking across road, sea and air.",
     about: [
       "Deliver1 turns a complex international-moving service into a clear digital journey. Visitors can understand available transport options, request an estimate and progress through structured relocation workflows.",
       "The ongoing rebuild focuses on making the product easier to maintain and extend while preserving a conversion-oriented experience across desktop and mobile devices.",
     ],
     contribution: [
-      "Reworked the front-end architecture and introduced typed, reusable patterns across the customer journey.",
+      "Rebuilt the customer-facing product's front-end architecture, introducing typed, reusable patterns across the journey.",
       "Developed instant-quote, inventory and multi-step booking experiences with location, date, phone and contact-data validation.",
       "Integrated Strapi-managed content, Stripe payments, Firebase phone verification and Nodemailer transactional emails.",
       "Built an issue-tracking flow with secure customer tokens, attachments, assignment, status updates and branded notifications.",
@@ -250,6 +302,60 @@ export const projects: Project[] = [
       "Nodemailer",
     ],
     accent: "blue",
+  },
+  {
+    slug: "opklinika",
+    name: "Ortopedijos Paslaugų Klinika",
+    domain: "opklinika.lt",
+    url: "https://www.opklinika.lt",
+    year: "2023",
+    period: "March 2023 – Present",
+    engagement: "Commercial client project",
+    location: "Vilnius, Lithuania",
+    role: "Front-end Engineer",
+    summary:
+      "A healthcare platform for an orthopaedic clinic — services and a technical-aid catalogue with generated PDFs.",
+    about: [
+      "Ortopedijos Paslaugų Klinika makes specialist orthopaedic services and technical products easier to understand and navigate. The website combines clinic information, consultations, rehabilitation services and a structured catalogue of orthopaedic aids.",
+      "A headless CMS allows the clinic team to maintain detailed service, category and product information while the front-end keeps discovery consistent across a large content surface.",
+    ],
+    contribution: [
+      "Built responsive service, category, product and clinic-information templates for a content-rich healthcare website.",
+      "Modelled and integrated structured Strapi content for services, product categories, diagnoses, reviews and pricing.",
+      "Generated branded, data-driven product catalogues on demand with React PDF, including diagnosis and reimbursement tables.",
+      "Delivered validated enquiry forms and SendGrid email handling, then added component tests and performance-focused data loading.",
+    ],
+    caseStudy: {
+      challenge:
+        "Make a large healthcare service and technical-aid catalogue understandable to patients while preserving detailed diagnosis and reimbursement information.",
+      decisions: [
+        "Modelled services, products, categories, diagnoses and pricing as structured Strapi content rather than embedding medical catalogue data in page components.",
+        "Generated the printable catalogue from the same data model with React PDF so web and document outputs stay aligned.",
+      ],
+      quality: [
+        "Tested enquiry behaviour and PDF-oriented components while reducing payloads and prioritising content needed for the first render.",
+        "Handled custom fonts, long tables and multi-page layout explicitly so generated catalogues remain usable outside the browser.",
+      ],
+      outcome:
+        "Clinic staff can maintain one structured catalogue while patients receive consistent product information online and in a branded downloadable document.",
+    },
+    sourceAccess: {
+      visibility: "private",
+      note: "Client source code is private. I can demonstrate the public product and explain the React PDF and Strapi architecture in a technical walkthrough.",
+    },
+    stack: [
+      "Next.js 13",
+      "React 18",
+      "TypeScript",
+      "Strapi",
+      "Material UI",
+      "Emotion",
+      "PostgreSQL",
+      "React PDF",
+      "SendGrid",
+      "Vitest",
+    ],
+    accent: "rose",
   },
   {
     slug: "noreikis",
@@ -304,60 +410,6 @@ export const projects: Project[] = [
       "next-i18next",
     ],
     accent: "sand",
-  },
-  {
-    slug: "opklinika",
-    name: "Ortopedijos Paslaugų Klinika",
-    domain: "opklinika.lt",
-    url: "https://www.opklinika.lt",
-    year: "2023",
-    period: "March 2023 – Present",
-    engagement: "Commercial client project",
-    location: "Vilnius, Lithuania",
-    role: "Front-end Engineer",
-    summary:
-      "A healthcare content and product platform for an orthopaedic clinic, its services and technical-aid catalogue.",
-    about: [
-      "Ortopedijos Paslaugų Klinika makes specialist orthopaedic services and technical products easier to understand and navigate. The website combines clinic information, consultations, rehabilitation services and a structured catalogue of orthopaedic aids.",
-      "A headless CMS allows the clinic team to maintain detailed service, category and product information while the front-end keeps discovery consistent across a large content surface.",
-    ],
-    contribution: [
-      "Built responsive service, category, product and clinic-information templates for a content-rich healthcare website.",
-      "Modelled and integrated structured Strapi content for services, product categories, diagnoses, reviews and pricing.",
-      "Generated branded, data-driven product catalogues on demand with React PDF, including diagnosis and reimbursement tables.",
-      "Delivered validated enquiry forms and SendGrid email handling, then added component tests and performance-focused data loading.",
-    ],
-    caseStudy: {
-      challenge:
-        "Make a large healthcare service and technical-aid catalogue understandable to patients while preserving detailed diagnosis and reimbursement information.",
-      decisions: [
-        "Modelled services, products, categories, diagnoses and pricing as structured Strapi content rather than embedding medical catalogue data in page components.",
-        "Generated the printable catalogue from the same data model with React PDF so web and document outputs stay aligned.",
-      ],
-      quality: [
-        "Tested enquiry behaviour and PDF-oriented components while reducing payloads and prioritising content needed for the first render.",
-        "Handled custom fonts, long tables and multi-page layout explicitly so generated catalogues remain usable outside the browser.",
-      ],
-      outcome:
-        "Clinic staff can maintain one structured catalogue while patients receive consistent product information online and in a branded downloadable document.",
-    },
-    sourceAccess: {
-      visibility: "private",
-      note: "Client source code is private. I can demonstrate the public product and explain the React PDF and Strapi architecture in a technical walkthrough.",
-    },
-    stack: [
-      "Next.js 13",
-      "React 18",
-      "TypeScript",
-      "Strapi",
-      "Material UI",
-      "Emotion",
-      "PostgreSQL",
-      "React PDF",
-      "SendGrid",
-      "Vitest",
-    ],
-    accent: "rose",
   },
 ];
 

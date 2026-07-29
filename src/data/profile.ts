@@ -4,18 +4,18 @@
 export const profile = {
   name: "Danielius Zajenčkauskas",
   firstName: "Danielius",
-  role: "Front-end Engineer",
+  role: "Front-end / Product Engineer",
   tagline:
-    "Front-end Engineer turning complex business workflows into reliable, accessible products and maintainable platform systems.",
+    "I turn complex business workflows into reliable, accessible products — and the shared systems that keep them maintainable.",
   location: "Vilnius, Lithuania",
-  availability: "Open to selected front-end opportunities",
+  availability: "Open to full-time roles and select freelance work",
   email: "danielius@zajenckauskas.lt",
   github: "https://github.com/dzajenckauskas",
   linkedin: "https://www.linkedin.com/in/danielius-zajenckauskas/",
 
   about: [
-    "Front-end Engineer with commercial experience across enterprise ERP, finance, payroll and HR software, alongside e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces, then build the shared systems that keep them consistent at scale.",
-    "I work beyond individual screens: designing shared component packages, config-driven forms and data tables, Strapi content models, REST and GraphQL integrations, PDF reports, transactional email templates and automated test coverage. Recent work spans a 35-app enterprise monorepo and an independently developed multi-application marketplace.",
+    "Front-end / Product Engineer with 4+ years of commercial experience across enterprise ERP, finance, payroll and HR software, alongside e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces, then build the shared systems that keep them consistent at scale.",
+    "I work beyond individual screens: designing shared component packages, config-driven forms and data tables, Strapi content models, REST and GraphQL integrations, PDF reports, transactional email templates and automated test coverage. Recent work spans a 35-app enterprise monorepo and an independently developed multi-application marketplace. I increasingly build with AI coding agents, holding their output to the same review, typing and test standards as any other code — my open-source project Toolkit is built and shipped this way.",
     "My background in graphic design brings strong product judgement to information hierarchy, responsive behaviour and interaction details. I favour pragmatic architecture, explicit types and reusable patterns that help teams ship confidently and maintain products over time.",
   ],
 } as const;
@@ -45,17 +45,17 @@ export const skillGroups: SkillGroupData[] = [
   {
     label: "API & Data Orchestration",
     description: "Coordinating data contracts, asynchronous states and recoverable integration flows.",
-    items: ["REST APIs", "OData", "GraphQL", "SWR", "Type-safe Contracts", "Failure States"],
+    items: ["REST APIs", "GraphQL", "SWR", "Type-safe Contracts", "Failure States"],
   },
   {
     label: "Performance & Accessibility",
-    description: "Protecting first impressions and inclusive use across devices and content conditions.",
+    description: "Keeping interfaces fast and usable across devices, content and assistive tech.",
     items: ["Semantic HTML", "Accessibility", "Web Performance", "Progressive Loading", "Payload Control", "Responsive Delivery"],
   },
   {
     label: "Reliability & Quality",
     description: "Making critical journeys testable, understandable and resilient when dependencies fail.",
-    items: ["Playwright", "Vitest", "React Testing Library", "Error Handling", "CI/CD", "Build Validation"],
+    items: ["Playwright", "Vitest", "React Testing Library", "Error Handling", "CI/CD", "AI-assisted delivery"],
   },
   {
     label: "Content & Delivery Systems",
@@ -167,13 +167,4 @@ export const languages = [
   { name: "English", level: "Fluent" },
 ];
 
-export const interests = [
-  "Cooking",
-  "Minimalism",
-  "Drawing",
-  "Visual Arts",
-  "Biking",
-  "Photography",
-  "Fly Fishing",
-  "Digital Media",
-];
+export const interests = ["Visual Arts", "Minimalism", "Cooking", "Fly fishing"];

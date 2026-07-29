@@ -278,8 +278,8 @@ const styles = StyleSheet.create({
   projectEntry: {
     borderBottomWidth: 0.55,
     borderBottomColor: colors.border,
-    paddingTop: 8.5,
-    paddingBottom: 8.5,
+    paddingTop: 6,
+    paddingBottom: 6,
   },
   projectHeader: { flexDirection: "row", alignItems: "baseline", justifyContent: "space-between" },
   projectName: { color: colors.text, fontSize: 9.3, fontWeight: 600, textDecoration: "none" },
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     textDecoration: "none",
   },
-  supportingGrid: { flexDirection: "row", marginTop: 38 },
+  supportingGrid: { flexDirection: "row", marginTop: 18 },
   supportingColumn: { width: 245 },
   supportingColumnRight: { width: 245, marginLeft: 21 },
   supportEntry: { marginBottom: 17 },
@@ -633,7 +633,7 @@ function PageOne() {
                 <Text style={styles.metricLabel}>SHARED PACKAGES</Text>
               </View>
               <View style={[styles.metric, styles.metricBorder]}>
-                <Text style={styles.metricValue}>6</Text>
+                <Text style={styles.metricValue}>7</Text>
                 <Text style={styles.metricLabel}>SELECTED CASE STUDIES</Text>
               </View>
             </View>
@@ -688,9 +688,14 @@ function PageTwo() {
             </Text>
             <View style={styles.projectDetails}>
               <Text style={styles.projectStack}>{project.stack.slice(0, 5).join("  ·  ")}</Text>
-              {project.url && (
-                <Link style={styles.projectUrl} src={project.url}>{project.domain} ↗</Link>
-              )}
+              <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+                {project.url && (
+                  <Link style={styles.projectUrl} src={project.url}>{project.domain} ↗</Link>
+                )}
+                {project.repository && (
+                  <Link style={styles.projectUrl} src={project.repository}>Code ↗</Link>
+                )}
+              </View>
             </View>
           </View>
         ))}

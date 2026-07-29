@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, LockKeyhole } from "lucide-react";
+import { ArrowUpRight, Github, LockKeyhole } from "lucide-react";
 import { SectionDoodle } from "@/components/SectionDoodle";
 import { projects } from "@/data/projects";
 
@@ -100,6 +100,9 @@ export function ProjectsExplorer() {
                 {project.stack.slice(0, 6).map((item) => <span key={item}>{item}</span>)}
                 {project.sourceAccess && (
                   <span className="is-private"><LockKeyhole aria-hidden="true" />Private source</span>
+                )}
+                {!project.sourceAccess && project.repository && (
+                  <span className="is-open-source"><Github aria-hidden="true" />Open source</span>
                 )}
               </div>
               <Link href={`/projects/${project.slug}`} className="link-button">

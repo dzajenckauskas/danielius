@@ -115,7 +115,7 @@ export default function Home() {
         <SectionDoodle type="speech" className="doodle-languages" />
         <Reveal className="home-info-heading thread-over">
           <p className="eyebrow">Perspective</p>
-          <h2>Language in work, curiosity beyond it.</h2>
+          <h2>Communication, and interests that keep the work grounded.</h2>
           <p>Clear communication across teams, with interests that keep the work grounded and observant.</p>
         </Reveal>
         <div className="home-info-card-grid">
