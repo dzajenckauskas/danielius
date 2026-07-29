@@ -87,9 +87,9 @@ An **open-source** hub of 48 privacy-first tools that run entirely in the browse
 
 `Next.js` · `React` · `TypeScript (strict)` · `Turborepo` · `Emotion` · `Vitest` · `Playwright`
 
-### [This portfolio](https://zajenckauskas.lt) · [source](https://github.com/dzajenckauskas/danielius)
+### [Portfolio — zajenckauskas.lt](https://zajenckauskas.lt) · [source](https://github.com/dzajenckauskas/danielius)
 
-The site you're on: a Next.js App Router build with generated case studies, a PDF résumé, structured data and OG metadata, and a hand-rolled canvas doodle studio with its own spam-resistant email pipeline. Public, so you can read the same code that's live in production.
+My personal site: a Next.js App Router build with generated case studies, a PDF résumé, structured data and OG metadata, and a hand-rolled canvas doodle studio with its own spam-resistant email pipeline. Public, so you can read the same code that's live in production.
 
 `Next.js` · `TypeScript` · `Tailwind CSS` · `React PDF` · `Nodemailer` · `Vitest` · `Playwright`
 
