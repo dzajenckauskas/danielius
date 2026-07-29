@@ -110,14 +110,22 @@ export function AnimatedFavicon() {
     // Take over from the server-rendered SVG favicon links. Recent Chrome
     // versions prefer a media-matched static <link rel="icon"> over a
     // dynamically-updated one, which silently ignores our per-frame href swaps
-    // (the animation appears dead). Detach the static SVG icons while we drive
-    // the favicon; restore them on cleanup so it still works with JS disabled.
+    // (the animation appears dead). These links are part of React's own head
+    // metadata tree (via the Metadata API), so detaching them from the DOM
+    // directly (e.g. .remove()) desyncs React's fiber from the real DOM: the
+    // next client-side navigation that reconciles the head — any route change,
+    // since each page's title differs — throws "Cannot read properties of
+    // null (reading 'removeChild')" trying to remove a node whose parent is
+    // already gone, silently aborting that navigation's commit. Neutralising
+    // them with a non-matching `media` instead keeps the nodes in place for
+    // React while still losing the browser's tab-icon tie-break.
     const staticIcons = Array.from(
       document.querySelectorAll<HTMLLinkElement>(
         'link[rel~="icon"][type="image/svg+xml"]:not([data-animated-favicon])',
       ),
     );
-    staticIcons.forEach((link) => link.remove());
+    const staticIconMedia = staticIcons.map((link) => link.media);
+    staticIcons.forEach((link) => { link.media = "not all"; });
 
     function createIconLink() {
       const link = document.createElement("link");
@@ -248,7 +256,7 @@ export function AnimatedFavicon() {
       URL.revokeObjectURL(workerUrl);
       revokeFrames();
       icon.remove();
-      staticIcons.forEach((link) => document.head.appendChild(link));
+      staticIcons.forEach((link, index) => { link.media = staticIconMedia[index]; });
       darkMode.removeEventListener("change", loadTheme);
       reducedMotion.removeEventListener("change", handleReducedMotion);
       document.removeEventListener("visibilitychange", handleVisibility);
