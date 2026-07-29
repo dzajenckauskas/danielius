@@ -19,6 +19,8 @@ import {
 } from "lucide-react";
 import { TurnstileWidget } from "@/components/TurnstileWidget";
 import {
+  DOODLE_HONEYPOT_FIELD,
+  DOODLE_TURNSTILE_FIELD,
   DoodleFormValues,
   doodleFormSchema,
   getDoodleFormValues,
@@ -889,9 +891,9 @@ export function DoodleLayer() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...values,
-          website: form.get("website"),
+          [DOODLE_HONEYPOT_FIELD]: form.get(DOODLE_HONEYPOT_FIELD),
           issuedAtMs: sendOpenedAtRef.current,
-          turnstileToken,
+          [DOODLE_TURNSTILE_FIELD]: turnstileToken,
           artwork,
           composite,
           portraitCard,
@@ -1063,7 +1065,7 @@ export function DoodleLayer() {
                   <textarea name="message" rows={3} maxLength={1000} placeholder="A project, an idea, or just hello…" required aria-invalid={Boolean(fieldErrors.message)} aria-describedby={fieldErrors.message ? "doodle-message-error" : undefined} onBlur={(event) => validateDoodleField("message", event.currentTarget.value)} onChange={() => setFieldErrors((current) => ({ ...current, message: undefined }))} />
                   {fieldErrors.message && <small id="doodle-message-error" className="doodle-field-error">{fieldErrors.message}</small>}
                 </label>
-                <label className="doodle-honeypot" aria-hidden="true"><span>Website</span><input name="website" tabIndex={-1} autoComplete="off" /></label>
+                <label className="doodle-honeypot" aria-hidden="true"><span>Website</span><input name={DOODLE_HONEYPOT_FIELD} tabIndex={-1} autoComplete="off" /></label>
                 <TurnstileWidget siteKey={TURNSTILE_SITE_KEY} onToken={setTurnstileToken} />
                 {sendError && <p className="doodle-form-error" role="alert">{sendError}</p>}
                 <button type="submit" className="primary-button" disabled={sendState === "sending" || !TURNSTILE_SITE_KEY || !turnstileToken}>

@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import * as yup from "yup";
 import {
+  DOODLE_HONEYPOT_FIELD,
   DOODLE_MIN_DWELL_TIME_MS,
+  DOODLE_TURNSTILE_FIELD,
   DoodleFormValues,
   doodleFormSchema,
   getYupFieldErrors,
@@ -69,7 +71,7 @@ export async function POST(request: Request) {
   }
 
   // Silently accept honeypot submissions so simple bots receive no useful signal.
-  if (body.website) return NextResponse.json({ ok: true });
+  if (body[DOODLE_HONEYPOT_FIELD]) return NextResponse.json({ ok: true });
 
   const issuedAtMs = Number(body.issuedAtMs);
   if (!Number.isFinite(issuedAtMs) || Date.now() - issuedAtMs < DOODLE_MIN_DWELL_TIME_MS) {
@@ -131,7 +133,7 @@ export async function POST(request: Request) {
     }
   }
 
-  const turnstileToken = typeof body.turnstileToken === "string" ? body.turnstileToken.trim() : "";
+  const turnstileToken = typeof body[DOODLE_TURNSTILE_FIELD] === "string" ? (body[DOODLE_TURNSTILE_FIELD] as string).trim() : "";
   if (!turnstileToken) {
     return NextResponse.json({ error: "Complete the bot check before sending." }, { status: 400 });
   }

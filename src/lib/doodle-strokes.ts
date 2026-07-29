@@ -56,7 +56,7 @@ export type DoodleFrame = {
 // to the face itself, not the frame — keeping its aspect ratio and position
 // stable across every breakpoint (the frame's own aspect ratio is not).
 export const PORTRAIT_IMAGE_ASPECT = 1149 / 1369;
-export const PORTRAIT_OBJECT_POSITION_Y = 0.38;
+const PORTRAIT_OBJECT_POSITION_Y = 0.38;
 
 export type ImageAnchoredFrame = {
   pageLeft: number;

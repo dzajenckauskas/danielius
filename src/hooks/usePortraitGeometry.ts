@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 export type ResizeDirection = "top" | "right" | "bottom" | "left" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
 
-export type PortraitSize = {
+type PortraitSize = {
   width: number;
   height: number;
   offsetX: number;

@@ -27,7 +27,7 @@ const color = {
 const fontStack = "'Neris','Helvetica Neue',Helvetica,Arial,sans-serif";
 const monoStack = "'SFMono-Regular',Menlo,Consolas,'Liberation Mono',monospace";
 
-export function escapeHtml(value: string) {
+function escapeHtml(value: string) {
   return value.replace(/[&<>"']/g, (character) => ({
     "&": "&amp;",
     "<": "&lt;",
