@@ -14,9 +14,9 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/danielius-zajenckauskas/",
 
   about: [
-    "Front-end / Product Engineer with 4+ years of commercial experience across enterprise ERP, finance, payroll and HR software, alongside e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces, then build the shared systems that keep them consistent at scale.",
-    "I work beyond individual screens: designing shared component packages, config-driven forms and data tables, Strapi content models, REST and GraphQL integrations, PDF reports, transactional email templates and automated test coverage. Recent work spans a 35-app enterprise monorepo and an independently developed multi-application marketplace. I increasingly build with AI coding agents, holding their output to the same review, typing and test standards as any other code — my open-source project Toolkit is built and shipped this way.",
-    "My background in graphic design brings strong product judgement to information hierarchy, responsive behaviour and interaction details. I favour pragmatic architecture, explicit types and reusable patterns that help teams ship confidently and maintain products over time.",
+    "Front-end / Product Engineer with 4+ years across enterprise ERP, finance, payroll and HR software, plus e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces — then build the shared systems that keep them consistent at scale.",
+    "Beyond individual screens, I design shared component packages, config-driven forms and data tables, Strapi content models, REST/GraphQL integrations, PDF reports and transactional email. Recent work spans a 35-app enterprise monorepo and an independently built marketplace. I also build with AI coding agents, holding their output to the same review, typing and test standards as any other code — my open-source Toolkit ships this way.",
+    "A graphic design background shapes how I judge information hierarchy, responsive behaviour and interaction detail. I favour pragmatic architecture and reusable patterns that help teams ship confidently and maintain products over time.",
   ],
 } as const;
 

@@ -43,25 +43,25 @@ export const projects: Project[] = [
       "The front-end is organised as a Turborepo monorepo with reusable UI, form, data, document and domain packages. A config-driven architecture turns resource definitions into consistent forms, lists, filters, actions and detail views while still supporting specialised product workflows.",
     ],
     contribution: [
-      "Owned the platform's front-end end to end, building and modernising config-driven forms, data tables, lists and multi-step action workflows across the accounting, payroll, HR and financial applications.",
-      "Delivered accounting workflows on the front end — purchase and sales orders, invoice submission and approval, and on-demand document rendering.",
-      "Built employee self-service document workflows: submission, qualified and non-qualified e-signing by employees and managers, with matching email notifications (React Email).",
-      "Developed time-tracking and timesheet interfaces, and React PDF documents for invoices, orders and HR processes.",
-      "Contributed the shared platform and design-system packages (forms, data tables, lists, documents, theme) that drive config-driven screens across ~35 apps — 12 shared packages, strict TypeScript and Playwright coverage, working front-end against established API contracts.",
+      "As the platform's sole front-end engineer, owned front-end delivery end to end — config-driven forms, data tables, lists and multi-step action workflows across the accounting, payroll, HR and financial applications.",
+      "Built the accounting workflows themselves: purchase and sales orders, invoice submission and approval, and on-demand document rendering.",
+      "Built employee self-service document workflows — submission, qualified and non-qualified e-signing by employees and managers — with matching React Email notifications.",
+      "Developed time-tracking and timesheet interfaces alongside React PDF documents for invoices, orders and HR processes.",
+      "Built and maintained the shared platform packages — forms, data tables, lists, documents, theme — that all ~35 apps run on: 12 shared packages, strict TypeScript and Playwright coverage, working against established API contracts.",
     ],
     caseStudy: {
       challenge:
-        "Modernise data-heavy business workflows across dozens of applications without fragmenting interaction patterns or breaking compatibility with established backend contracts.",
+        "Modernise data-heavy business workflows across dozens of applications, alone, without fragmenting interaction patterns or breaking compatibility with established backend contracts.",
       decisions: [
         "Moved repeated form, list, filter and action behaviour into shared TypeScript packages and configuration-driven resource definitions.",
         "Kept specialised document, signing and financial workflows composable instead of forcing every product into one generic screen model.",
       ],
       quality: [
         "Used strict typing and targeted application builds to control the blast radius of shared-package changes.",
-        "Added focused Playwright checks and explicit loading, validation and structured backend-error states for business-critical flows.",
+        "Added focused Playwright coverage and clear loading, validation and backend-error states for the business-critical flows.",
       ],
       outcome:
-        "Teams can extend related ERP, payroll and financial workflows through consistent patterns while preserving the domain-specific behaviour each product requires.",
+        "As new apps and workflows join the platform, they extend the same shared patterns instead of reinventing forms and tables from scratch — while still preserving the domain-specific behaviour each product needs.",
     },
     sourceAccess: {
       visibility: "private",
@@ -162,14 +162,14 @@ export const projects: Project[] = [
         "Serve three differently branded companies from one maintainable codebase while combining marketing content with authenticated subscription, ordering and payment self-service.",
       decisions: [
         "Resolved brand identity at build time — theme, analytics, push and social integrations — so shared components stay unaware of which site they render.",
-        "Kept editable marketing content in the headless CMS over GraphQL while modelling account, checkout and payment journeys as explicit application workflows.",
+        "Kept editable marketing content in the headless CMS over GraphQL, and modelled account, checkout and payment as their own application logic rather than CMS-driven pages.",
       ],
       quality: [
-        "Modelled payment progress as explicit states (awaiting payment, awaiting contract, pending, paid) with matching transactional email templates for each transition.",
-        "Used default-locale-clean multilingual routing, structured metadata and image and bundle optimisation to keep a large content surface fast and discoverable.",
+        "Tracked each order through four named payment stages — awaiting payment, awaiting contract, pending, paid — with a transactional email matched to every transition, so a client's inbox always reflects where their order stands.",
+        "Kept a large, multilingual content surface fast and discoverable with default-locale-clean routing, structured metadata, and image and bundle optimisation.",
       ],
       outcome:
-        "The group operates three branded web products from a single front-end codebase, and clients move from marketing pages into signed-in subscription, ordering and invoicing flows without leaving the product.",
+        "One codebase now runs three branded businesses, and a visitor can go from a marketing page to a signed-in subscription, order or invoice without ever leaving the product.",
     },
     sourceAccess: {
       visibility: "private",
@@ -219,14 +219,14 @@ export const projects: Project[] = [
         "Build a multi-seller marketplace as one coherent product while keeping storefront, seller, support and administration concerns independently maintainable.",
       decisions: [
         "Separated five applications around user roles while sharing authentication, domain types, forms, localisation and UI foundations through six packages.",
-        "Modelled payment, stock and seller-finance transitions explicitly so Stripe retries and failed checkout paths could be handled safely.",
+        "Treated payment, stock and seller-payout changes as a state machine, not a database update — a duplicate Stripe webhook or a failed checkout can't silently double-charge a seller or oversell stock.",
       ],
       quality: [
         "Covered domain services and payment edge cases with Vitest, then used Playwright for high-value customer and operational journeys.",
-        "Added webhook deduplication, stock restoration, rate limiting and visible action-level error states rather than treating failure paths as secondary UI.",
+        "Added webhook deduplication, automatic stock restoration and rate limiting, and surfaced failures directly in the relevant action rather than a generic toast.",
       ],
       outcome:
-        "The product can evolve across customer and operational surfaces without duplicating core business rules or compromising checkout and inventory integrity.",
+        "Customer, seller and admin surfaces can each keep evolving without duplicating the underlying business rules or putting checkout and inventory integrity at risk.",
     },
     sourceAccess: {
       visibility: "private",
@@ -274,14 +274,14 @@ export const projects: Project[] = [
         "Simplify a high-friction international moving journey while incrementally improving a live, conversion-focused product with existing content and service integrations.",
       decisions: [
         "Split quotation and booking into validated steps that keep location, inventory, date, identity and payment concerns understandable.",
-        "Used Strapi for editable service content while keeping payment, phone verification and customer issue tracking in explicit application workflows.",
+        "Used Strapi for editable service content, and kept payment, phone verification and customer issue tracking as first-class application flows rather than CMS-driven pages.",
       ],
       quality: [
         "Designed retry, cooldown, loading and actionable error states around verification, email and payment operations.",
         "Reduced media cost with progressive loading, adjacent-image preloading and touch-friendly navigation rather than loading full galleries eagerly.",
       ],
       outcome:
-        "Customers receive a clearer path from initial estimate to structured booking, while the front-end is easier to extend across service and support journeys.",
+        "The path from a first estimate to a booked, structured move is shorter and clearer for customers, and the front-end is easier to extend across new service and support journeys.",
     },
     sourceAccess: {
       visibility: "private",
@@ -329,15 +329,15 @@ export const projects: Project[] = [
       challenge:
         "Make a large healthcare service and technical-aid catalogue understandable to patients while preserving detailed diagnosis and reimbursement information.",
       decisions: [
-        "Modelled services, products, categories, diagnoses and pricing as structured Strapi content rather than embedding medical catalogue data in page components.",
-        "Generated the printable catalogue from the same data model with React PDF so web and document outputs stay aligned.",
+        "Modelled services, products, categories, diagnoses and pricing once in Strapi, so the same catalogue data drives both the website and the printed document — nothing is entered or maintained twice.",
+        "Generated the printable catalogue from that same data model with React PDF so web and document outputs stay aligned.",
       ],
       quality: [
         "Tested enquiry behaviour and PDF-oriented components while reducing payloads and prioritising content needed for the first render.",
-        "Handled custom fonts, long tables and multi-page layout explicitly so generated catalogues remain usable outside the browser.",
+        "Handled custom fonts, long tables and multi-page pagination by hand so the generated catalogue is still legible once it's printed or opened outside the browser.",
       ],
       outcome:
-        "Clinic staff can maintain one structured catalogue while patients receive consistent product information online and in a branded downloadable document.",
+        "Clinic staff maintain one structured catalogue, and patients get the same product information whether they're browsing the site or holding a printed, branded document.",
     },
     sourceAccess: {
       visibility: "private",
@@ -383,7 +383,7 @@ export const projects: Project[] = [
       challenge:
         "Balance a distinctive personal brand with fast property discovery, editable content and reliable lead capture for buyers and sellers.",
       decisions: [
-        "Structured property, editorial, testimonial and SEO content in Strapi so the broker could update the site without front-end releases.",
+        "Put property listings, articles, testimonials and SEO metadata in Strapi so the broker updates the site directly, without waiting on a front-end release.",
         "Kept valuation and contact journeys contextual to the content that triggered them, with reusable validated form primitives.",
       ],
       quality: [
@@ -391,7 +391,7 @@ export const projects: Project[] = [
         "Automated deployment and kept form submission failures visible and recoverable for prospective clients.",
       ],
       outcome:
-        "The platform supports both organic discovery and qualified enquiries while remaining maintainable by a small content and development workflow.",
+        "The platform earns organic discovery on its own merits and converts a share of it into qualified enquiries, while staying maintainable for a small content-and-development workflow.",
     },
     sourceAccess: {
       visibility: "private",
