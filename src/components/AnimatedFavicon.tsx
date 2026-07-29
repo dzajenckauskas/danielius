@@ -119,11 +119,29 @@ export function AnimatedFavicon() {
     );
     staticIcons.forEach((link) => link.remove());
 
-    const icon = document.createElement("link");
-    icon.rel = "icon";
-    icon.type = "image/svg+xml";
-    icon.dataset.animatedFavicon = "true";
+    function createIconLink() {
+      const link = document.createElement("link");
+      link.rel = "icon";
+      link.type = "image/svg+xml";
+      link.dataset.animatedFavicon = "true";
+      return link;
+    }
+
+    let icon = createIconLink();
     document.head.appendChild(icon);
+
+    // Some Chromium versions stop repainting the tab icon once a <link> has
+    // already been painted, even though its href keeps changing — mutating
+    // icon.href in place silently goes nowhere. Swapping in a brand-new
+    // <link> element per frame instead of mutating the existing one forces
+    // the repaint reliably.
+    function setIconHref(href: string) {
+      const next = createIconLink();
+      next.href = href;
+      document.head.appendChild(next);
+      icon.remove();
+      icon = next;
+    }
 
     let generation = 0;
     let frameUrls: string[] = [];
@@ -138,7 +156,7 @@ export function AnimatedFavicon() {
     }: MessageEvent<{ mode: "high" | "low"; frameIndex: number }>) => {
       const expectedMode = document.hidden ? "high" : "low";
       if (data.mode !== expectedMode || reducedMotion.matches) return;
-      if (frameUrls[data.frameIndex]) icon.href = frameUrls[data.frameIndex];
+      if (frameUrls[data.frameIndex]) setIconHref(frameUrls[data.frameIndex]);
     };
 
     function cancelReturnBounce() {
@@ -155,7 +173,7 @@ export function AnimatedFavicon() {
       const shouldAnimate = !reducedMotion.matches && frameUrls.length > 0;
       const mode = document.hidden ? "start-high" : "start-low";
       animationWorker.postMessage(shouldAnimate ? mode : "stop");
-      if (!shouldAnimate && frameUrls[0]) icon.href = frameUrls[0];
+      if (!shouldAnimate && frameUrls[0]) setIconHref(frameUrls[0]);
     }
 
     function playReturnBounce(step = 0) {
@@ -163,12 +181,12 @@ export function AnimatedFavicon() {
       animationWorker.postMessage("stop");
 
       if (reducedMotion.matches || !frameUrls.length) {
-        if (frameUrls[0]) icon.href = frameUrls[0];
+        if (frameUrls[0]) setIconHref(frameUrls[0]);
         return;
       }
 
       const frameIndex = HIGH_BOUNCE_ORDER[step];
-      if (frameUrls[frameIndex]) icon.href = frameUrls[frameIndex];
+      if (frameUrls[frameIndex]) setIconHref(frameUrls[frameIndex]);
 
       if (step < HIGH_BOUNCE_ORDER.length - 1) {
         returnTimer = window.setTimeout(() => playReturnBounce(step + 1), 90);
@@ -201,10 +219,10 @@ export function AnimatedFavicon() {
           );
           return URL.createObjectURL(new Blob([frame], { type: "image/svg+xml" }));
         });
-        icon.href = frameUrls[0];
+        setIconHref(frameUrls[0]);
         updateAnimation();
       } catch {
-        icon.href = `/favicon-${theme}.svg?v=6`;
+        setIconHref(`/favicon-${theme}.svg?v=6`);
       }
     }
 
