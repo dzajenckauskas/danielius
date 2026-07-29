@@ -21,6 +21,13 @@ const FRAMES = [
 ] as const;
 const HIGH_BOUNCE_ORDER = [0, 1, 1, 2, 3, 4, 5, 6, 7, 7, 8, 9];
 const LOW_BOUNCE_ORDER = [0, 10, 11, 12, 13, 14, 9];
+// The worker keeps ticking on schedule even while the tab is hidden (workers
+// aren't throttled), but applying a frame still means touching the DOM on
+// the main thread, which Chrome *does* throttle heavily once hidden. Without
+// this floor, a throttled main thread flushes a whole backlog of queued
+// frame messages in one burst — every frame swaps almost instantly instead
+// of ~90ms apart, which reads as the icon flashing rather than bouncing.
+const MIN_FRAME_APPLY_INTERVAL_MS = 60;
 
 const WORKER_SOURCE = `
   const animations = {
@@ -104,7 +111,11 @@ export function AnimatedFavicon() {
     };
 
     function setup() {
-    const darkMode = window.matchMedia("(prefers-color-scheme: dark)");
+    // The site's theme is entirely manual (next-themes with enableSystem
+    // false — see providers.tsx), so it can disagree with the OS's own
+    // prefers-color-scheme. The favicon has to follow the theme actually on
+    // screen (the "class" next-themes puts on <html>), not the OS setting.
+    const isDarkTheme = () => document.documentElement.classList.contains("dark");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     // Take over from the server-rendered SVG favicon links. Recent Chrome
@@ -159,11 +170,15 @@ export function AnimatedFavicon() {
     );
     const animationWorker = new Worker(workerUrl);
 
+    let lastFrameAppliedAt = 0;
     animationWorker.onmessage = ({
       data,
     }: MessageEvent<{ mode: "high" | "low"; frameIndex: number }>) => {
       const expectedMode = document.hidden ? "high" : "low";
       if (data.mode !== expectedMode || reducedMotion.matches) return;
+      const now = performance.now();
+      if (now - lastFrameAppliedAt < MIN_FRAME_APPLY_INTERVAL_MS) return;
+      lastFrameAppliedAt = now;
       if (frameUrls[data.frameIndex]) setIconHref(frameUrls[data.frameIndex]);
     };
 
@@ -207,7 +222,7 @@ export function AnimatedFavicon() {
     async function loadTheme() {
       const currentGeneration = ++generation;
       animationWorker.postMessage("stop");
-      const theme = darkMode.matches ? "dark" : "light";
+      const theme = isDarkTheme() ? "dark" : "light";
       try {
         const response = await fetch(`/favicon-${theme}.svg?v=6`);
         if (!response.ok) return;
@@ -245,7 +260,8 @@ export function AnimatedFavicon() {
     }
 
     void loadTheme();
-    darkMode.addEventListener("change", loadTheme);
+    const themeObserver = new MutationObserver(() => { void loadTheme(); });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
     reducedMotion.addEventListener("change", handleReducedMotion);
     document.addEventListener("visibilitychange", handleVisibility);
 
@@ -257,7 +273,7 @@ export function AnimatedFavicon() {
       revokeFrames();
       icon.remove();
       staticIcons.forEach((link, index) => { link.media = staticIconMedia[index]; });
-      darkMode.removeEventListener("change", loadTheme);
+      themeObserver.disconnect();
       reducedMotion.removeEventListener("change", handleReducedMotion);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
