@@ -14,7 +14,7 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/danielius-zajenckauskas/",
 
   about: [
-    "Front-end / Product Engineer with 4+ years across enterprise ERP, finance, payroll and HR software, plus e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces — then build the shared systems that keep them consistent at scale.",
+    "Front-end / Product Engineer with 4+ years across enterprise ERP, finance, payroll and HR software, plus e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces — then build the shared systems that keep them consistent at scale. I work in an Agile, Kanban-style flow — pulling from a continuously prioritised backlog across concurrent projects rather than fixed sprints, which has sharpened my ability to context-switch fast, prioritise under ambiguity, and ramp up quickly on unfamiliar codebases.",
     "Beyond individual screens, I design shared component packages, config-driven forms and data tables, Strapi content models, REST/GraphQL integrations, PDF reports and transactional email. Recent work spans a 35-app enterprise monorepo and an independently built marketplace. I also build with AI coding agents, holding their output to the same review, typing and test standards as any other code — my open-source Toolkit ships this way.",
     "A graphic design background shapes how I judge information hierarchy, responsive behaviour and interaction detail. I favour pragmatic architecture and reusable patterns that help teams ship confidently and maintain products over time.",
   ],
@@ -35,6 +35,8 @@ export const skillGroups: SkillGroupData[] = [
       "Information Architecture",
       "Responsive UX",
       "Conversion Journeys",
+      "Context-Switching",
+      "Rapid Ramp-up",
     ],
   },
   {
@@ -80,7 +82,7 @@ export const experience: TimelineEntry[] = [
     period: "Mar 2024 – Present · Hybrid",
     year: "2024",
     description:
-      "Building and modernising a 35-application enterprise platform spanning ERP, financials, payroll, HR and audit. Develop shared TypeScript packages and config-driven form/list architecture; deliver PDF reporting, React Email notifications, document upload and signing workflows; and improve accessibility, error handling and automated coverage.",
+      "Building and modernising a 35-application enterprise platform spanning ERP, financials, payroll, HR and audit, as the team's sole front-end engineer in an Agile, Kanban-style workflow — a continuously prioritised Jira backlog across concurrent workstreams, no fixed sprints. Develop shared TypeScript packages and config-driven form/list architecture; deliver PDF reporting, React Email notifications, document upload and signing workflows; and improve accessibility, error handling and automated coverage.",
     tags: [
       "React",
       "TypeScript",
@@ -90,6 +92,8 @@ export const experience: TimelineEntry[] = [
       "React Email",
       "REST / OData",
       "Playwright",
+      "Agile Kanban",
+      "Multi-project Delivery",
     ],
   },
   {
@@ -98,7 +102,7 @@ export const experience: TimelineEntry[] = [
     period: "Nov 2021 – Mar 2024 · Vilnius",
     year: "2021",
     description:
-      "Delivered customer-facing websites, bespoke e-commerce applications and CMS, ERP and CRM interfaces. Built reusable TypeScript and React systems, modelled content in Strapi, integrated REST and GraphQL services, and shipped multilingual lead-generation, checkout, PDF catalogue and transactional-email workflows.",
+      "Delivered customer-facing websites, bespoke e-commerce applications and CMS, ERP and CRM interfaces, as the team's sole front-end engineer in the same Agile, Kanban-style workflow — a continuously prioritised Jira backlog across concurrent projects, no fixed sprints. Built reusable TypeScript and React systems, modelled content in Strapi, integrated REST and GraphQL services, and shipped multilingual lead-generation, checkout, PDF catalogue and transactional-email workflows.",
     tags: [
       "React",
       "Next.js",
@@ -109,6 +113,8 @@ export const experience: TimelineEntry[] = [
       "GraphQL",
       "REST",
       "React PDF",
+      "Agile Kanban",
+      "Multi-project Delivery",
     ],
   },
   {
