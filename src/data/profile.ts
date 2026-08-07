@@ -8,7 +8,7 @@ export const profile = {
   tagline:
     "I turn complex business workflows into reliable, accessible products — and the shared systems that keep them maintainable.",
   location: "Vilnius, Lithuania",
-  availability: "Open to full-time roles and select freelance work",
+  availability: "Available for freelance projects, agency partnerships and selected full-time roles",
   email: "danielius@zajenckauskas.lt",
   github: "https://github.com/dzajenckauskas",
   linkedin: "https://www.linkedin.com/in/danielius-zajenckauskas/",
@@ -63,6 +63,33 @@ export const skillGroups: SkillGroupData[] = [
     label: "Content & Delivery Systems",
     description: "Connecting editable content, documents, communication and production infrastructure.",
     items: ["Strapi", "PostgreSQL", "React PDF", "React Email", "Stripe", "Docker", "NGINX"],
+  },
+];
+
+export type HireCardData = {
+  title: string;
+  description: string;
+  tags: string[];
+};
+
+export const hireCards: HireCardData[] = [
+  {
+    title: "Product Development",
+    description:
+      "React and Next.js applications, dashboards, marketplaces and complex product interfaces.",
+    tags: ["New products", "MVPs", "New features", "SaaS"],
+  },
+  {
+    title: "Existing Product Support",
+    description:
+      "Join an existing codebase and help your team ship features, fix frontend problems or improve architecture.",
+    tags: ["Feature development", "Refactoring", "Performance", "Integrations"],
+  },
+  {
+    title: "Agency Development Partner",
+    description:
+      "Additional React/Next.js capacity when your internal team is busy or a project requires specialist frontend help.",
+    tags: ["Figma → React", "Client projects", "Overflow work", "White-label development"],
   },
 ];
 

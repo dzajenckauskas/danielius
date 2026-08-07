@@ -932,6 +932,16 @@ body {
   transform: rotate(17deg);
 }
 
+.section-blob-hire {
+  left: -6rem;
+  top: -1.5rem;
+  width: 17rem;
+  height: 17rem;
+  border-radius: 50%;
+  background: var(--blob-3);
+  filter: blur(58px);
+}
+
 .parallax-blob {
   --parallax-x: 0px;
   --parallax-y: 0px;
@@ -951,6 +961,11 @@ body {
 .section-blob-languages {
   --float-distance: 10px;
   --float-duration: 12s;
+}
+
+.section-blob-hire {
+  --float-distance: 13px;
+  --float-duration: 15s;
 }
 
 .section-blob-skills,
@@ -1255,6 +1270,14 @@ body {
   animation-duration: 19s;
 }
 
+.doodle-hire {
+  --doodle-rotation: -6deg;
+  left: -4.5rem;
+  top: 1rem;
+  animation-delay: -6s;
+  animation-duration: 21s;
+}
+
 .doodle-accent {
   position: absolute;
   z-index: 0;
@@ -1298,6 +1321,13 @@ body {
   top: 2.2rem;
   background: var(--blob-2);
   transform: rotate(-13deg);
+}
+
+.doodle-accent-hire {
+  left: -2.8rem;
+  top: 2.6rem;
+  background: var(--blob-3);
+  transform: rotate(-15deg);
 }
 
 .doodle-accent-languages {
@@ -1801,6 +1831,104 @@ body {
   color: var(--muted);
   font-size: clamp(0.95rem, 1.4vw, 1.1rem);
   line-height: 1.75;
+}
+
+.home-hire-cta {
+  margin-top: 2rem;
+}
+
+.home-hire-cards {
+  display: grid;
+  gap: 1rem;
+}
+
+.home-hire-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 1.75rem;
+  background: color-mix(in srgb, var(--surface) 76%, transparent);
+  backdrop-filter: blur(10px);
+  transition: border-color 0.3s ease, transform 0.35s ease;
+}
+
+.home-hire-card::after {
+  content: "";
+  position: absolute;
+  top: -4rem;
+  right: -4rem;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  background: var(--blob-1);
+  filter: blur(30px);
+  opacity: 0.14;
+  transition: opacity 0.35s ease, transform 0.5s ease;
+}
+
+.home-hire-cards>.reveal:nth-child(2) .home-hire-card::after {
+  background: var(--blob-2);
+}
+
+.home-hire-cards>.reveal:nth-child(3) .home-hire-card::after {
+  background: var(--blob-3);
+}
+
+.home-hire-card:hover {
+  border-color: color-mix(in srgb, var(--ink) 42%, var(--border));
+  transform: translateY(-4px);
+}
+
+.home-hire-card:hover::after {
+  opacity: 0.26;
+  transform: translate(-0.8rem, 0.8rem);
+}
+
+.home-hire-card-meta {
+  position: relative;
+  z-index: 1;
+  color: var(--subtle);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.62rem;
+}
+
+.home-hire-card-content {
+  position: relative;
+  z-index: 1;
+  margin-top: 0.9rem;
+}
+
+.home-hire-card-content h3 {
+  color: var(--text);
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.home-hire-card-content p {
+  max-width: 32rem;
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.home-hire-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 1.15rem;
+}
+
+.home-hire-chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.32rem 0.68rem;
+  background: color-mix(in srgb, var(--surface) 66%, transparent);
+  color: var(--muted);
+  font-size: 0.72rem;
 }
 
 .home-skill-cards {
@@ -4049,7 +4177,8 @@ body {
   .doodle-featured,
   .doodle-projects,
   .doodle-career,
-  .doodle-education {
+  .doodle-education,
+  .doodle-hire {
     right: 0.5rem;
     left: auto;
     top: 0.5rem;
@@ -4058,7 +4187,8 @@ body {
   .doodle-accent-featured,
   .doodle-accent-projects,
   .doodle-accent-career,
-  .doodle-accent-education {
+  .doodle-accent-education,
+  .doodle-accent-hire {
     right: 1.8rem;
     left: auto;
     top: 2.4rem;
@@ -4261,6 +4391,12 @@ body {
     height: 9rem;
   }
 
+  .section-blob-hire {
+    left: -4rem;
+    width: 12rem;
+    height: 12rem;
+  }
+
   .doodle-skills,
   .doodle-languages {
     left: auto;
@@ -4279,7 +4415,8 @@ body {
   .doodle-featured,
   .doodle-projects,
   .doodle-career,
-  .doodle-education {
+  .doodle-education,
+  .doodle-hire {
     left: auto;
     right: 0.5rem;
     top: 0.5rem;
@@ -4288,7 +4425,8 @@ body {
   .doodle-accent-featured,
   .doodle-accent-projects,
   .doodle-accent-career,
-  .doodle-accent-education {
+  .doodle-accent-education,
+  .doodle-accent-hire {
     left: auto;
     right: 1.8rem;
     top: 2.4rem;

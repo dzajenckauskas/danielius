@@ -93,7 +93,7 @@ export const projects: Project[] = [
     location: "Independent · Remote",
     role: "Creator & Maintainer",
     summary:
-      "An open-source hub of 48 privacy-first browser tools — image, text, developer, design and PDF utilities — that run entirely on the user's device.",
+      "An open-source hub of 48+ privacy-first browser tools — image, text, developer, design and PDF utilities — that run entirely on the user's device.",
     about: [
       "Toolkit is a free, client-side tool hub: dozens of small utilities under one roof, each running locally with no account, no upload and no paywall. Images are processed with the Canvas API and hashing and encryption with the Web Crypto API, so nothing ever leaves the browser.",
       "It is built as a Turborepo monorepo with a registry-driven catalog: a single source of truth powers the home page, keyboard command palette, navigation, sitemap and per-tool SEO, so adding a tool is a pure function, a component, a route and one registry entry.",

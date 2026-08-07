@@ -10,6 +10,7 @@ import {
   skillGroups,
   languages,
   interests,
+  hireCards,
 } from "@/data/profile";
 import { projects } from "@/data/projects";
 
@@ -48,6 +49,52 @@ export default function Home() {
       </section>
 
       <FeaturedProjects />
+
+      {/* Work with me */}
+      <section className="home-editorial-section relative mx-auto max-w-6xl px-5 py-16" data-thread-anchor>
+        <span aria-hidden className="section-blob section-blob-hire parallax-blob" />
+        <span aria-hidden className="doodle-accent doodle-accent-hire" />
+        <SectionDoodle type="career" className="doodle-hire" />
+        <div className="home-section-rail">
+          <Reveal>
+            <p className="eyebrow">Available for freelance work</p>
+            <h2>Need frontend development help?</h2>
+            <p>
+              I work with product teams, startups and agencies on existing products and new
+              builds — from individual features to complete frontend applications.
+            </p>
+            <a
+              href={`mailto:${profile.email}?subject=Project%20inquiry`}
+              className="link-button home-hire-cta"
+            >
+              Discuss a project
+              <ArrowUpRight aria-hidden="true" />
+            </a>
+          </Reveal>
+        </div>
+        <div className="home-hire-cards">
+          {hireCards.map((card, i) => (
+            <Reveal
+              key={card.title}
+              delay={i * 0.05}
+              className={i % 2 === 1 ? "thread-under" : "thread-over"}
+            >
+              <div className="home-hire-card">
+                <div className="home-hire-card-meta">{String(i + 1).padStart(2, "0")}</div>
+                <div className="home-hire-card-content">
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                  <div className="home-hire-chip-list">
+                    {card.tags.map((tag) => (
+                      <span className="home-hire-chip" key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
       {/* About */}
       <section className="home-editorial-section relative mx-auto max-w-6xl px-5 py-16" data-thread-anchor>
