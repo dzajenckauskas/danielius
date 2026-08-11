@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight, FileText, Github, Linkedin, Menu, X } from "lucide-react";
+import { ArrowUpRight, FileUser, Github, Linkedin, Menu, X } from "lucide-react";
 import { profile } from "@/data/profile";
 
 const links = [
@@ -221,7 +221,7 @@ export function Nav() {
             aria-label="View CV"
             className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
           >
-            <FileText className="h-[18px] w-[18px]" />
+            <FileUser className="h-[18px] w-[18px]" />
           </a>
           <a
             href={`mailto:${profile.email}`}
@@ -286,7 +286,7 @@ export function Nav() {
                 aria-label="View CV"
                 className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
               >
-                <FileText className="h-[18px] w-[18px]" />
+                <FileUser className="h-[18px] w-[18px]" />
               </a>
               <a
                 href={`mailto:${profile.email}`}

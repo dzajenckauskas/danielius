@@ -15,9 +15,9 @@ import {
 import { projects } from "@/data/projects";
 
 const aboutCardTitles = [
-  "Product engineering",
-  "Platform architecture",
-  "Design-led systems",
+  "What I build",
+  "How I build",
+  "What shapes the work",
 ];
 
 export default function Home() {
@@ -37,8 +37,8 @@ export default function Home() {
               <dd>shared platform packages</dd>
             </div>
             <div>
-              <dt>11</dt>
-              <dd>marketplace workspaces</dd>
+              <dt>5</dt>
+              <dd>marketplace applications</dd>
             </div>
             <div>
               <dt>{projects.length}</dt>
@@ -57,17 +57,17 @@ export default function Home() {
         <SectionDoodle type="career" className="doodle-hire" />
         <div className="home-section-rail">
           <Reveal>
-            <p className="eyebrow">Available for freelance work</p>
-            <h2>Need frontend development help?</h2>
+            <p className="eyebrow">Available for selected work</p>
+            <h2>Building or improving a digital product?</h2>
             <p>
-              I work with product teams, startups and agencies on existing products and new
-              builds — from individual features to complete frontend applications.
+              I work with product teams, startups and agencies on React products,
+              integrations and existing platforms.
             </p>
             <a
               href={`mailto:${profile.email}?subject=Project%20inquiry`}
               className="link-button home-hire-cta"
             >
-              Discuss a project
+              <span>Discuss a project</span>
               <ArrowUpRight aria-hidden="true" />
             </a>
           </Reveal>
@@ -104,24 +104,26 @@ export default function Home() {
         <div className="home-section-rail">
           <Reveal>
             <p className="eyebrow">About</p>
-            <h2>Product thinking, platform discipline.</h2>
+            <h2>Making complicated work feel simple.</h2>
             <p>
-              I combine front-end engineering with a graphic communication design background to
-              make complex product workflows easier to understand and maintain.
+              If a complex workflow cannot be explained clearly, I do not consider the interface
+              finished.
             </p>
           </Reveal>
         </div>
-        <div className="home-editorial-cards">
+        <div className="home-hire-cards home-about-cards">
           {profile.about.map((para, i) => (
             <Reveal
               key={para}
               delay={i * 0.05}
-              className={`home-editorial-card ${i % 2 === 0 ? "thread-over" : "thread-under"}`}
+              className={i % 2 === 0 ? "thread-over" : "thread-under"}
             >
-              <span>{String(i + 1).padStart(2, "0")}</span>
-              <div className="home-editorial-card-content">
-                <h3>{aboutCardTitles[i]}</h3>
-                <p>{para}</p>
+              <div className="home-hire-card">
+                <div className="home-hire-card-meta">{String(i + 1).padStart(2, "0")}</div>
+                <div className="home-hire-card-content">
+                  <h3>{aboutCardTitles[i]}</h3>
+                  <p>{para}</p>
+                </div>
               </div>
             </Reveal>
           ))}
@@ -135,10 +137,10 @@ export default function Home() {
         <div className="home-section-rail">
           <Reveal>
             <p className="eyebrow">Engineering capabilities</p>
-            <h2>Beyond the framework.</h2>
+            <h2>How I approach the work.</h2>
             <p>
-              Product judgement, architecture, data, performance and reliability—supported by
-              tools chosen for the work.
+              The tools change; the priorities do not: clear workflows, sound architecture and
+              reliable delivery.
             </p>
           </Reveal>
         </div>

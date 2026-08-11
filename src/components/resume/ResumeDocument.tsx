@@ -684,16 +684,16 @@ function PageTwo() {
             <Text style={styles.projectSummary}>{project.summary}</Text>
             <Text style={styles.projectEvidence}>
               <Text style={styles.projectEvidenceLabel}>Evidence: </Text>
-              {project.contribution[0]}
+              {project.contribution[0].detail}
             </Text>
             <View style={styles.projectDetails}>
               <Text style={styles.projectStack}>{project.stack.slice(0, 5).join("  ·  ")}</Text>
               <View style={{ flexDirection: "row", alignItems: "baseline" }}>
-                {project.url && (
-                  <Link style={styles.projectUrl} src={project.url}>{project.domain} ↗</Link>
-                )}
                 {project.repository && (
                   <Link style={styles.projectUrl} src={project.repository}>Code ↗</Link>
+                )}
+                {project.url && (
+                  <Link style={styles.projectUrl} src={project.url}>{project.domain} ↗</Link>
                 )}
               </View>
             </View>

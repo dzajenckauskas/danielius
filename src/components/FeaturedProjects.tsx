@@ -99,7 +99,9 @@ export function FeaturedProjects() {
               <div>
                 <ul>
                   {project.contribution.slice(0, 2).map((item) => (
-                    <li key={item}>{item}</li>
+                    <li key={item.label}>
+                      <strong>{item.label}</strong> — {item.detail}
+                    </li>
                   ))}
                 </ul>
 

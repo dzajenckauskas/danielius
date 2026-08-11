@@ -7,7 +7,6 @@ export function SkillGroup({ group, index }: { group: SkillGroupData; index: num
         <span>{String(index + 1).padStart(2, "0")}</span>
       </div>
       <div className="skill-card-content">
-        <small>Engineering capability</small>
         <h3>{group.label}</h3>
         <p className="skill-card-description">{group.description}</p>
         <div className="skill-chip-list">

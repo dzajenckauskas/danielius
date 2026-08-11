@@ -4,9 +4,9 @@
 export const profile = {
   name: "Danielius Zajenčkauskas",
   firstName: "Danielius",
-  role: "Front-end & Full-stack Product Engineer",
+  role: "Product Engineer",
   tagline:
-    "I build complex product interfaces backed by reliable services, integrations, and production infrastructure.",
+    "I'm a full-stack engineer with a front-end focus, building complex products from interface to infrastructure.",
   location: "Vilnius, Lithuania",
   availability: "Available for freelance projects, agency partnerships and selected full-time roles",
   email: "danielius@zajenckauskas.lt",
@@ -14,9 +14,9 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/danielius-zajenckauskas/",
 
   about: [
-    "Front-end & Full-stack Product Engineer with 4+ years across enterprise ERP, finance, payroll and HR software, plus e-commerce, healthcare and real-estate products. My strongest specialism is front-end architecture, but I also build the backend services, integrations and production systems needed to deliver complete products. I work in an Agile, Kanban-style flow — pulling from a continuously prioritised backlog across concurrent projects rather than fixed sprints, which has sharpened my ability to context-switch fast, prioritise under ambiguity, and ramp up quickly on unfamiliar codebases.",
-    "Beyond individual screens, I work across the full delivery stack: React Hook Form/Yup workflows, Redux Toolkit and Zustand state, shared packages, Node.js/Strapi services, PostgreSQL, REST/GraphQL integrations, Stripe payments, PDF generation and Nodemailer/React Email communication. I ship through GitHub Actions to self-managed VPS infrastructure with PM2 and NGINX, and use Cloudflare Turnstile specifically for bot protection on public forms. Recent work spans a 35-app enterprise monorepo and an independently built marketplace. I also build with AI coding agents, holding their output to the same review, typing and test standards as any other code — my open-source Toolkit ships this way.",
-    "A graphic design background shapes how I judge information hierarchy, responsive behaviour and interaction detail. I favour pragmatic architecture and reusable patterns that help teams ship confidently and maintain products over time.",
+    "Front-end engineer with nearly five years of experience across enterprise ERP, finance, payroll, HR, e-commerce, healthcare and real estate products. I specialise in React architecture and complex product interfaces, and I also build the Node.js/Strapi services and integrations needed to deliver complete products.",
+    "My current work ranges from shared packages used by 35 enterprise applications to an independently built five-application marketplace. I work with REST and GraphQL APIs, PostgreSQL, payments, PDF generation, transactional email and production delivery, backed by focused automated tests.",
+    "A graphic design background shapes how I approach information hierarchy, responsive behaviour and interaction detail. I prefer pragmatic systems that are clear to use and straightforward to maintain.",
   ],
 } as const;
 
@@ -35,8 +35,8 @@ export const skillGroups: SkillGroupData[] = [
       "Information Architecture",
       "Responsive UX",
       "Conversion Journeys",
-      "Context-Switching",
-      "Rapid Ramp-up",
+      "Domain Modelling",
+      "Product Delivery",
     ],
   },
   {
@@ -47,7 +47,7 @@ export const skillGroups: SkillGroupData[] = [
   {
     label: "API & Data Orchestration",
     description: "Coordinating data contracts, asynchronous states and recoverable integration flows.",
-    items: ["Node.js", "REST APIs", "GraphQL", "SWR", "Webhooks", "Type-safe Contracts", "Failure States"],
+    items: ["Node.js", "Strapi", "PostgreSQL", "REST APIs", "GraphQL", "SWR", "Webhooks", "Type-safe Contracts"],
   },
   {
     label: "Performance & Accessibility",
@@ -57,12 +57,12 @@ export const skillGroups: SkillGroupData[] = [
   {
     label: "Reliability & Quality",
     description: "Making critical journeys testable, understandable and resilient when dependencies fail.",
-    items: ["Playwright", "Vitest", "React Testing Library", "Error Handling", "CI/CD", "AI-assisted delivery"],
+    items: ["Playwright", "Vitest", "React Testing Library", "Error Handling", "CI/CD", "AI-assisted delivery · Codex · Claude"],
   },
   {
     label: "Content & Delivery Systems",
     description: "Connecting editable content, documents, communication and production infrastructure.",
-    items: ["Strapi", "PostgreSQL", "Nodemailer", "React Email", "Stripe", "Docker", "PM2", "NGINX", "Cloudflare Turnstile"],
+    items: ["Nodemailer", "React Email", "Stripe", "Docker", "PM2", "NGINX", "Cloudflare Turnstile"],
   },
 ];
 
@@ -76,20 +76,20 @@ export const hireCards: HireCardData[] = [
   {
     title: "Product Development",
     description:
-      "React and Next.js applications, dashboards, marketplaces and complex product interfaces.",
+      "React and Next.js products supported by the APIs, integrations and delivery systems they need.",
     tags: ["New products", "MVPs", "New features", "SaaS"],
   },
   {
     title: "Existing Product Support",
     description:
-      "Join an existing codebase and help your team ship features, fix frontend problems or improve architecture.",
+      "Join an existing codebase to ship features, fix front-end problems or improve architecture.",
     tags: ["Feature development", "Refactoring", "Performance", "Integrations"],
   },
   {
     title: "Agency Development Partner",
     description:
-      "Additional React/Next.js capacity when your internal team is busy or a project requires specialist frontend help.",
-    tags: ["Figma → React", "Client projects", "Overflow work", "White-label development"],
+      "Additional front-end or full-stack product capacity for client work and busy internal teams.",
+    tags: ["Figma → React", "Client projects", "Integrations", "White-label development"],
   },
 ];
 
@@ -109,18 +109,16 @@ export const experience: TimelineEntry[] = [
     period: "Mar 2024 – Present · Hybrid",
     year: "2024",
     description:
-      "Building and modernising a 35-application enterprise platform spanning ERP, financials, payroll, HR and audit, as the team's sole front-end engineer in an Agile, Kanban-style workflow — a continuously prioritised Jira backlog across concurrent workstreams, no fixed sprints. Develop shared TypeScript packages with config-driven form/list architecture; deliver PDF reporting, React Email notifications plus document upload/signing workflows; improve accessibility, error handling and automated coverage.",
+      "Sole front-end engineer for a 35-application enterprise platform spanning ERP, financials, payroll, HR and audit. Own shared TypeScript packages and config-driven resource interfaces, and deliver specialised accounting, reporting, document and signing workflows with focused Playwright coverage.",
     tags: [
       "React",
       "TypeScript",
-      "Material-UI",
+      "Material UI",
       "Vite",
       "React PDF",
       "React Email",
       "REST / OData",
       "Playwright",
-      "Agile Kanban",
-      "Multi-project Delivery",
     ],
   },
   {
@@ -129,19 +127,17 @@ export const experience: TimelineEntry[] = [
     period: "Nov 2021 – Mar 2024 · Vilnius",
     year: "2021",
     description:
-      "Delivered customer-facing websites, bespoke e-commerce applications and CMS, ERP and CRM interfaces, as the team's sole front-end engineer in the same Agile, Kanban-style workflow — a continuously prioritised Jira backlog across concurrent projects, no fixed sprints. Built reusable TypeScript/React systems, modelled content in Strapi, integrated REST/GraphQL services and shipped multilingual lead-generation, checkout, PDF catalogue plus transactional-email workflows.",
+      "Delivered customer websites, e-commerce products and CMS, ERP and CRM interfaces. Built reusable React systems and Strapi backends, integrated REST and GraphQL services, and shipped multilingual checkout, lead capture, PDF catalogue and email workflows.",
     tags: [
       "React",
       "Next.js",
       "TypeScript",
       "Redux",
-      "Material-UI",
+      "Material UI",
       "Strapi",
       "GraphQL",
       "REST",
       "React PDF",
-      "Agile Kanban",
-      "Multi-project Delivery",
     ],
   },
   {
@@ -149,7 +145,7 @@ export const experience: TimelineEntry[] = [
     period: "2016 – Present",
     year: "2016",
     description:
-      "Working across branding, packaging, editorial and web design — which also grew into hands-on web-development knowledge.",
+      "Selective freelance work across branding, packaging, editorial and digital design.",
     tags: ["Branding", "Packaging", "Editorial", "Web Design"],
   },
   {
@@ -158,40 +154,25 @@ export const experience: TimelineEntry[] = [
     period: "Summer 2014",
     year: "2014",
     description:
-      "Worked on projects for well-known brands including Švyturys and Vaikystės Sodas, and contributed to the Lietuvos Paštas rebrand alongside a highly professional team.",
+      "Contributed to work for Švyturys and Vaikystės Sodas and to the Lietuvos Paštas rebrand.",
     tags: ["Branding", "Graphic Design"],
   },
 ];
 
 export const education: TimelineEntry[] = [
   {
-    title: "Front-End Developer, Course",
+    title: "Front-End Development Programme",
     org: "Baltic Institute of Technology",
     period: "2021 · Vilnius",
     year: "2021",
     description:
-      "Intensive program covering HTML, CSS/SCSS, JavaScript, Angular.js and Node.js, with SQL and NoSQL data management.",
+      "Intensive programme covering HTML, CSS/SCSS, JavaScript, AngularJS and Node.js, with SQL and NoSQL data management.",
   },
   {
     title: "Graphic Design, BA",
     org: "Vilnius College of Design",
     period: "2018 · Vilnius",
     year: "2018",
-  },
-  {
-    title: "Secondary Education",
-    org: "Mažeikių Gabijos Gimnazija",
-    period: "2012 · Mažeikiai",
-    description: "Focus on arts, mechanical drawing and mathematics.",
-    year: "2012",
-  },
-  {
-    title: "Fine Arts",
-    org: "Mažeikių Dailės Mokykla",
-    period: "2009 · Mažeikiai",
-    description:
-      "Drawing, graphics, composition, color studies and art history.",
-    year: "2009",
   },
 ];
 

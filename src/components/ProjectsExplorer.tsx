@@ -91,7 +91,7 @@ export function ProjectsExplorer() {
               </div>
               <div>
                 <small>Outcome</small>
-                <p>{project.caseStudy.outcome}</p>
+                <p>{project.cardOutcome}</p>
               </div>
             </div>
 

@@ -139,6 +139,21 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </div>
         </section>
 
+        <section className="project-copy-grid" data-thread-anchor>
+          <Reveal>
+            <h2 className="eyebrow">My contribution</h2>
+          </Reveal>
+          <Reveal className="thread-over">
+            <ul className="project-contribution-list">
+              {project.contribution.map((item) => (
+                <li key={item.label}>
+                  <strong>{item.label}</strong> — {item.detail}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </section>
+
         <section className="project-proof-section" data-thread-anchor>
           <Reveal>
             <p className="eyebrow">Engineering proof</p>
@@ -177,24 +192,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
         <section className="project-copy-grid" data-thread-anchor>
           <Reveal>
-            <h2 className="eyebrow">My contribution</h2>
-          </Reveal>
-          <Reveal className="thread-over">
-            <ul className="project-contribution-list">
-              {project.contribution.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </Reveal>
-        </section>
-
-        <section className="project-copy-grid" data-thread-anchor>
-          <Reveal>
             <h2 className="eyebrow">Technology</h2>
           </Reveal>
           <Reveal>
             <div className="project-stack-list">
-              {project.stack.map((item) => <span key={item}>{item}</span>)}
+              {project.stack.slice(0, 10).map((item) => <span key={item}>{item}</span>)}
             </div>
           </Reveal>
         </section>

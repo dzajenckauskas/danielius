@@ -55,7 +55,7 @@ export function Hero() {
       <div className="hero-editorial-layout">
         <div className="hero-intro">
           <Reveal>
-            <p className="eyebrow">Front-end & Full-stack Product Engineer</p>
+            <p className="eyebrow">Product Engineer</p>
           </Reveal>
 
           <Reveal delay={0.06}>
@@ -78,10 +78,10 @@ export function Hero() {
               </Link>
               <a
                 href={`mailto:${profile.email}?subject=Project%20inquiry`}
-                className="secondary-button"
+                className="link-button"
               >
-                <ArrowUpRight className="h-4 w-4" />
                 Discuss a project
+                <ArrowUpRight className="h-4 w-4" />
               </a>
             </div>
           </Reveal>
