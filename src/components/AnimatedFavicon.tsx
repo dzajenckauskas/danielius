@@ -111,12 +111,11 @@ export function AnimatedFavicon() {
     };
 
     function setup() {
-    // The site's theme is entirely manual (next-themes with enableSystem
-    // false — see providers.tsx), so it can disagree with the OS's own
-    // prefers-color-scheme. The favicon has to follow the theme actually on
-    // screen (the "class" next-themes puts on <html>), not the OS setting.
-    const isDarkTheme = () => document.documentElement.classList.contains("dark");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // Favicons sit in browser chrome, so their contrast needs to follow the
+    // browser/OS colour scheme rather than the site's independently selected
+    // theme. A white page can still be open in a dark tab strip and vice versa.
+    const darkBrowserChrome = window.matchMedia("(prefers-color-scheme: dark)");
 
     // Take over from the server-rendered SVG favicon links. Recent Chrome
     // versions prefer a media-matched static <link rel="icon"> over a
@@ -130,13 +129,31 @@ export function AnimatedFavicon() {
     // already gone, silently aborting that navigation's commit. Neutralising
     // them with a non-matching `media` instead keeps the nodes in place for
     // React while still losing the browser's tab-icon tie-break.
-    const staticIcons = Array.from(
-      document.querySelectorAll<HTMLLinkElement>(
-        'link[rel~="icon"][type="image/svg+xml"]:not([data-animated-favicon])',
-      ),
-    );
-    const staticIconMedia = staticIcons.map((link) => link.media);
-    staticIcons.forEach((link) => { link.media = "not all"; });
+    const staticIconMedia = new Map<HTMLLinkElement, string>();
+    let headObserver: MutationObserver | undefined;
+    const neutralizeStaticIcons = () => {
+      headObserver?.disconnect();
+      const staticIcons = document.querySelectorAll<HTMLLinkElement>(
+        'link[rel~="icon"]:not([data-animated-favicon])',
+      );
+      staticIcons.forEach((link) => {
+        if (!staticIconMedia.has(link)) staticIconMedia.set(link, link.media);
+        if (link.media !== "not all") link.media = "not all";
+      });
+      headObserver?.observe(document.head, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["href", "media", "rel", "type"],
+      });
+    };
+
+    // Route metadata is reconciled on every client navigation. That can add
+    // fresh static icon links or restore media attributes on existing ones,
+    // making Chromium alternate between the static and animated candidates.
+    // Keep React's nodes mounted, but make every competing icon ineligible.
+    headObserver = new MutationObserver(neutralizeStaticIcons);
+    neutralizeStaticIcons();
 
     function createIconLink() {
       const link = document.createElement("link");
@@ -222,7 +239,7 @@ export function AnimatedFavicon() {
     async function loadTheme() {
       const currentGeneration = ++generation;
       animationWorker.postMessage("stop");
-      const theme = isDarkTheme() ? "dark" : "light";
+      const theme = darkBrowserChrome.matches ? "dark" : "light";
       try {
         const response = await fetch(`/favicon-${theme}.svg?v=6`);
         if (!response.ok) return;
@@ -260,8 +277,7 @@ export function AnimatedFavicon() {
     }
 
     void loadTheme();
-    const themeObserver = new MutationObserver(() => { void loadTheme(); });
-    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    darkBrowserChrome.addEventListener("change", loadTheme);
     reducedMotion.addEventListener("change", handleReducedMotion);
     document.addEventListener("visibilitychange", handleVisibility);
 
@@ -272,8 +288,11 @@ export function AnimatedFavicon() {
       URL.revokeObjectURL(workerUrl);
       revokeFrames();
       icon.remove();
-      staticIcons.forEach((link, index) => { link.media = staticIconMedia[index]; });
-      themeObserver.disconnect();
+      headObserver?.disconnect();
+      staticIconMedia.forEach((media, link) => {
+        if (link.isConnected) link.media = media;
+      });
+      darkBrowserChrome.removeEventListener("change", loadTheme);
       reducedMotion.removeEventListener("change", handleReducedMotion);
       document.removeEventListener("visibilitychange", handleVisibility);
     };
