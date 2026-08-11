@@ -1,0 +1,114 @@
+/* Mobile motion budget and the global reduced-motion contract live separately
+   from layout so future responsive edits cannot accidentally weaken them. */
+@media (max-width: 900px) {
+  .parallax-blob {
+    animation: none;
+  }
+
+  .section-doodle {
+    animation: none;
+    transform: rotate(var(--doodle-rotation));
+  }
+
+  .hero-letter {
+    animation: none;
+  }
+
+  .hero-availability-dot::after {
+    animation: none;
+    opacity: 0.3;
+    transform: translate(-50%, -50%);
+  }
+
+  .reveal,
+  .hero-letter-shell,
+  .nav-name-letter-shell,
+  .nav-name-letter {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .hero-availability-dot::after {
+    animation: none;
+    opacity: 0.3;
+    transform: translate(-50%, -50%);
+  }
+
+  .reveal,
+  .name-svg .ltr,
+  .hero-letter-shell,
+  .hero-letter,
+  .nav-name-letter-shell,
+  .nav-name-letter,
+  .section-doodle *,
+  .hdline-svg path,
+  .blob,
+  .parallax-blob,
+  [class*="icon-in"] {
+    animation: none !important;
+  }
+
+  .name-svg .ltr,
+  .hdline-svg path {
+    opacity: 1;
+  }
+
+  .hdline-svg path {
+    clip-path: none;
+  }
+
+  .scroll-thread-path {
+    stroke-dashoffset: 0 !important;
+    transition: none;
+  }
+
+  .section-doodle path,
+  .section-doodle circle,
+  .section-doodle ellipse {
+    stroke-dashoffset: 0;
+  }
+
+  .section-doodle {
+    animation: none;
+    transform: rotate(var(--doodle-rotation));
+  }
+
+  .doodle-tool-invite .doodle-tool-icon,
+  .theme-toggle-sun,
+  .theme-toggle-moon,
+  .doodle-tool-invite:hover .doodle-tool-icon,
+  .doodle-theme-toggle:hover .theme-toggle-sun,
+  .doodle-theme-toggle:hover .theme-toggle-moon {
+    animation: none;
+  }
+
+  .hero-letter-shell,
+  .nav-name-letter-shell,
+  .nav-name-letter {
+    opacity: 1;
+    transform: none;
+  }
+
+  .nav-dot,
+  .scroll-thread-ball {
+    display: none;
+  }
+
+  .featured-work-progress span {
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}

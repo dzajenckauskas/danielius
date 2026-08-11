@@ -1,17 +1,12 @@
 import { NextResponse } from "next/server";
 import { generateDoodlePortraitPdf } from "@/lib/generateDoodlePortraitPdf";
+import { verifySameOrigin } from "@/lib/request-origin";
+import { isJpeg } from "@/lib/doodle-attachments";
 
 export const runtime = "nodejs";
 
 const JPEG_PREFIX = "data:image/jpeg;base64,";
 const MAX_PORTRAIT_CARD_BYTES = 3_000_000;
-
-function isJpeg(buffer: Buffer) {
-  return buffer.length >= 3
-    && buffer[0] === 0xff
-    && buffer[1] === 0xd8
-    && buffer[2] === 0xff;
-}
 
 export function GET(request: Request) {
   const previewPage = new URL("/", request.url);
@@ -20,16 +15,8 @@ export function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const host = request.headers.get("host");
-  const origin = request.headers.get("origin");
-  if (origin && host) {
-    try {
-      if (new URL(origin).host !== host) {
-        return NextResponse.json({ error: "This preview origin is not allowed." }, { status: 403 });
-      }
-    } catch {
-      return NextResponse.json({ error: "This preview origin is not allowed." }, { status: 403 });
-    }
+  if (!verifySameOrigin(request)) {
+    return NextResponse.json({ error: "This preview origin is not allowed." }, { status: 403 });
   }
 
   let body: Record<string, unknown>;

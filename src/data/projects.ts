@@ -118,7 +118,7 @@ export const projects: Project[] = [
       ],
       quality: [
         "73 Vitest and Playwright files cover tool logic, safety boundaries and browser behaviour.",
-        "Formatting, lint, type, test and production-build gates keep main deployable at all times.",
+        "Formatting, lint, type, test and production-build gates help keep main deployable.",
       ],
       outcome:
         "New tools follow one documented delivery path, and because the source is public, the privacy model isn't a claim you have to take on trust — it's readable.",

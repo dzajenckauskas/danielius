@@ -1,31 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/Reveal";
 import { SectionDoodle } from "@/components/SectionDoodle";
 import { Tag } from "@/components/Tag";
 import { education, experience } from "@/data/profile";
+import { useActiveIndexObserver } from "@/hooks/useActiveIndexObserver";
 
 export function ExperienceExplorer() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const { activeIndex, setObservedElement } = useActiveIndexObserver<HTMLElement>(experience.length);
   const activeEntry = experience[activeIndex];
-
-  useEffect(() => {
-    const observers = cardRefs.current.map((card, index) => {
-      if (!card) return null;
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveIndex(index);
-        },
-        { rootMargin: "-38% 0px -48%", threshold: 0 },
-      );
-      observer.observe(card);
-      return observer;
-    });
-
-    return () => observers.forEach((observer) => observer?.disconnect());
-  }, []);
 
   return (
     <>
@@ -63,7 +46,7 @@ export function ExperienceExplorer() {
               key={`${entry.title}-${entry.year}`}
               id={`experience-${entry.year}-${index}`}
               ref={(card) => {
-                cardRefs.current[index] = card;
+                setObservedElement(index, card);
               }}
               className={`experience-card ${index % 2 === 0 ? "thread-over" : "thread-under"}`}
               data-year={entry.year}

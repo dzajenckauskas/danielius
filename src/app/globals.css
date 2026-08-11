@@ -18,6 +18,7 @@
   --text: #191a1c;
   --muted: #55585c;
   --subtle: #8b8e92;
+  --danger: #b64c5e;
   --ink: #4f736e;
   --ink-strong: #3d5b57;
   --blob-1: rgba(197, 168, 219, 0.5);
@@ -45,6 +46,7 @@
   --text: #f2f0ec;
   --muted: #a7adb8;
   --subtle: #737b88;
+  --danger: #e58a98;
   --ink: #93bcb5;
   --ink-strong: #b6d6d0;
   --blob-1: rgba(150, 120, 190, 0.34);
@@ -911,7 +913,7 @@ body {
 }
 
 .section-blob-career {
-  right: -7rem;
+  right: 0;
   top: 10rem;
   width: 15rem;
   height: 12rem;
@@ -922,7 +924,7 @@ body {
 }
 
 .section-blob-education {
-  left: -2rem;
+  left: 0;
   top: 3rem;
   width: 3rem;
   height: 2rem;
@@ -1478,7 +1480,7 @@ body {
   z-index: auto;
   max-width: 72rem;
   margin: 1rem auto 0;
-  padding: 5rem 1.25rem 6rem;
+  padding: 4rem 1.25rem;
 }
 
 .featured-work-layout {
@@ -1588,14 +1590,14 @@ body {
 
 .featured-work-cards {
   display: grid;
-  gap: 4rem;
+  gap: 2.5rem;
 }
 
 .featured-work-card {
   --project-accent: var(--blob-1);
   position: relative;
   display: flex;
-  min-height: min(68rem, 78vh);
+  min-height: min(48rem, 64vh);
   scroll-margin-top: 7rem;
   flex-direction: column;
   justify-content: space-between;
@@ -1685,7 +1687,7 @@ body {
   display: grid;
   gap: 0.65rem;
   max-width: 35rem;
-  margin-top: 4rem;
+  margin-top: 2.5rem;
 }
 
 .featured-work-card li {
@@ -3554,14 +3556,14 @@ body {
 
 .doodle-send-panel input[aria-invalid="true"],
 .doodle-send-panel textarea[aria-invalid="true"] {
-  border-color: #b64c5e;
-  box-shadow: 0 0 0 3px color-mix(in srgb, #b64c5e 10%, transparent);
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger) 10%, transparent);
 }
 
 .doodle-field-error {
-  color: #b64c5e !important;
-  font-size: 0.68rem !important;
-  font-weight: 600 !important;
+  color: var(--danger);
+  font-size: 0.68rem;
+  font-weight: 600;
 }
 
 .doodle-captcha {
@@ -3599,9 +3601,9 @@ body {
 }
 
 .doodle-captcha-status.is-error {
-  border-color: color-mix(in srgb, #b64c5e 40%, var(--border));
-  background: color-mix(in srgb, #b64c5e 7%, var(--surface));
-  color: #b64c5e;
+  border-color: color-mix(in srgb, var(--danger) 40%, var(--border));
+  background: color-mix(in srgb, var(--danger) 7%, var(--surface));
+  color: var(--danger);
 }
 
 .doodle-captcha-status.is-error svg {
@@ -3616,11 +3618,11 @@ body {
 
 .doodle-captcha-error {
   margin-top: 1rem;
-  border: 1px solid color-mix(in srgb, #b64c5e 45%, var(--border));
+  border: 1px solid color-mix(in srgb, var(--danger) 45%, var(--border));
   border-radius: 0.85rem;
   padding: 0.7rem 0.8rem;
-  background: color-mix(in srgb, #b64c5e 7%, transparent);
-  color: #b64c5e;
+  background: color-mix(in srgb, var(--danger) 7%, transparent);
+  color: var(--danger);
   font-size: 0.75rem;
 }
 
@@ -3640,7 +3642,7 @@ body {
 
 .doodle-form-error {
   margin-top: 0.75rem;
-  color: #b64c5e;
+  color: var(--danger);
   font-size: 0.75rem;
 }
 
@@ -3916,705 +3918,6 @@ body {
   }
 }
 
-@media (max-width: 1280px) {
-
-  .doodle-featured,
-  .doodle-projects,
-  .doodle-career,
-  .doodle-education,
-  .doodle-skills,
-  .doodle-languages {
-    --doodle-drift-x: 0.7rem;
-    --doodle-drift-y: 0.2rem;
-    right: auto;
-    left: 0.75rem;
-    top: -2.25rem;
-  }
-
-  .doodle-accent-featured,
-  .doodle-accent-projects,
-  .doodle-accent-career,
-  .doodle-accent-education,
-  .doodle-accent-languages {
-    right: auto;
-    left: 2.6rem;
-    top: -0.4rem;
-  }
-}
-
-@media (max-width: 900px) {
-
-  .doodle-hit-area-active {
-    touch-action: none;
-  }
-
-  .hero-photo-composition {
-    margin-right: auto;
-  }
-
-  .hero-editorial,
-  .hero-editorial-layout {
-    min-height: auto;
-  }
-
-  .hero-editorial-layout {
-    display: block;
-    padding-top: 4.5rem;
-    padding-bottom: 5rem;
-  }
-
-  .hero-intro {
-    max-width: 42rem;
-  }
-
-  .hero-editorial .hero-name {
-    width: min(100%, 39rem);
-    font-size: clamp(2.8rem, 10.2cqw, 4.5rem);
-  }
-
-  .hero-portrait-wrap {
-    max-width: 38rem;
-    margin: 4rem auto 0;
-    justify-self: auto;
-  }
-
-  .hero-portrait-frame {
-    height: var(--hero-portrait-user-height, clamp(36rem, 88vw, 42rem));
-  }
-
-  .hero-scroll-cue {
-    display: none;
-  }
-
-  .home-editorial-section,
-  .home-info-editorial,
-  .projects-explorer,
-  .experience-explorer,
-  .education-editorial {
-    display: block;
-  }
-
-  .home-section-rail,
-  .home-info-heading,
-  .projects-explorer-rail,
-  .experience-explorer-rail,
-  .education-editorial-heading {
-    position: relative;
-    top: auto;
-    min-height: 0;
-    padding-bottom: 2.5rem;
-  }
-
-  .projects-explorer-summary,
-  .projects-explorer-counter,
-  .projects-explorer-progress,
-  .projects-explorer-rail nav,
-  .experience-explorer-rail>p:nth-of-type(2),
-  .experience-active-role,
-  .experience-explorer-rail nav {
-    display: none;
-  }
-
-  .projects-explorer-list,
-  .experience-card-list {
-    gap: 1.5rem;
-  }
-
-  .education-editorial {
-    margin-top: 7rem;
-  }
-
-  .cta-panel {
-    min-height: 0;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-    gap: 2.75rem;
-  }
-
-  .cta-copy {
-    max-width: 40rem;
-  }
-
-  .cta-contact {
-    width: min(100%, 32rem);
-  }
-
-  /* Mobile perf: backdrop blur re-samples the page behind these surfaces on
-     every frame while they reveal/scroll — the main cause of laggy cards.
-     Raise the surface mix slightly to keep text contrast without the blur. */
-  .proof-strip dl,
-  .featured-work-card,
-  .skill-group-card,
-  .projects-explorer-card,
-  .experience-card,
-  .project-list-card,
-  .project-facts,
-  .project-proof-card,
-  .private-source-note {
-    backdrop-filter: none;
-  }
-
-  /* Keep the header as the only continuously scrolling blurred surface.
-     These controls already use an opaque-enough surface on small screens. */
-  .hero-doodle-invite,
-  .doodle-tool,
-  .doodle-studio {
-    backdrop-filter: none;
-  }
-
-  /* Continuous decorative transforms keep layers promoted throughout a long
-     mobile page. Static artwork retains the composition at far lower cost. */
-  .parallax-blob,
-  .section-doodle,
-  .nav-name-letter {
-    animation: none;
-    will-change: auto;
-  }
-
-  .hero-photo-blob-back {
-    filter: blur(24px);
-  }
-
-  .hero-photo-blob-side {
-    filter: blur(6px);
-  }
-
-  .section-blob-about,
-  .section-blob-career {
-    filter: blur(30px);
-  }
-
-  .featured-work-card {
-    background:
-      radial-gradient(circle at 88% 8%, var(--project-accent), transparent 36%),
-      color-mix(in srgb, var(--surface) 94%, transparent);
-  }
-
-  .proof-strip dl {
-    background: color-mix(in srgb, var(--surface) 92%, transparent);
-  }
-
-  .section-doodle {
-    --doodle-drift-x: -0.55rem;
-    --doodle-drift-y: -0.45rem;
-    width: 4.6rem;
-    opacity: 0.52;
-  }
-
-  .doodle-skills,
-  .doodle-languages {
-    right: 1rem;
-    left: auto;
-    top: 1.5rem;
-  }
-
-  .doodle-about,
-  .doodle-contact {
-    right: 0.75rem;
-    left: auto;
-    top: -2.6rem;
-  }
-
-  .doodle-featured,
-  .doodle-projects,
-  .doodle-career,
-  .doodle-education,
-  .doodle-hire {
-    right: 0.5rem;
-    left: auto;
-    top: 0.5rem;
-  }
-
-  .doodle-accent-featured,
-  .doodle-accent-projects,
-  .doodle-accent-career,
-  .doodle-accent-education,
-  .doodle-accent-hire {
-    right: 1.8rem;
-    left: auto;
-    top: 2.4rem;
-  }
-
-  .doodle-accent-languages {
-    right: 1.8rem;
-    left: auto;
-    top: 3rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .hero-editorial-layout {
-    padding-top: 3.5rem;
-    padding-bottom: 3.5rem;
-  }
-
-  .hero-editorial .hero-name {
-    margin-top: 0.9rem;
-    font-size: clamp(1.7rem, 9.1cqw, 2.65rem);
-  }
-
-  .hero-editorial .hero-name-line {
-    gap: clamp(0.015rem, 0.25cqw, 0.08rem);
-  }
-
-  .hero-intro-copy {
-    margin-top: 1.5rem;
-    font-size: 0.96rem;
-  }
-
-  .hero-actions {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  .hero-actions a {
-    width: 100%;
-  }
-
-  .hero-intro-footer {
-    margin-top: 2rem;
-  }
-
-  .hero-portrait-wrap {
-    width: 100%;
-    margin-top: 3rem;
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  .hero-portrait-frame {
-    height: var(--hero-portrait-user-height, min(125vw, 36rem));
-  }
-
-  .hero-portrait-footer {
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .hero-socials {
-    margin-top: 0;
-  }
-
-  .home-contact-section {
-    padding-top: 6rem;
-    padding-bottom: 5rem;
-  }
-
-  .cta-panel {
-    gap: 2.25rem;
-    border-radius: var(--radius-card);
-    padding: 1.5rem;
-  }
-
-  .cta-copy h2 {
-    font-size: clamp(2.25rem, 11vw, 3.35rem);
-  }
-
-  .cta-copy>p:last-child {
-    font-size: 0.9rem;
-    line-height: 1.65;
-  }
-
-  .doodle-tool:not(.doodle-tool-invite) .doodle-tool-label {
-    display: none;
-  }
-
-  .doodle-tool:not(.doodle-tool-invite) {
-    padding: 0;
-  }
-
-  .doodle-studio {
-    top: auto;
-    right: 0.75rem;
-    bottom: 4.75rem;
-    left: 0.75rem;
-    width: auto;
-    max-height: calc(100dvh - 7rem);
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding: 0.7rem;
-  }
-
-  .doodle-studio-minimize {
-    display: inline-flex !important;
-  }
-
-  .doodle-studio-heading {
-    padding-bottom: 0.45rem;
-  }
-
-  .doodle-tool-grid button {
-    height: 2.8rem;
-  }
-
-  .doodle-setting-row {
-    margin-top: 0.4rem;
-    padding-top: 0.4rem;
-  }
-
-  .doodle-form-grid {
-    grid-template-columns: 1fr;
-    gap: 0.55rem;
-    margin-top: 0.9rem;
-  }
-
-  .doodle-send-backdrop {
-    padding: 0.5rem;
-  }
-
-  .doodle-send-panel {
-    max-height: none;
-    overflow: visible;
-    border-radius: 1.35rem;
-    padding: 1.15rem;
-  }
-
-  .doodle-send-close {
-    top: 0.7rem;
-    right: 0.7rem;
-  }
-
-  .doodle-send-panel h2 {
-    margin-top: 0.35rem;
-    padding-right: 1.5rem;
-    font-size: clamp(2rem, 10vw, 2.65rem);
-  }
-
-  .doodle-send-panel h2+p {
-    margin-top: 0.65rem;
-    font-size: 0.8rem;
-    line-height: 1.42;
-  }
-
-  .doodle-send-panel form>label {
-    margin-top: 0.6rem;
-  }
-
-  .doodle-send-panel input,
-  .doodle-send-panel textarea {
-    padding: 0.55rem 0.7rem;
-  }
-
-  .doodle-send-panel textarea {
-    min-height: 4.4rem;
-    max-height: 4.4rem;
-    resize: none;
-  }
-
-  .doodle-captcha,
-  .doodle-send-panel form>.primary-button {
-    margin-top: 0.7rem;
-  }
-
-  .doodle-privacy-note {
-    margin-top: 0.5rem;
-  }
-
-  .section-doodle {
-    width: 4.5rem;
-    opacity: 0.55;
-  }
-
-  .scroll-thread-path {
-    opacity: 0.32;
-  }
-
-  .section-blob-about {
-    right: -6rem;
-    width: 14rem;
-    height: 14rem;
-  }
-
-  .section-blob-career {
-    right: -5rem;
-    width: 11rem;
-    height: 9rem;
-  }
-
-  .section-blob-hire {
-    left: -4rem;
-    width: 12rem;
-    height: 12rem;
-  }
-
-  .doodle-skills,
-  .doodle-languages {
-    left: auto;
-    right: 1rem;
-    top: 1.5rem;
-  }
-
-  .doodle-about,
-  .doodle-contact {
-    right: 0.75rem;
-    top: -2.6rem;
-    width: 4.6rem;
-    opacity: 0.68;
-  }
-
-  .doodle-featured,
-  .doodle-projects,
-  .doodle-career,
-  .doodle-education,
-  .doodle-hire {
-    left: auto;
-    right: 0.5rem;
-    top: 0.5rem;
-  }
-
-  .doodle-accent-featured,
-  .doodle-accent-projects,
-  .doodle-accent-career,
-  .doodle-accent-education,
-  .doodle-accent-hire {
-    left: auto;
-    right: 1.8rem;
-    top: 2.4rem;
-  }
-
-  .doodle-accent-languages {
-    left: auto;
-    right: 1.8rem;
-    top: 3rem;
-  }
-
-  .doodle-accent-about,
-  .doodle-accent-contact {
-    right: 1.8rem;
-    top: -0.15rem;
-  }
-
-  .project-list-card {
-    gap: 0.6rem;
-    padding: 1.15rem 1rem;
-  }
-
-  .project-card-index {
-    width: 1.5rem;
-  }
-
-  .project-card-heading {
-    display: block;
-  }
-
-  .project-card-heading small {
-    display: block;
-    margin-top: 0.1rem;
-  }
-
-  .project-card-tags span:nth-child(n+4) {
-    display: none;
-  }
-
-  .project-facts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .project-facts>div {
-    min-height: 7rem;
-  }
-
-  .project-facts>div:nth-child(3) {
-    border-left: 0;
-    border-top: 1px solid var(--border);
-  }
-
-  .project-facts>div:nth-child(4) {
-    border-top: 1px solid var(--border);
-  }
-
-  .project-copy-grid {
-    grid-template-columns: 1fr;
-    gap: 1.8rem;
-    padding: 3.5rem 0;
-  }
-
-  .proof-strip {
-    margin-top: -0.5rem;
-  }
-
-  .proof-strip dl {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .proof-strip dl>div {
-    min-height: 6.4rem;
-    padding: 1rem;
-  }
-
-  .proof-strip dl>div:nth-child(3) {
-    border-left: 0;
-    border-top: 1px solid var(--border);
-  }
-
-  .proof-strip dl>div:nth-child(4) {
-    border-top: 1px solid var(--border);
-  }
-
-  .proof-strip dt {
-    font-size: 1.65rem;
-  }
-
-  .private-source-note {
-    grid-template-columns: auto 1fr;
-  }
-
-  .private-source-note a {
-    grid-column: 2;
-  }
-
-  .project-proof-section {
-    padding: 3.5rem 0;
-  }
-
-  .project-proof-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .project-proof-card h3 {
-    margin-top: 1.8rem;
-  }
-
-  .featured-work {
-    padding-top: 3rem;
-    padding-bottom: 4rem;
-  }
-
-  .featured-work-layout {
-    display: block;
-  }
-
-  .featured-work-rail {
-    position: relative;
-    top: auto;
-    min-height: 0;
-    padding-bottom: 2.5rem;
-  }
-
-  .featured-work-rail h2 {
-    font-size: 2.65rem;
-  }
-
-  .featured-work-summary,
-  .featured-work-counter,
-  .featured-work-progress,
-  .featured-work-rail nav {
-    display: none;
-  }
-
-  .featured-work-cards {
-    gap: 1.25rem;
-  }
-
-  .featured-work-card {
-    min-height: 34rem;
-    border-radius: var(--radius-card);
-  }
-
-  .featured-work-card h3 {
-    font-size: 2.45rem;
-  }
-
-  .featured-work-card ul {
-    margin-top: 3rem;
-  }
-
-  .home-editorial-section,
-  .home-info-editorial,
-  .projects-explorer,
-  .experience-explorer,
-  .education-editorial {
-    display: block;
-  }
-
-  .home-section-rail,
-  .home-info-heading,
-  .projects-explorer-rail,
-  .experience-explorer-rail,
-  .education-editorial-heading {
-    position: relative;
-    top: auto;
-    min-height: 0;
-    padding-bottom: 2.5rem;
-  }
-
-  .home-section-rail h2,
-  .home-info-heading h2,
-  .projects-explorer-rail h1,
-  .experience-explorer-rail h1,
-  .education-editorial-heading h2 {
-    font-size: 2.65rem;
-  }
-
-  .projects-explorer-summary,
-  .projects-explorer-counter,
-  .projects-explorer-progress,
-  .projects-explorer-rail nav,
-  .experience-explorer-rail>p:nth-of-type(2),
-  .experience-active-role,
-  .experience-explorer-rail nav {
-    display: none;
-  }
-
-  .home-skill-cards,
-  .home-info-card-grid,
-  .education-card-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .home-skill-cards>.reveal>div {
-    min-height: 17.5rem;
-  }
-
-  .home-info-card {
-    min-height: 18rem;
-  }
-
-  .projects-explorer-list,
-  .experience-card-list {
-    gap: 1.25rem;
-  }
-
-  .projects-explorer-card {
-    min-height: 40rem;
-    border-radius: var(--radius-card);
-  }
-
-  .projects-explorer-card h2 {
-    font-size: 2.55rem;
-  }
-
-  .projects-explorer-evidence {
-    grid-template-columns: 1fr;
-  }
-
-  .projects-explorer-card footer {
-    display: block;
-  }
-
-  .projects-explorer-card footer>a {
-    margin-top: 1.5rem;
-  }
-
-  .experience-card {
-    min-height: 34rem;
-    border-radius: var(--radius-card);
-  }
-
-  .experience-card h2 {
-    font-size: 2.35rem;
-  }
-
-  .education-editorial {
-    margin-top: 6rem;
-  }
-
-  .education-card {
-    min-height: 15rem;
-  }
-}
-
 .name-svg {
   display: block;
   width: 100%;
@@ -4675,157 +3978,4 @@ body {
 .ink-underline:hover,
 .ink-underline:focus-visible {
   background-size: 100% 1.5px;
-}
-
-/*
- * Mobile-only motion trim (performance).
- * Desktop scores well and its look is deliberately tuned, so nothing here
- * touches the desktop rules. On phones these ambient loops and entrance
- * animations are barely perceptible but keep the main thread and compositor
- * busy, which is the main drag on the mobile Lighthouse score. We stop the
- * looping decoration and make the entrances instant, always restoring the
- * final visible state so nothing disappears.
- *
- * Intentionally LEFT RUNNING on mobile (the signature motion the site is
- * known for): the scroll-thread draw + ball drop (.scroll-thread*) and the
- * JS-driven doodle parallax on the portrait — neither is a keyframe here.
- */
-@media (max-width: 900px) {
-
-  /* Ambient loops that never settle — stop them. */
-  .parallax-blob {
-    animation: none;
-  }
-
-  .section-doodle {
-    animation: none;
-    transform: rotate(var(--doodle-rotation));
-  }
-
-  .hero-letter {
-    animation: none;
-  }
-
-  .hero-availability-dot::after {
-    animation: none;
-    opacity: 0.3;
-    transform: translate(-50%, -50%);
-  }
-
-  /* Low-value one-shot entrances — show the final state instantly so they
-     aren't competing with hydration. */
-  .reveal {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-
-  .hero-letter-shell {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-
-  .nav-name-letter-shell,
-  .nav-name-letter {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  .hero-availability-dot::after {
-    animation: none;
-    opacity: 0.3;
-    transform: translate(-50%, -50%);
-  }
-
-  .reveal,
-  .name-svg .ltr,
-  .hero-letter-shell,
-  .hero-letter,
-  .nav-name-letter-shell,
-  .nav-name-letter,
-  .section-doodle *,
-  .hdline-svg path,
-  .blob,
-  .parallax-blob,
-  [class*="icon-in"] {
-    animation: none !important;
-  }
-
-  .name-svg .ltr,
-  .hdline-svg path {
-    opacity: 1;
-  }
-
-  .hdline-svg path {
-    clip-path: none;
-  }
-
-  .scroll-thread-path {
-    stroke-dashoffset: 0 !important;
-    transition: none;
-  }
-
-  .section-doodle path,
-  .section-doodle circle,
-  .section-doodle ellipse {
-    stroke-dashoffset: 0;
-  }
-
-  .section-doodle {
-    animation: none;
-    transform: rotate(var(--doodle-rotation));
-  }
-
-  .doodle-tool-invite .doodle-tool-icon {
-    animation: none;
-  }
-
-  .theme-toggle-sun,
-  .theme-toggle-moon {
-    animation: none;
-  }
-
-  .doodle-tool-invite:hover .doodle-tool-icon,
-  .doodle-theme-toggle:hover .theme-toggle-sun,
-  .doodle-theme-toggle:hover .theme-toggle-moon {
-    animation: none;
-  }
-
-  .hero-letter-shell {
-    opacity: 1;
-    transform: none;
-  }
-
-  .nav-name-letter-shell,
-  .nav-name-letter {
-    opacity: 1;
-    transform: none;
-  }
-
-  .nav-dot {
-    display: none;
-  }
-
-  .scroll-thread-ball {
-    display: none;
-  }
-
-  .featured-work-progress span {
-    transition: none;
-  }
-
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    transition-duration: 0.001ms !important;
-  }
 }

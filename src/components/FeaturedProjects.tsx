@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, Github, LockKeyhole } from "lucide-react";
 import { SectionDoodle } from "@/components/SectionDoodle";
 import { projects } from "@/data/projects";
+import { useActiveIndexObserver } from "@/hooks/useActiveIndexObserver";
 
 const featuredProjectSlugs = new Set<string>([
   "lobasoft-enterprise-platform",
@@ -15,27 +15,8 @@ const featuredProjectSlugs = new Set<string>([
 const featuredProjects = projects.filter((project) => featuredProjectSlugs.has(project.slug));
 
 export function FeaturedProjects() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const { activeIndex, setObservedElement } = useActiveIndexObserver<HTMLElement>(featuredProjects.length);
   const activeProject = featuredProjects[activeIndex];
-
-  useEffect(() => {
-    const observers = cardRefs.current.map((card, index) => {
-      if (!card) return null;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveIndex(index);
-        },
-        { rootMargin: "-38% 0px -48%", threshold: 0 },
-      );
-
-      observer.observe(card);
-      return observer;
-    });
-
-    return () => observers.forEach((observer) => observer?.disconnect());
-  }, []);
 
   return (
     <section id="selected-work" className="featured-work" data-thread-anchor>
@@ -85,7 +66,7 @@ export function FeaturedProjects() {
               key={project.slug}
               id={`featured-${project.slug}`}
               ref={(card) => {
-                cardRefs.current[index] = card;
+                setObservedElement(index, card);
               }}
               data-index={String(index + 1).padStart(2, "0")}
               className={`featured-work-card project-accent-${project.accent} ${index % 2 === 0 ? "thread-over" : "thread-under"}`}

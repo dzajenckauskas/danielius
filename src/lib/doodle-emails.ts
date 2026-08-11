@@ -136,7 +136,7 @@ function renderShell({ preheader, eyebrow, content, footnote }: ShellOptions) {
                   <div style="${FOOTER_DIVIDER}">&nbsp;</div>
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:17px">
                     <tr>
-                      <td style="font-family:${monoStack};font-size:10px;letter-spacing:.14em;line-height:1.8;color:${color.subtle}"><span style="text-transform:uppercase">Danielius Zajenčkauskas</span><br>Front-end Engineer</td>
+                      <td style="font-family:${monoStack};font-size:10px;letter-spacing:.14em;line-height:1.8;color:${color.subtle}"><span style="text-transform:uppercase">Danielius Zajenčkauskas</span><br>Product Engineer</td>
                       <td align="right" valign="bottom"><a href="${SITE_URL}" style="font-family:${fontStack};font-size:12px;font-weight:600;color:${color.inkStrong};text-decoration:none">${SITE_LABEL}&nbsp;&#8599;&#65038;</a></td>
                     </tr>
                   </table>

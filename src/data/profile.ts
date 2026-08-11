@@ -61,8 +61,8 @@ export const skillGroups: SkillGroupData[] = [
   {
     label: "Reliability & Quality",
     description: "Making critical journeys testable, understandable and resilient when dependencies fail.",
-    items: ["Playwright", "Vitest", "React Testing Library", "Error Handling", "CI/CD", "AI-assisted delivery · Codex · Claude"],
-    resumeItems: ["Playwright", "Vitest", "CI/CD", "AI-assisted delivery"],
+    items: ["Playwright", "Vitest", "React Testing Library", "Error Handling", "CI/CD", "AI-assisted development"],
+    resumeItems: ["Playwright", "Vitest", "CI/CD", "AI-assisted development"],
   },
   {
     label: "Content & Delivery Systems",

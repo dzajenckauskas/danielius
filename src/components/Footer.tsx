@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { FileUser, Github, Linkedin, Mail } from "lucide-react";
 import { profile } from "@/data/profile";
+import { SocialLinks } from "@/components/SocialLinks";
 
 const quickLinks = [
   { href: "/projects", label: "Projects" },
@@ -28,44 +28,7 @@ export function Footer() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-1">
-          <a
-            href={profile.github}
-            target="_blank"
-            rel="noreferrer noopener"
-            aria-label="GitHub"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
-          >
-            <Github className="h-[18px] w-[18px]" />
-          </a>
-          {profile.linkedin && (
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="LinkedIn"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
-            >
-              <Linkedin className="h-[18px] w-[18px]" />
-            </a>
-          )}
-          <a
-            href="/api/resume"
-            target="_blank"
-            rel="noreferrer noopener"
-            aria-label="View CV"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
-          >
-            <FileUser className="h-[18px] w-[18px]" />
-          </a>
-          <a
-            href={`mailto:${profile.email}`}
-            aria-label="Email"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-text"
-          >
-            <Mail className="h-[18px] w-[18px]" />
-          </a>
-        </div>
+        <SocialLinks includeEmail />
       </div>
     </footer>
   );

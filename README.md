@@ -7,7 +7,7 @@ Personal website / portfolio for **Danielius Zajenckauskas** — Product Enginee
 🔗 **Live:** [zajenckauskas.lt](https://zajenckauskas.lt)
 
 Built with Next.js 15 (App Router), TypeScript, Tailwind CSS v4 and next-themes. Motion is
-hand-rolled CSS/canvas (see `Reveal.tsx`, `DoodleLayer.tsx`) rather than a motion library.
+hand-rolled with CSS and focused canvas hooks rather than a motion library.
 
 ## Structure
 
@@ -16,8 +16,8 @@ src/
   app/          Routes (App Router): home, /projects, /experience, résumé and doodle APIs
   components/   UI — hero, nav, project explorers, the doodle studio, resume/PDF rendering
   data/         Single source of truth for site copy (profile.ts, projects.ts) and content
-  hooks/        Shared client-side behaviour (e.g. portrait drag/resize geometry)
-  lib/          Framework-free logic — doodle canvas drawing, stroke math, form validation
+  hooks/        Shared client behaviour — observers, portrait geometry, drawing and export
+  lib/          Framework-free logic — drawing, stroke math, request validation and delivery
 e2e/            Playwright smoke tests
 ```
 
@@ -33,7 +33,7 @@ npm run dev      # http://localhost:3000
 ```bash
 npm run typecheck   # tsc --noEmit
 npm run lint        # ESLint
-npm test            # Vitest — unit tests for lib/ (doodle canvas, strokes, form validation)
+npm test            # Vitest — drawing, validation and doodle API security tests
 npm run test:e2e    # Playwright — nav, mobile menu, reduced motion, project/résumé flows
 ```
 
