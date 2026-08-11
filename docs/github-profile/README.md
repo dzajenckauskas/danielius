@@ -14,23 +14,23 @@ I build complex product interfaces backed by reliable services, integrations, an
 
 ## Hello
 
-I am a front-end-led, full-stack product engineer based in Vilnius, Lithuania. My work spans enterprise ERP, finance, payroll and HR platforms alongside e-commerce, healthcare, real-estate and service products.
+I am a front-end-led, full-stack product engineer based in Vilnius, Lithuania. I build enterprise platforms and complete digital products across ERP, finance, payroll, HR, e-commerce, healthcare, real estate and international services.
 
-I work beyond individual screens: shared component packages, configuration-driven forms/tables, Node.js/Strapi services, PostgreSQL, API integrations, payment/webhook workflows, PDF reports, transactional email, automated testing and production delivery. Recent work includes a **35-application enterprise ecosystem** plus an independently developed **multi-application marketplace**.
+My work extends beyond individual screens: shared packages, configuration-driven forms and data tables, Node.js/Strapi services, PostgreSQL models, API integrations, payment and webhook workflows, PDF generation, transactional email, automated testing and production operations. Current work includes a **35-application enterprise ecosystem**, an independently developed **five-application marketplace**, and full-stack ownership of customer, content and support systems for commercial clients.
 
 Before moving into software engineering, I worked in graphic design. That background still shapes how I approach information hierarchy, responsive behaviour, accessibility and the small interaction details that make complex products feel clear.
 
 ## What I focus on
 
 - Translating dense business rules into understandable product workflows
-- Building reusable, type-safe foundations across applications and teams
-- Designing resilient API integrations with explicit loading, validation and failure states
+- Building reusable, type-safe foundations across applications and product surfaces
+- Designing backend and integration workflows that remain safe under retries and partial failure
 - Creating accessible, responsive interfaces that hold up under real content
-- Supporting critical journeys with focused unit, integration and end-to-end tests
+- Supporting critical journeys with focused tests, observable failures and repeatable delivery
 
 ## AI-assisted engineering
 
-I build with AI coding agents as a core part of my workflow, and hold their output to the same bar as any other code — reviewed, tested, and true to the architecture. I direct agents through issue-driven sprints, code review and CI gates, so speed never comes at the cost of quality. My [Toolkit](https://github.com/dzajenckauskas/toolkit) project is planned, built and shipped this way end to end.
+I use AI coding agents as part of a disciplined engineering workflow and hold their output to the same standard as any other code: scoped, reviewed, tested and consistent with the architecture. I direct work through issue-driven planning, explicit acceptance criteria, code review and CI gates. My open-source [Toolkit](https://github.com/dzajenckauskas/toolkit) project documents and demonstrates that workflow end to end.
 
 ## Toolbox
 
@@ -39,6 +39,7 @@ I build with AI coding agents as a core part of my workflow, and hold their outp
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=111111)
 ![HTML](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
 ![CSS](https://img.shields.io/badge/CSS-1572B6?style=flat-square&logo=css3&logoColor=white)
@@ -51,12 +52,15 @@ I build with AI coding agents as a core part of my workflow, and hold their outp
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 ![GraphQL](https://img.shields.io/badge/GraphQL-E10098?style=flat-square&logo=graphql&logoColor=white)
 ![Stripe](https://img.shields.io/badge/Stripe-635BFF?style=flat-square&logo=stripe&logoColor=white)
+![Turborepo](https://img.shields.io/badge/Turborepo-EF4444?style=flat-square&logo=turborepo&logoColor=white)
 
 **Quality and delivery**
 
 ![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat-square&logo=playwright&logoColor=white)
 ![Vitest](https://img.shields.io/badge/Vitest-6E9F18?style=flat-square&logo=vitest&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![NGINX](https://img.shields.io/badge/NGINX-009639?style=flat-square&logo=nginx&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
 
 ## Experience
@@ -65,13 +69,13 @@ I build with AI coding agents as a core part of my workflow, and hold their outp
 
 `March 2024 – present` · Vilnius, Lithuania · Hybrid
 
-Building and modernising a 35-application enterprise platform spanning ERP, financials, payroll, HR, audit and employee self-service. I develop shared TypeScript packages with configuration-driven interfaces, deliver document/communication workflows, then strengthen accessibility, error handling and automated coverage.
+Sole front-end engineer for a 35-application enterprise platform spanning ERP, financials, payroll, HR, audit and employee self-service. I own 12 shared TypeScript packages, config-driven resource interfaces, specialised financial/document workflows and cross-application quality controls.
 
 ### Front-end Developer · Ideaformus
 
 `November 2021 – March 2024` · Vilnius, Lithuania
 
-Delivered customer-facing websites, bespoke e-commerce products, CMS, ERP and CRM interfaces. Built reusable React systems, modelled content in Strapi, integrated REST/GraphQL services, then shipped multilingual checkout, PDF catalogue and transactional-email workflows.
+Delivered customer-facing websites, bespoke e-commerce products and CMS, ERP and CRM interfaces. Worked across React/Next.js front ends and Strapi backends, modelling content and data, integrating REST/GraphQL services, and shipping multilingual checkout, lead capture, PDF catalogue and transactional-email workflows.
 
 ### Freelance Graphic Designer
 
@@ -83,7 +87,7 @@ Branding, packaging, editorial and digital-design work that continues to inform 
 
 ### [Toolkit — free, private browser tools](https://toolkit.zajenckauskas.lt) · [source](https://github.com/dzajenckauskas/toolkit)
 
-An **open-source** hub of 49 privacy-first tools — nearly all run entirely in the browser, with an isolated Playwright service for accessibility audits. Built as a Turborepo monorepo with a registry-driven catalog, strict types and a full CI/CD pipeline. My most complete **public** code sample.
+An **open-source** hub of 49 privacy-conscious tools. Nearly all processing stays on-device; accessibility audits run through a narrow, authenticated Playwright service. A typed registry, framework-independent tool logic, 266 unit/safety tests and 95 browser tests make this my most complete **public** engineering sample.
 
 `Next.js` · `React` · `TypeScript (strict)` · `Turborepo` · `Emotion` · `Vitest` · `Playwright`
 
@@ -95,27 +99,39 @@ My personal site: a Next.js App Router build with generated case studies, a PDF 
 
 ### [Lobasoft Enterprise Platform](https://zajenckauskas.lt/projects/lobasoft-enterprise-platform)
 
-A 35-application enterprise ecosystem covering ERP, financials, payroll, HR, audit and employee self-service.
+A 35-application enterprise ecosystem built on 12 shared packages and config-driven resource interfaces, with specialised accounting, document, signing, payroll and HR workflows.
 
 `React` · `TypeScript` · `Material UI` · `React PDF` · `React Email` · `OData / REST` · `Playwright`
 
 ### [Musės — Fly Tying Market](https://muses.lt)
 
-An independently developed marketplace connecting customer, seller, support and administration applications through shared domain packages.
+An independently developed five-application marketplace with shared domain packages, a Strapi/PostgreSQL backend, replay-safe Stripe and inventory workflows, seller-ledger accounting, and dedicated customer, seller, support and administration surfaces.
 
 `Next.js` · `React` · `TypeScript` · `Strapi` · `PostgreSQL` · `Stripe` · `Vitest` · `Playwright`
 
 ### [Deliver1](https://deliver1.co.uk)
 
-An international-removals platform with instant quotations, structured booking, payments, phone verification and customer issue tracking.
+Full-stack development across a customer-facing booking experience, its Node.js/Strapi backend and a separate support portal for customers and staff. The platform covers instant quotations, structured booking, payments, phone verification and end-to-end issue resolution.
 
 `Next.js` · `TypeScript` · `Strapi` · `Stripe` · `Firebase` · `PostgreSQL`
 
 ### [Ortopedijos Paslaugų Klinika](https://www.opklinika.lt)
 
-A healthcare content and product platform with a CMS-managed catalogue and branded, data-driven PDF generation.
+Full-stack development across a public healthcare website and its Node.js/Strapi backend, combining a CMS-managed catalogue with enquiry workflows and branded, data-driven PDF generation.
 
-`Next.js` · `TypeScript` · `Strapi` · `React PDF` · `SendGrid` · `Vitest`
+`Next.js` · `TypeScript` · `Strapi` · `React PDF` · `Nodemailer` · `Vitest`
+
+### [Tezaurus](https://tezaurus.lt)
+
+A multilingual self-service platform that runs three audit, accounting and payroll brands from one white-label Next.js architecture, combining CMS content with identity, subscriptions, orders, documents and Braintree payments.
+
+`Next.js` · `TypeScript` · `Apollo GraphQL` · `next-auth` · `Braintree` · `React PDF` · `React Email`
+
+### [Noreikis](https://www.noreikis.com)
+
+A full-stack real-estate platform with broker-managed listings and editorial content, server-rendered discovery, multilingual SEO, and structured contact and valuation workflows backed by Strapi and branded email delivery.
+
+`Next.js` · `TypeScript` · `Strapi` · `PostgreSQL` · `React Hook Form` · `Nodemailer`
 
 ## A note on source code
 
@@ -134,9 +150,9 @@ For a relevant opportunity, I can provide a guided architecture walkthrough or a
 
 <div align="center">
 
-### Open to selected front-end opportunities
+### Open to selected product-engineering opportunities
 
-I am most interested in teams that value thoughtful product work, dependable engineering and maintainable systems.
+I am most interested in front-end-led or full-stack product work with teams that value thoughtful interfaces, dependable engineering and maintainable systems.
 
 **[Explore my work](https://zajenckauskas.lt) · [Connect on LinkedIn](https://www.linkedin.com/in/danielius-zajenckauskas/) · [Send an email](mailto:danielius@zajenckauskas.lt)**
 
