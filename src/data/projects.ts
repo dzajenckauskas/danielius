@@ -44,10 +44,10 @@ export const projects: Project[] = [
     ],
     contribution: [
       "As the platform's sole front-end engineer, owned delivery from established OData/REST contracts to production UI — config-driven React Hook Form workflows, data tables, filters, actions and detail views across accounting, payroll, HR and financial applications.",
-      "Built the accounting workflows themselves: purchase and sales orders, invoice submission and approval, and on-demand document rendering.",
+      "Built the accounting workflows themselves: purchase/sales orders, invoice submission/approval and on-demand document rendering.",
       "Built employee self-service document workflows — submission, qualified and non-qualified e-signing by employees and managers — with matching React Email notifications.",
       "Developed time-tracking and timesheet interfaces alongside React PDF documents for invoices, orders and HR processes.",
-      "Built and maintained the 12 shared packages for forms, tables, lists, documents, domain types and theming that all ~35 apps consume, with strict TypeScript, Turborepo task orchestration and Playwright coverage controlling cross-application change risk.",
+      "Built and maintained the 12 shared packages for forms, tables, lists, documents, domain types and theming that all ~35 apps consume, with strict TypeScript, Turborepo task orchestration plus Playwright coverage controlling cross-application change risk.",
     ],
     caseStudy: {
       challenge:
@@ -160,7 +160,7 @@ export const projects: Project[] = [
       "Implemented the white-label architecture that ships three branded websites from one component tree, each with its own theme, analytics and integration configuration.",
       "Developed account journeys covering registration, email confirmation, password recovery and Dokobit e-identity sign-in on top of next-auth.",
       "Built React Hook Form and Yup-validated account, lead and checkout flows, with Redux Toolkit handling persistent client-side commerce state where it needed to survive navigation.",
-      "Implemented subscription and order checkout with coupons, Braintree payment methods and an invoice-payment fallback, plus proforma, invoice and contract-conditions PDFs rendered with React PDF.",
+      "Implemented subscription/order checkout with coupons, Braintree payment methods and an invoice-payment fallback; React PDF renders the supporting proformas, invoices and contract conditions.",
       "Created a suite of React Email transactional templates — orders, subscriptions, expiration reminders, contract and termination notices — tied to explicit order-state transitions.",
       "Handled technical SEO, per-brand analytics via next/third-parties, image optimisation and bundle analysis for a content-heavy multilingual surface.",
     ],
@@ -173,7 +173,7 @@ export const projects: Project[] = [
       ],
       quality: [
         "Tracked each order through four named payment stages — awaiting payment, awaiting contract, pending, paid — with a transactional email matched to every transition, so a client's inbox always reflects where their order stands.",
-        "Kept a large, multilingual content surface fast and discoverable with default-locale-clean routing, structured metadata, and image and bundle optimisation.",
+        "Kept a large, multilingual content surface fast and discoverable with default-locale-clean routing, structured metadata, image optimisation plus bundle analysis.",
       ],
       outcome:
         "One codebase now runs three branded businesses, and a visitor can go from a marketing page to a signed-in subscription, order or invoice without ever leaving the product.",
@@ -223,7 +223,7 @@ export const projects: Project[] = [
       "Standardised complex forms with React Hook Form and Yup, and isolated persistent cart state in Zustand instead of pushing all server data into a global client store.",
       "Implemented a generic product-variant model and stock service, then built Stripe checkout around idempotency keys, deduplicated webhooks, at-least-once workers and replay-safe stock restoration.",
       "Modelled seller wallets as an append-only ledger, with payout, immutable statement, reconciliation and dispute workflows guarded against duplicate financial side effects.",
-      "Added OTP/2FA authentication and protected public support endpoints with Cloudflare Turnstile, honeypots, server-side validation and Upstash Redis-backed rate limiting and deduplication.",
+      "Added OTP/2FA authentication; protected public support endpoints with Cloudflare Turnstile, honeypots, server-side validation plus Upstash Redis-backed rate limiting and deduplication.",
       "Built editable email templates and auditable notification-delivery records on top of Nodemailer, plus seller tooling with Tiptap rich text and client-side image editing/background removal.",
       "Automated Vitest and Playwright coverage and deployed the five production services to a self-managed VPS behind NGINX, with PM2 managing each application process.",
     ],
@@ -237,7 +237,7 @@ export const projects: Project[] = [
       ],
       quality: [
         "Covered domain services, ledger invariants, webhook replay and outage scenarios with Vitest, then used Playwright for high-value customer, seller and admin journeys.",
-        "Added structured operational events and worker metrics, automatic stock restoration, shared abuse controls and contextual failure states for support and finance teams.",
+        "Added structured operational events/worker metrics, automatic stock restoration, shared abuse controls plus contextual failure states for support and finance teams.",
       ],
       outcome:
         "Customer, seller and admin surfaces can each keep evolving without duplicating the underlying business rules or putting checkout and inventory integrity at risk.",
@@ -286,7 +286,7 @@ export const projects: Project[] = [
     ],
     contribution: [
       "Rebuilt the customer-facing architecture around reusable TypeScript and Material UI primitives, SWR/axios-hooks data boundaries and route-level metadata for CMS-driven pages.",
-      "Developed instant-quote, inventory and multi-step booking experiences with React Hook Form and step-specific Yup schemas for location, date, phone, inventory and contact data.",
+      "Developed instant-quote, inventory and multi-step booking experiences with React Hook Form. Step-specific Yup schemas validate location, date, phone, inventory and contact data.",
       "Kept sensitive integrations behind Next.js server routes: Stripe Payment Intents for deposits, Firebase OTP phone verification and Nodemailer SMTP delivery for transactional messages.",
       "Built a separate issue portal with secure tracking tokens, attachments, assignment and threaded status updates; Next.js proxy routes verify Cloudflare Turnstile and file allow-lists before forwarding accepted writes to Strapi.",
       "Added layered abuse controls to public support flows — honeypots, dwell-time checks, rate limits, request deduplication, timeouts and structured security events, with Upstash Redis used when shared production state is configured.",
@@ -306,7 +306,7 @@ export const projects: Project[] = [
         "Reduced media cost with progressive loading, responsive images, adjacent-image preloading and touch-friendly navigation rather than loading full galleries eagerly.",
       ],
       outcome:
-        "The path from a first estimate to a booked, structured move is shorter and clearer for customers, and the front-end is easier to extend across new service and support journeys.",
+        "The path from a first estimate to a booked, structured move is shorter and clearer for customers; the front-end is easier to extend across new service and support journeys.",
     },
     sourceAccess: {
       visibility: "private",
@@ -353,9 +353,9 @@ export const projects: Project[] = [
     contribution: [
       "Built responsive service, category, product and clinic-information templates with static generation and incremental revalidation for stable content, while retaining server rendering where filtered results must stay request-specific.",
       "Modelled and integrated structured Strapi content for services, product categories, diagnoses, reviews and pricing.",
-      "Generated branded catalogues on demand through a Next.js API route and React PDF streaming, including custom fonts, diagnosis and reimbursement tables, and multi-page pagination.",
-      "Built React Hook Form/Yup enquiry flows with SendGrid delivery, and covered form and PDF behaviour with Vitest and React Testing Library.",
-      "Deployed and maintained the Next.js and Strapi applications on a self-managed VPS, with NGINX routing traffic and PM2 keeping the Node.js processes available.",
+      "Generated branded catalogues on demand through a Next.js API route with React PDF streaming, including custom fonts, diagnosis/reimbursement tables plus multi-page pagination.",
+      "Built React Hook Form/Yup enquiry flows with SendGrid delivery; covered form/PDF behaviour with Vitest and React Testing Library.",
+      "Deployed and maintained the Next.js/Strapi applications on a self-managed VPS. NGINX routes traffic, while PM2 keeps the Node.js processes available.",
     ],
     caseStudy: {
       challenge:
@@ -411,9 +411,9 @@ export const projects: Project[] = [
       "A Node.js/Strapi API gives the broker direct control over listings, articles and search metadata, while server-rendered Next.js pages keep changing inventory discoverable and contextual valuation forms turn that traffic into qualified leads.",
     ],
     contribution: [
-      "Developed the responsive Next.js interface and reusable property, editorial and profile sections, using request-time rendering for live listings and articles.",
+      "Developed the responsive Next.js interface with reusable property, editorial and profile sections, using request-time rendering for live listings and articles.",
       "Modelled and integrated Strapi-managed listings, articles, FAQs, testimonials, galleries and SEO metadata.",
-      "Built reusable React Hook Form primitives and conditional Yup schemas for contact and property-price enquiries, including category-dependent fields and branded Nodemailer delivery through Strapi.",
+      "Built reusable React Hook Form primitives plus conditional Yup schemas for contact/property-price enquiries, including category-dependent fields and branded Nodemailer delivery through Strapi.",
       "Implemented multilingual content, property sorting and filtering, motion details and technical SEO.",
       "Automated VPS deployment for both the Next.js front-end and Strapi API, using NGINX as the reverse proxy and PM2 for Node.js process management.",
     ],
@@ -427,7 +427,7 @@ export const projects: Project[] = [
       ],
       quality: [
         "Added next-i18next routing, CMS-controlled metadata, predictable property sorting and careful Framer Motion details that do not obscure primary actions.",
-        "Automated front-end and API deployment through GitHub Actions and kept form and email failures visible and recoverable for prospective clients.",
+        "Automated front-end/API deployment through GitHub Actions; kept form or email failures visible and recoverable for prospective clients.",
       ],
       outcome:
         "The platform earns organic discovery on its own merits and converts a share of it into qualified enquiries, while staying maintainable for a small content-and-development workflow.",

@@ -6,7 +6,7 @@ export const profile = {
   firstName: "Danielius",
   role: "Front-end & Full-stack Product Engineer",
   tagline:
-    "I build complex product interfaces and the backend systems, integrations and infrastructure that support them.",
+    "I build complex product interfaces backed by reliable services, integrations, and production infrastructure.",
   location: "Vilnius, Lithuania",
   availability: "Available for freelance projects, agency partnerships and selected full-time roles",
   email: "danielius@zajenckauskas.lt",
@@ -109,7 +109,7 @@ export const experience: TimelineEntry[] = [
     period: "Mar 2024 – Present · Hybrid",
     year: "2024",
     description:
-      "Building and modernising a 35-application enterprise platform spanning ERP, financials, payroll, HR and audit, as the team's sole front-end engineer in an Agile, Kanban-style workflow — a continuously prioritised Jira backlog across concurrent workstreams, no fixed sprints. Develop shared TypeScript packages and config-driven form/list architecture; deliver PDF reporting, React Email notifications, document upload and signing workflows; and improve accessibility, error handling and automated coverage.",
+      "Building and modernising a 35-application enterprise platform spanning ERP, financials, payroll, HR and audit, as the team's sole front-end engineer in an Agile, Kanban-style workflow — a continuously prioritised Jira backlog across concurrent workstreams, no fixed sprints. Develop shared TypeScript packages with config-driven form/list architecture; deliver PDF reporting, React Email notifications plus document upload/signing workflows; improve accessibility, error handling and automated coverage.",
     tags: [
       "React",
       "TypeScript",
@@ -129,7 +129,7 @@ export const experience: TimelineEntry[] = [
     period: "Nov 2021 – Mar 2024 · Vilnius",
     year: "2021",
     description:
-      "Delivered customer-facing websites, bespoke e-commerce applications and CMS, ERP and CRM interfaces, as the team's sole front-end engineer in the same Agile, Kanban-style workflow — a continuously prioritised Jira backlog across concurrent projects, no fixed sprints. Built reusable TypeScript and React systems, modelled content in Strapi, integrated REST and GraphQL services, and shipped multilingual lead-generation, checkout, PDF catalogue and transactional-email workflows.",
+      "Delivered customer-facing websites, bespoke e-commerce applications and CMS, ERP and CRM interfaces, as the team's sole front-end engineer in the same Agile, Kanban-style workflow — a continuously prioritised Jira backlog across concurrent projects, no fixed sprints. Built reusable TypeScript/React systems, modelled content in Strapi, integrated REST/GraphQL services and shipped multilingual lead-generation, checkout, PDF catalogue plus transactional-email workflows.",
     tags: [
       "React",
       "Next.js",

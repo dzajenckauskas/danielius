@@ -4,7 +4,7 @@
 
 ### Front-end & Full-stack Product Engineer · React · Next.js · TypeScript
 
-I build complex product interfaces and the backend systems, integrations and infrastructure that support them.
+I build complex product interfaces backed by reliable services, integrations, and production infrastructure.
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-zajenckauskas.lt-4F736E?style=for-the-badge&logo=safari&logoColor=white)](https://zajenckauskas.lt)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Let's_connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/danielius-zajenckauskas/)
@@ -16,7 +16,7 @@ I build complex product interfaces and the backend systems, integrations and inf
 
 I am a front-end-led, full-stack product engineer based in Vilnius, Lithuania. My work spans enterprise ERP, finance, payroll and HR platforms alongside e-commerce, healthcare, real-estate and service products.
 
-I work beyond individual screens: shared component packages, configuration-driven forms and data tables, Node.js/Strapi services, PostgreSQL, API integrations, payment and webhook workflows, PDF reports, transactional email, automated testing and production delivery. Recent work includes a **35-application enterprise ecosystem** and an independently developed **multi-application marketplace**.
+I work beyond individual screens: shared component packages, configuration-driven forms/tables, Node.js/Strapi services, PostgreSQL, API integrations, payment/webhook workflows, PDF reports, transactional email, automated testing and production delivery. Recent work includes a **35-application enterprise ecosystem** plus an independently developed **multi-application marketplace**.
 
 Before moving into software engineering, I worked in graphic design. That background still shapes how I approach information hierarchy, responsive behaviour, accessibility and the small interaction details that make complex products feel clear.
 
@@ -65,13 +65,13 @@ I build with AI coding agents as a core part of my workflow, and hold their outp
 
 `March 2024 – present` · Vilnius, Lithuania · Hybrid
 
-Building and modernising a 35-application enterprise platform spanning ERP, financials, payroll, HR, audit and employee self-service. I develop shared TypeScript packages and configuration-driven interfaces, deliver document and communication workflows, and strengthen accessibility, error handling and automated coverage.
+Building and modernising a 35-application enterprise platform spanning ERP, financials, payroll, HR, audit and employee self-service. I develop shared TypeScript packages with configuration-driven interfaces, deliver document/communication workflows, then strengthen accessibility, error handling and automated coverage.
 
 ### Front-end Developer · Ideaformus
 
 `November 2021 – March 2024` · Vilnius, Lithuania
 
-Delivered customer-facing websites, bespoke e-commerce products and CMS, ERP and CRM interfaces. Built reusable React systems, modelled content in Strapi, integrated REST and GraphQL services, and shipped multilingual checkout, PDF catalogue and transactional-email workflows.
+Delivered customer-facing websites, bespoke e-commerce products, CMS, ERP and CRM interfaces. Built reusable React systems, modelled content in Strapi, integrated REST/GraphQL services, then shipped multilingual checkout, PDF catalogue and transactional-email workflows.
 
 ### Freelance Graphic Designer
 
