@@ -2,8 +2,11 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-
-type Point = { x: number; y: number; loops?: number; radius?: number };
+import {
+  buildScrollThreadPath,
+  type ScrollThreadPoint,
+} from "@/lib/scroll-thread-path";
+import { extendScrollThreadDashPattern } from "@/lib/scroll-thread-dashes";
 
 // The nav ball fires "nav-ball-exit" when it tumbles out of the header; the
 // thread ball takes over here, riding the tip of the thread and drawing it
@@ -19,96 +22,93 @@ const SAMPLE_STEP_LOW_POWER = 14;
 // The trace records how you scrolled: a slow ball presses down and draws a
 // solid line; a fast one skims and leaves spaced skip-marks. Gap size scales
 // with drawing speed (path px/s, smoothed) between these two thresholds.
-const SPEED_SOLID = 500;
-const SPEED_SKIM = 4000;
-const DASH_BASE = 10;
-const GAP_MAX = 20;
+function useScrollThreadRuntime() {
+  const runtimeRef = useRef<{
+    svgRef: { current: SVGSVGElement | null };
+    pathRef: { current: SVGPathElement | null };
+    turbulenceRef: { current: SVGFETurbulenceElement | null };
+    displacementRef: { current: SVGFEDisplacementMapElement | null };
+    ballRef: { current: HTMLDivElement | null };
+    maskRef: { current: SVGMaskElement | null };
+    maskPathRef: { current: SVGPathElement | null };
+    frameRef: { current: number | null };
+    variationRef: { current: number[] };
+    pointerRef: { current: { x: number; y: number } };
+    interactionRef: { current: number };
+    samplesRef: { current: { x: number; y: number }[] };
+    totalRef: { current: number };
+    ballModeRef: { current: "hidden" | "catchup" | "live" };
+    drawnRef: { current: number };
+    reducedMotionRef: { current: boolean };
+    patternRef: { current: number[] };
+    patternLenRef: { current: number };
+    speedRef: { current: number };
+    lastDrawnRef: { current: number };
+    lastTimeRef: { current: number };
+    lastAppliedDrawnRef: { current: number };
+    geometryRef: { current: { width: number; height: number } };
+    blobsRef: { current: HTMLElement[] };
+    lowPowerRef: { current: boolean };
+    stepRef: { current: number };
+    measuredRef: { current: boolean };
+  } | null>(null);
 
-function connect(path: string, from: Point, to: Point, character: number) {
-  const distance = Math.max(to.y - from.y, 80);
-  const sway = (character - 0.5) * 32;
-  return `${path} C ${from.x + sway} ${from.y + distance * 0.34}, `
-    + `${to.x - sway * 0.35} ${to.y - distance * 0.24}, ${to.x} ${to.y}`;
+  if (!runtimeRef.current) {
+    runtimeRef.current = {
+      svgRef: { current: null },
+      pathRef: { current: null },
+      turbulenceRef: { current: null },
+      displacementRef: { current: null },
+      ballRef: { current: null },
+      maskRef: { current: null },
+      maskPathRef: { current: null },
+      frameRef: { current: null },
+      variationRef: { current: [] },
+      pointerRef: { current: { x: 0, y: 0 } },
+      interactionRef: { current: 0 },
+      samplesRef: { current: [] },
+      totalRef: { current: 0 },
+      ballModeRef: { current: "hidden" },
+      drawnRef: { current: 0 },
+      reducedMotionRef: { current: false },
+      patternRef: { current: [] },
+      patternLenRef: { current: 0 },
+      speedRef: { current: 0 },
+      lastDrawnRef: { current: 0 },
+      lastTimeRef: { current: 0 },
+      lastAppliedDrawnRef: { current: -1 },
+      geometryRef: { current: { width: 0, height: 0 } },
+      blobsRef: { current: [] },
+      lowPowerRef: { current: false },
+      stepRef: { current: SAMPLE_STEP },
+      measuredRef: { current: false },
+    };
+  }
+
+  return runtimeRef.current;
 }
 
-function addOrbit(path: string, center: Point, radius: number, character: number) {
-  // An intentionally uneven gesture rather than a geometric ellipse. Unequal
-  // lobes, a tilted axis and an off-centre return create a loose hand motion.
-  const lean = (character - 0.5) * radius * 0.5;
-  const horizontal = radius * (0.82 + character * 0.3);
-  const vertical = radius * (0.62 + (1 - character) * 0.28);
-  const x = center.x;
-  const y = center.y;
-  const startX = x - radius * (0.94 + character * 0.1);
-  const startY = y;
+type ScrollThreadRefs = ReturnType<typeof useScrollThreadRuntime>;
 
-  return path
-    + ` C ${x - horizontal * 1.08} ${y + vertical * 0.48}, ${x - horizontal * 0.42 + lean} ${y + vertical * 1.08}, ${x + horizontal * 0.12 + lean} ${y + vertical * 0.86}`
-    + ` C ${x + horizontal * 0.72} ${y + vertical * 0.7}, ${x + horizontal * 1.06} ${y + vertical * 0.12}, ${x + horizontal * 0.82} ${y - vertical * 0.34}`
-    + ` C ${x + horizontal * 0.58 - lean} ${y - vertical * 0.94}, ${x - horizontal * 0.12 - lean} ${y - vertical * 1.02}, ${x - horizontal * 0.66} ${y - vertical * 0.62}`
-    + ` C ${x - horizontal * 1.04} ${y - vertical * 0.38}, ${x - horizontal * 1.12} ${y + vertical * 0.02}, ${startX} ${startY}`;
-}
-
-function buildPath(points: Point[], variation: number[]) {
-  if (points.length < 2) return "";
-  let current = points[0];
-  let path = `M ${current.x} ${current.y}`;
-
-  points.slice(1).forEach((point, index) => {
-    const character = variation[index % variation.length] ?? 0.5;
-    const loopCount = point.loops ?? 0;
-
-    if (loopCount > 0) {
-      const radius = point.radius ?? 42;
-      const orbitStart = { x: point.x - radius * (0.94 + character * 0.1), y: point.y };
-      path = connect(path, current, orbitStart, character);
-
-      for (let loop = 0; loop < loopCount; loop += 1) {
-        path = addOrbit(path, point, radius + loop * 8, character);
-      }
-      current = orbitStart;
-      return;
-    }
-
-    path = connect(path, current, point, character);
-    current = point;
-  });
-
-  return path;
-}
-
-export function ScrollThread() {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-  const frameRef = useRef<number | null>(null);
-  const variationRef = useRef<number[]>([]);
-  const pointerRef = useRef({ x: 0, y: 0 });
-  const interactionRef = useRef(0);
-  const turbulenceRef = useRef<SVGFETurbulenceElement>(null);
-  const displacementRef = useRef<SVGFEDisplacementMapElement>(null);
-  const ballRef = useRef<HTMLDivElement>(null);
-  const maskRef = useRef<SVGMaskElement>(null);
-  const maskPathRef = useRef<SVGPathElement>(null);
-  const samplesRef = useRef<{ x: number; y: number }[]>([]);
-  const totalRef = useRef(0);
-  const ballModeRef = useRef<"hidden" | "catchup" | "live">("hidden");
-  const drawnRef = useRef(0);
-  const reducedMotionRef = useRef(false);
-  const patternRef = useRef<number[]>([]);
-  const patternLenRef = useRef(0);
-  const speedRef = useRef(0);
-  const lastDrawnRef = useRef(0);
-  const lastTimeRef = useRef(0);
-  const lastAppliedDrawnRef = useRef(-1);
-  const geometryRef = useRef({ width: 0, height: 0 });
-  const blobsRef = useRef<HTMLElement[]>([]);
-  // Touch devices: skip the displacement filter and per-frame parallax work —
-  // re-rasterizing a document-height filtered SVG every scroll frame is the
-  // main source of mobile jank.
-  const lowPowerRef = useRef(false);
-  const stepRef = useRef(SAMPLE_STEP);
-  const measuredRef = useRef(false);
-  const pathname = usePathname();
+function useScrollThreadDrawing(refs: ScrollThreadRefs) {
+  const {
+    svgRef,
+    pathRef,
+    ballRef,
+    maskPathRef,
+    samplesRef,
+    totalRef,
+    ballModeRef,
+    drawnRef,
+    reducedMotionRef,
+    patternRef,
+    patternLenRef,
+    speedRef,
+    lastDrawnRef,
+    lastTimeRef,
+    lastAppliedDrawnRef,
+    stepRef,
+  } = refs;
 
   // Length along the path whose point sits at the "pen tip" for the current
   // scroll position. Scanning to the first sample below the tip line makes
@@ -125,7 +125,7 @@ export function ScrollThread() {
     let i = 0;
     while (i < samples.length - 1 && samples[i].y < tipY) i += 1;
     return Math.min(i * stepRef.current, totalRef.current);
-  }, []);
+  }, [samplesRef, stepRef, totalRef]);
 
   const drawThread = useCallback(() => {
     const maskPath = maskPathRef.current;
@@ -162,26 +162,19 @@ export function ScrollThread() {
     // Lay down ink just ahead of the reveal edge: solid runs while slow,
     // skip-marks with speed-sized gaps while fast. Once laid, never redrawn.
     if (drawn + 40 > patternLenRef.current && patternLenRef.current < totalRef.current + 40) {
-      const pattern = patternRef.current;
-      const skim = Math.max(0, Math.min(1, (speedRef.current - SPEED_SOLID) / (SPEED_SKIM - SPEED_SOLID)));
-      const baseGap = skim * GAP_MAX;
       const pathElement = pathRef.current;
-      while (patternLenRef.current < Math.min(drawn + 40, totalRef.current + 40)) {
-        // Mild per-segment jitter on top of the speed-driven gap, so it
-        // doesn't track speed with mechanical uniformity but still stays
-        // speed-led overall.
-        const roll = Math.random();
-        const gapMultiplier = roll < 0.12 ? 0 : 0.8 + Math.random() * 0.4;
-        const dash = DASH_BASE + skim * 8 + (Math.random() - 0.5) * 2;
-        const dashGap = baseGap * gapMultiplier < 1.5 ? 0 : baseGap * gapMultiplier;
-        if (dashGap === 0 && pattern.length >= 2 && pattern[pattern.length - 1] === 0) {
-          pattern[pattern.length - 2] += dash;
-        } else {
-          pattern.push(dash, dashGap);
-        }
-        patternLenRef.current += dash + dashGap;
+      patternLenRef.current = extendScrollThreadDashPattern({
+        pattern: patternRef.current,
+        patternLength: patternLenRef.current,
+        targetLength: drawn + 40,
+        totalLength: totalRef.current,
+        speed: speedRef.current,
+      });
+      if (pathElement) {
+        pathElement.style.strokeDasharray = patternRef.current
+          .map((number) => number.toFixed(1))
+          .join(" ");
       }
-      if (pathElement) pathElement.style.strokeDasharray = pattern.map((n) => n.toFixed(1)).join(" ");
     }
     const point = samples[Math.min(Math.round(drawn / stepRef.current), samples.length - 1)];
     const svgWidth = svgRef.current?.clientWidth || window.innerWidth;
@@ -190,7 +183,52 @@ export function ScrollThread() {
     const roll = (drawn / (2 * Math.PI * BALL_R)) * 360;
     ball.style.opacity = "1";
     ball.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) rotate(${roll.toFixed(0)}deg)`;
-  }, [tipLength]);
+  }, [
+    ballRef,
+    ballModeRef,
+    drawnRef,
+    lastAppliedDrawnRef,
+    lastDrawnRef,
+    lastTimeRef,
+    maskPathRef,
+    patternLenRef,
+    patternRef,
+    pathRef,
+    reducedMotionRef,
+    samplesRef,
+    speedRef,
+    stepRef,
+    svgRef,
+    tipLength,
+    totalRef,
+  ]);
+
+  return { tipLength, drawThread };
+}
+
+function useScrollThreadGeometry(
+  refs: ScrollThreadRefs,
+  drawThread: () => void,
+) {
+  const {
+    svgRef,
+    pathRef,
+    turbulenceRef,
+    maskRef,
+    maskPathRef,
+    variationRef,
+    totalRef,
+    patternRef,
+    patternLenRef,
+    speedRef,
+    lastDrawnRef,
+    lastAppliedDrawnRef,
+    geometryRef,
+    blobsRef,
+    stepRef,
+    samplesRef,
+    measuredRef,
+  } = refs;
 
   const measure = useCallback((force = false) => {
     const svg = svgRef.current;
@@ -243,7 +281,7 @@ export function ScrollThread() {
     const logoShells = document.querySelectorAll<HTMLElement>(".nav-name .nav-name-letter-shell");
     const firstLetter = logoShells[0];
     const lastLetter = logoShells[logoShells.length - 1];
-    const points: Point[] = [];
+    const points: ScrollThreadPoint[] = [];
     const toViewBoxX = (px: number) => Math.max(20, Math.min(980, (px / svgWidth) * 1000));
     if (firstLetter && lastLetter) {
       const firstRect = firstLetter.getBoundingClientRect();
@@ -295,7 +333,7 @@ export function ScrollThread() {
 
     svg.setAttribute("viewBox", `0 0 1000 ${documentHeight}`);
     svg.style.height = `${documentHeight}px`;
-    const pathData = buildPath(points, variation);
+    const pathData = buildScrollThreadPath(points, variation);
     path.setAttribute("d", pathData);
     maskPathRef.current?.setAttribute("d", pathData);
     if (maskRef.current) {
@@ -323,7 +361,52 @@ export function ScrollThread() {
     });
     measuredRef.current = true;
     drawThread();
-  }, [drawThread]);
+  }, [
+    blobsRef,
+    drawThread,
+    geometryRef,
+    lastAppliedDrawnRef,
+    lastDrawnRef,
+    maskPathRef,
+    maskRef,
+    measuredRef,
+    patternLenRef,
+    patternRef,
+    pathRef,
+    samplesRef,
+    speedRef,
+    stepRef,
+    svgRef,
+    totalRef,
+    turbulenceRef,
+    variationRef,
+  ]);
+
+  return measure;
+}
+
+function useScrollThreadMotion(
+  refs: ScrollThreadRefs,
+  pathname: string,
+  drawThread: () => void,
+  tipLength: () => number,
+  measure: (force?: boolean) => void,
+) {
+  const {
+    svgRef,
+    pathRef,
+    displacementRef,
+    frameRef,
+    pointerRef,
+    interactionRef,
+    ballModeRef,
+    drawnRef,
+    reducedMotionRef,
+    blobsRef,
+    lowPowerRef,
+    stepRef,
+    measuredRef,
+  } = refs;
 
   const update = useCallback(() => {
     frameRef.current = null;
@@ -358,7 +441,17 @@ export function ScrollThread() {
     if (interactionRef.current > 0.015) {
       frameRef.current = requestAnimationFrame(update);
     }
-  }, [drawThread]);
+  }, [
+    blobsRef,
+    displacementRef,
+    drawThread,
+    frameRef,
+    interactionRef,
+    lowPowerRef,
+    pathRef,
+    pointerRef,
+    svgRef,
+  ]);
 
   useEffect(() => {
     const schedule = () => {
@@ -454,7 +547,40 @@ export function ScrollThread() {
       }
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
     };
-  }, [measure, pathname, update, drawThread, tipLength]);
+  }, [
+    ballModeRef,
+    drawnRef,
+    drawThread,
+    frameRef,
+    interactionRef,
+    lowPowerRef,
+    measure,
+    measuredRef,
+    pathname,
+    pathRef,
+    pointerRef,
+    reducedMotionRef,
+    stepRef,
+    tipLength,
+    update,
+  ]);
+}
+
+export function ScrollThread() {
+  const refs = useScrollThreadRuntime();
+  const pathname = usePathname();
+  const { tipLength, drawThread } = useScrollThreadDrawing(refs);
+  const measure = useScrollThreadGeometry(refs, drawThread);
+  useScrollThreadMotion(refs, pathname, drawThread, tipLength, measure);
+  const {
+    svgRef,
+    pathRef,
+    turbulenceRef,
+    displacementRef,
+    ballRef,
+    maskRef,
+    maskPathRef,
+  } = refs;
 
   return (
     <>

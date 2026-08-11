@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { createPortal } from "react-dom";
 import { Maximize2, Pencil } from "lucide-react";
@@ -15,32 +15,20 @@ import { useDoodleExport } from "@/hooks/useDoodleExport";
 import { useStudioDrag } from "@/hooks/useStudioDrag";
 import { useDoodleSubmission } from "@/hooks/useDoodleSubmission";
 import { useDoodleDrawing } from "@/hooks/useDoodleDrawing";
-import {
-  defaultPortraitDoodle,
-  DOODLE_PORTRAIT_SELECTOR,
-  useDoodleCanvas,
-} from "@/hooks/useDoodleCanvas";
+import { useDoodleCanvas } from "@/hooks/useDoodleCanvas";
+import { useDoodleHero } from "@/hooks/useDoodleHero";
+import { useDoodleKeyboardShortcuts } from "@/hooks/useDoodleKeyboardShortcuts";
+import { useDoodleStudioPlacement } from "@/hooks/useDoodleStudioPlacement";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 export function DoodleLayer() {
   const pathname = usePathname();
-  const studioWidthRef = useRef(320);
-  const studioWidthCapturedRef = useRef(false);
   const [active, setActive] = useState(false);
   const [studioMinimized, setStudioMinimized] = useState(false);
   const [portraitResizeEnabled, setPortraitResizeEnabled] = useState(false);
-  const [heroInView, setHeroInView] = useState(false);
-  const [doodleSurface, setDoodleSurface] = useState<HTMLElement | null>(null);
-  const [doodleAnchor, setDoodleAnchor] = useState<HTMLElement | null>(null);
   const [toolsAnchor, setToolsAnchor] = useState<HTMLElement | null>(null);
   const { studioRef, studioOffset, startStudioDrag, moveStudio, finishStudioDrag } = useStudioDrag();
-  const [studioPlacement, setStudioPlacement] = useState({
-    left: 0,
-    top: 0,
-    width: 320,
-    ready: false,
-  });
   const [tool, setTool] = useState<Tool>("pen");
   const [color, setColor] = useState(DOODLE_COLORS[0]);
   const [weight, setWeight] = useState(DEFAULT_DOODLE_WEIGHT);
@@ -74,6 +62,26 @@ export function DoodleLayer() {
     defaultActionCountRef,
     redraw,
   });
+  const deactivate = useCallback(() => {
+    setPortraitResizeEnabled(false);
+    setActive(false);
+  }, []);
+  const { heroInView, doodleSurface, doodleAnchor } = useDoodleHero({
+    pathname,
+    actionsRef,
+    defaultActionCountRef,
+    defaultAnimationFrameRef,
+    defaultAnimationProgressRef,
+    prepareCanvas,
+    redraw,
+    setHistorySize,
+    deactivate,
+  });
+  const { placement: studioPlacement, prepareToOpen } = useDoodleStudioPlacement(
+    active,
+    pathname,
+    doodleAnchor,
+  );
   const { exportArtwork, exportStrokes, exportPortraitComposite, exportPortraitCard } = useDoodleExport(actionsRef);
   const {
     sendOpen,
@@ -95,6 +103,14 @@ export function DoodleLayer() {
     exportPortraitComposite,
     exportPortraitCard,
   });
+  useDoodleKeyboardShortcuts({
+    active,
+    sendOpen,
+    historySize,
+    closeSend,
+    deactivate,
+    undo,
+  });
 
   useEffect(() => {
     window.dispatchEvent(new CustomEvent("portrait-resize-mode", {
@@ -110,188 +126,6 @@ export function DoodleLayer() {
   useEffect(() => {
     setToolsAnchor(document.querySelector<HTMLElement>("[data-page-tools]"));
   }, []);
-
-  useEffect(() => {
-    if (pathname === "/") return;
-    const defaultCount = Math.min(
-      defaultActionCountRef.current,
-      actionsRef.current.length,
-    );
-    if (defaultCount === 0) return;
-
-    if (defaultAnimationFrameRef.current !== null) {
-      window.cancelAnimationFrame(defaultAnimationFrameRef.current);
-      defaultAnimationFrameRef.current = null;
-    }
-    actionsRef.current = actionsRef.current.slice(defaultCount);
-    defaultActionCountRef.current = 0;
-    defaultAnimationProgressRef.current = 1;
-    setHistorySize(actionsRef.current.length);
-    redraw();
-  }, [
-    actionsRef,
-    defaultActionCountRef,
-    defaultAnimationFrameRef,
-    defaultAnimationProgressRef,
-    pathname,
-    redraw,
-    setHistorySize,
-  ]);
-
-  useEffect(() => {
-    if (pathname !== "/") {
-      studioWidthCapturedRef.current = false;
-      setHeroInView(false);
-      setDoodleSurface(null);
-      setDoodleAnchor(null);
-      setActive(false);
-      return;
-    }
-
-    const hero = document.querySelector<HTMLElement>(".hero-editorial");
-    const anchor = document.querySelector<HTMLElement>("[data-doodle-control-anchor]");
-    setDoodleSurface(hero);
-    setDoodleAnchor(anchor);
-    if (anchor) {
-      studioWidthRef.current = Math.min(
-        anchor.getBoundingClientRect().width,
-        window.innerWidth - 24,
-      );
-    }
-    if (!hero) {
-      setHeroInView(false);
-      return;
-    }
-
-    const updateVisibility = (visible: boolean) => {
-      setHeroInView(visible);
-      if (!visible) setActive(false);
-    };
-    const rect = hero.getBoundingClientRect();
-    updateVisibility(rect.bottom > 0 && rect.top < window.innerHeight);
-
-    const observer = new IntersectionObserver(
-      ([entry]) => updateVisibility(entry.isIntersecting),
-      { rootMargin: "-30% 0px 0px", threshold: 0 },
-    );
-    observer.observe(hero);
-
-    return () => observer.disconnect();
-  }, [pathname]);
-
-  useEffect(() => {
-    if (pathname !== "/") return;
-    const frame = document.querySelector<HTMLElement>(DOODLE_PORTRAIT_SELECTOR);
-    if (!frame || defaultActionCountRef.current > 0) return;
-    let seeded = false;
-    const seedDoodle = () => {
-      if (seeded || defaultActionCountRef.current > 0) return;
-      seeded = true;
-      const defaults = defaultPortraitDoodle(frame.getBoundingClientRect());
-      actionsRef.current = [...defaults, ...actionsRef.current];
-      defaultActionCountRef.current = defaults.length;
-      defaultAnimationProgressRef.current = 0;
-      setHistorySize(actionsRef.current.length);
-      prepareCanvas();
-      const shouldAnimate = window.innerWidth > 900
-        && !window.matchMedia("(pointer: coarse), (prefers-reduced-motion: reduce)").matches;
-      if (!shouldAnimate) {
-        defaultAnimationProgressRef.current = 1;
-        redraw();
-        return;
-      }
-      const startedAt = performance.now();
-      const animateDoodle = (time: number) => {
-        defaultAnimationProgressRef.current = Math.min(1, (time - startedAt) / 1_800);
-        redraw();
-        if (defaultAnimationProgressRef.current < 1) {
-          defaultAnimationFrameRef.current = window.requestAnimationFrame(animateDoodle);
-        } else {
-          defaultAnimationFrameRef.current = null;
-        }
-      };
-      defaultAnimationFrameRef.current = window.requestAnimationFrame(animateDoodle);
-    };
-    const reveal = frame.closest<HTMLElement>(".reveal");
-    if (!reveal || getComputedStyle(reveal).animationName === "none") {
-      seedDoodle();
-      return;
-    }
-    reveal.addEventListener("animationend", seedDoodle, { once: true });
-    const fallback = window.setTimeout(seedDoodle, 1_000);
-    return () => {
-      reveal.removeEventListener("animationend", seedDoodle);
-      window.clearTimeout(fallback);
-      if (defaultAnimationFrameRef.current !== null) {
-        window.cancelAnimationFrame(defaultAnimationFrameRef.current);
-        defaultAnimationFrameRef.current = null;
-      }
-    };
-  }, [
-    actionsRef,
-    defaultActionCountRef,
-    defaultAnimationFrameRef,
-    defaultAnimationProgressRef,
-    pathname,
-    prepareCanvas,
-    redraw,
-    setHistorySize,
-  ]);
-
-  useEffect(() => {
-    if (!active || !doodleAnchor) return;
-
-    const updatePlacement = () => {
-      const portrait = doodleAnchor.getBoundingClientRect();
-      const studioWidth = Math.min(studioWidthRef.current, window.innerWidth - 24);
-
-      setStudioPlacement({
-        left: Math.min(
-          window.innerWidth - studioWidth - 12,
-          Math.max(12, portrait.left),
-        ) + window.scrollX,
-        top: portrait.bottom + window.scrollY + 12,
-        width: studioWidth,
-        ready: true,
-      });
-    };
-
-    updatePlacement();
-    const observer = new ResizeObserver(updatePlacement);
-    observer.observe(doodleAnchor);
-    window.addEventListener("resize", updatePlacement);
-    window.addEventListener("portrait-geometry-change", updatePlacement);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", updatePlacement);
-      window.removeEventListener("portrait-geometry-change", updatePlacement);
-    };
-  }, [active, doodleAnchor]);
-
-  useEffect(() => {
-    if (!active) return;
-    const handleKeyboardShortcut = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        if (sendOpen) closeSend();
-        else {
-          setPortraitResizeEnabled(false);
-          setActive(false);
-        }
-        return;
-      }
-
-      const isUndo = (event.metaKey || event.ctrlKey)
-        && !event.shiftKey
-        && event.key.toLowerCase() === "z";
-      if (!isUndo || sendOpen || historySize === 0) return;
-
-      event.preventDefault();
-      undo();
-    };
-    window.addEventListener("keydown", handleKeyboardShortcut);
-    return () => window.removeEventListener("keydown", handleKeyboardShortcut);
-  }, [active, closeSend, historySize, sendOpen, undo]);
 
   return (
     <>
@@ -332,7 +166,7 @@ export function DoodleLayer() {
           onMoveDrag={moveStudio}
           onFinishDrag={finishStudioDrag}
           onMinimize={() => setStudioMinimized(true)}
-          onClose={() => { setPortraitResizeEnabled(false); setActive(false); }}
+          onClose={deactivate}
           onUndo={undo}
           onClear={clear}
           onToggleResize={() => setPortraitResizeEnabled((enabled) => !enabled)}
@@ -349,7 +183,7 @@ export function DoodleLayer() {
           turnstileSiteKey={TURNSTILE_SITE_KEY}
           onBackdropPointerDown={(event) => { if (event.target === event.currentTarget) closeSend(); }}
           onClose={closeSend}
-          onDone={() => { closeSend(); setActive(false); }}
+          onDone={() => { closeSend(); deactivate(); }}
           onSubmit={sendDoodle}
           onValidateField={(field, value) => { void validateField(field, value); }}
           onClearFieldError={clearFieldError}
@@ -368,15 +202,7 @@ export function DoodleLayer() {
           <button type="button" onClick={() => {
             setPortraitResizeEnabled(false);
             setStudioMinimized(false);
-            if (!studioWidthCapturedRef.current) {
-              studioWidthRef.current = Math.min(
-                doodleAnchor.getBoundingClientRect().width,
-                window.innerWidth - 24,
-              );
-              studioWidthCapturedRef.current = true;
-            }
-            setStudioPlacement((current) => ({ ...current, ready: false }));
-            setActive(true);
+            if (prepareToOpen()) setActive(true);
           }} className="doodle-tool doodle-tool-invite hero-doodle-invite" aria-label="Draw on my portrait" aria-pressed="false">
             <span className="doodle-tool-icon" aria-hidden="true">
               <Pencil className="h-4 w-4" />

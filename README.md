@@ -16,8 +16,8 @@ src/
   app/          Routes (App Router): home, /projects, /experience, résumé and doodle APIs
   components/   UI — hero, nav, project explorers, the doodle studio, resume/PDF rendering
   data/         Single source of truth for site copy (profile.ts, projects.ts) and content
-  hooks/        Shared client behaviour — observers, portrait geometry, drawing and export
-  lib/          Framework-free logic — drawing, stroke math, request validation and delivery
+  hooks/        Shared client behaviour — observers, doodle lifecycle, geometry and export
+  lib/          Framework-free logic — drawing, thread paths, validation and delivery
 e2e/            Playwright smoke tests
 ```
 
@@ -34,7 +34,7 @@ npm run dev      # http://localhost:3000
 npm run typecheck   # tsc --noEmit
 npm run lint        # ESLint
 npm test            # Vitest — drawing, validation and doodle API security tests
-npm run test:e2e    # Playwright — nav, mobile menu, reduced motion, project/résumé flows
+npm run test:e2e    # Playwright — nav, doodle studio, responsive and project/résumé flows
 ```
 
 `test:e2e` builds and boots a production server itself (see `playwright.config.ts`); run
