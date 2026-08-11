@@ -2,9 +2,9 @@
 
 # Danielius Zajenčkauskas
 
-### Front-end Engineer · React · Next.js · TypeScript
+### Front-end & Full-stack Product Engineer · React · Next.js · TypeScript
 
-I turn complex business workflows into reliable, accessible products—and build the shared systems that keep them maintainable at scale.
+I build complex product interfaces and the backend systems, integrations and infrastructure that support them.
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-zajenckauskas.lt-4F736E?style=for-the-badge&logo=safari&logoColor=white)](https://zajenckauskas.lt)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Let's_connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/danielius-zajenckauskas/)
@@ -14,9 +14,9 @@ I turn complex business workflows into reliable, accessible products—and build
 
 ## Hello
 
-I am a front-end engineer based in Vilnius, Lithuania. My work spans enterprise ERP, finance, payroll and HR platforms alongside e-commerce, healthcare, real-estate and service products.
+I am a front-end-led, full-stack product engineer based in Vilnius, Lithuania. My work spans enterprise ERP, finance, payroll and HR platforms alongside e-commerce, healthcare, real-estate and service products.
 
-I work beyond individual screens: shared component packages, configuration-driven forms and data tables, headless CMS architecture, API integrations, PDF reports, transactional email and automated testing. Recent work includes a **35-application enterprise ecosystem** and an independently developed **multi-application marketplace**.
+I work beyond individual screens: shared component packages, configuration-driven forms and data tables, Node.js/Strapi services, PostgreSQL, API integrations, payment and webhook workflows, PDF reports, transactional email, automated testing and production delivery. Recent work includes a **35-application enterprise ecosystem** and an independently developed **multi-application marketplace**.
 
 Before moving into software engineering, I worked in graphic design. That background still shapes how I approach information hierarchy, responsive behaviour, accessibility and the small interaction details that make complex products feel clear.
 
@@ -83,7 +83,7 @@ Branding, packaging, editorial and digital-design work that continues to inform 
 
 ### [Toolkit — free, private browser tools](https://toolkit.zajenckauskas.lt) · [source](https://github.com/dzajenckauskas/toolkit)
 
-An **open-source** hub of 48 privacy-first tools that run entirely in the browser — no account, no upload, no paywall. Built as a Turborepo monorepo with a registry-driven catalog, strict types and a full CI/CD pipeline. My most complete **public** code sample.
+An **open-source** hub of 49 privacy-first tools — nearly all run entirely in the browser, with an isolated Playwright service for accessibility audits. Built as a Turborepo monorepo with a registry-driven catalog, strict types and a full CI/CD pipeline. My most complete **public** code sample.
 
 `Next.js` · `React` · `TypeScript (strict)` · `Turborepo` · `Emotion` · `Vitest` · `Playwright`
 

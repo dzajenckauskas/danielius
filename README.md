@@ -2,7 +2,7 @@
 
 [![CI/CD](https://github.com/dzajenckauskas/danielius/actions/workflows/ci.yml/badge.svg)](https://github.com/dzajenckauskas/danielius/actions/workflows/ci.yml)
 
-Personal website / portfolio for **Danielius Zajenckauskas** — Front-End Developer.
+Personal website / portfolio for **Danielius Zajenckauskas** — Front-end & Full-stack Product Engineer.
 
 🔗 **Live:** [zajenckauskas.lt](https://zajenckauskas.lt)
 

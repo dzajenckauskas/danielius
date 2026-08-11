@@ -4,9 +4,9 @@
 export const profile = {
   name: "Danielius Zajenčkauskas",
   firstName: "Danielius",
-  role: "Front-end / Product Engineer",
+  role: "Front-end & Full-stack Product Engineer",
   tagline:
-    "I turn complex business workflows into reliable, accessible products — and the shared systems that keep them maintainable.",
+    "I build complex product interfaces and the backend systems, integrations and infrastructure that support them.",
   location: "Vilnius, Lithuania",
   availability: "Available for freelance projects, agency partnerships and selected full-time roles",
   email: "danielius@zajenckauskas.lt",
@@ -14,8 +14,8 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/danielius-zajenckauskas/",
 
   about: [
-    "Front-end / Product Engineer with 4+ years across enterprise ERP, finance, payroll and HR software, plus e-commerce, healthcare and real-estate products. I turn complex workflows and domain rules into reliable, accessible interfaces — then build the shared systems that keep them consistent at scale. I work in an Agile, Kanban-style flow — pulling from a continuously prioritised backlog across concurrent projects rather than fixed sprints, which has sharpened my ability to context-switch fast, prioritise under ambiguity, and ramp up quickly on unfamiliar codebases.",
-    "Beyond individual screens, I design shared component packages, config-driven forms and data tables, Strapi content models, REST/GraphQL integrations, PDF reports and transactional email. Recent work spans a 35-app enterprise monorepo and an independently built marketplace. I also build with AI coding agents, holding their output to the same review, typing and test standards as any other code — my open-source Toolkit ships this way.",
+    "Front-end & Full-stack Product Engineer with 4+ years across enterprise ERP, finance, payroll and HR software, plus e-commerce, healthcare and real-estate products. My strongest specialism is front-end architecture, but I also build the backend services, integrations and production systems needed to deliver complete products. I work in an Agile, Kanban-style flow — pulling from a continuously prioritised backlog across concurrent projects rather than fixed sprints, which has sharpened my ability to context-switch fast, prioritise under ambiguity, and ramp up quickly on unfamiliar codebases.",
+    "Beyond individual screens, I work across the full delivery stack: React Hook Form/Yup workflows, Redux Toolkit and Zustand state, shared packages, Node.js/Strapi services, PostgreSQL, REST/GraphQL integrations, Stripe payments, PDF generation and Nodemailer/React Email communication. I ship through GitHub Actions to self-managed VPS infrastructure with PM2 and NGINX, and use Cloudflare Turnstile specifically for bot protection on public forms. Recent work spans a 35-app enterprise monorepo and an independently built marketplace. I also build with AI coding agents, holding their output to the same review, typing and test standards as any other code — my open-source Toolkit ships this way.",
     "A graphic design background shapes how I judge information hierarchy, responsive behaviour and interaction detail. I favour pragmatic architecture and reusable patterns that help teams ship confidently and maintain products over time.",
   ],
 } as const;
@@ -42,12 +42,12 @@ export const skillGroups: SkillGroupData[] = [
   {
     label: "Front-end Architecture",
     description: "Building typed foundations that stay coherent across applications and teams.",
-    items: ["TypeScript", "React", "Next.js", "Shared Packages", "Config-driven UI", "Monorepos"],
+    items: ["TypeScript", "React", "Next.js", "React Hook Form", "Yup", "Redux Toolkit", "Zustand", "Shared Packages", "Config-driven UI", "Monorepos"],
   },
   {
     label: "API & Data Orchestration",
     description: "Coordinating data contracts, asynchronous states and recoverable integration flows.",
-    items: ["REST APIs", "GraphQL", "SWR", "Type-safe Contracts", "Failure States"],
+    items: ["Node.js", "REST APIs", "GraphQL", "SWR", "Webhooks", "Type-safe Contracts", "Failure States"],
   },
   {
     label: "Performance & Accessibility",
@@ -62,7 +62,7 @@ export const skillGroups: SkillGroupData[] = [
   {
     label: "Content & Delivery Systems",
     description: "Connecting editable content, documents, communication and production infrastructure.",
-    items: ["Strapi", "PostgreSQL", "React PDF", "React Email", "Stripe", "Docker", "NGINX"],
+    items: ["Strapi", "PostgreSQL", "Nodemailer", "React Email", "Stripe", "Docker", "PM2", "NGINX", "Cloudflare Turnstile"],
   },
 ];
 

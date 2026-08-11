@@ -55,7 +55,7 @@ export function Hero() {
       <div className="hero-editorial-layout">
         <div className="hero-intro">
           <Reveal>
-            <p className="eyebrow">Front-end & Product Engineer</p>
+            <p className="eyebrow">Front-end & Full-stack Product Engineer</p>
           </Reveal>
 
           <Reveal delay={0.06}>
