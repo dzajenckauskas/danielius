@@ -48,23 +48,21 @@ export const projects: Project[] = [
     contribution: [
       { label: "Scope", detail: "As the sole front-end engineer, I own delivery from established OData/REST contracts to production workflows across accounting, payroll, HR and audit." },
       { label: "Platform foundation", detail: "Built and maintain 12 shared packages and a config-driven resource layer that produces consistent forms, tables, filters, actions and detail views across 35 applications." },
-      { label: "Financial workflows", detail: "Delivered purchase and sales orders, invoice submission and approval, and on-demand financial documents alongside the shared platform work." },
-      { label: "Document signing", detail: "Implemented employee document submission and qualified/non-qualified e-signing for employees and managers, with transactional React Email notifications aligned to workflow state." },
-      { label: "Time and reporting", detail: "Developed time-tracking and timesheet interfaces plus React PDF documents for invoices, orders and HR processes, with targeted Playwright coverage across business-critical paths." },
+      { label: "Specialised workflows", detail: "Delivered purchase/sales orders and invoice approval, employee document submission with qualified and non-qualified e-signing, and time-tracking, with React PDF output for invoices, orders and HR processes and React Email notifications tied to workflow state." },
     ],
     caseStudy: {
       challenge:
-        "Modernise data-heavy workflows across dozens of applications as the sole front-end engineer, without fragmenting interaction patterns or breaking established OData and REST contracts.",
+        "As the sole front-end engineer, I had to modernise data-heavy workflows across 35 applications without fragmenting interaction patterns or breaking established OData and REST contracts.",
       decisions: [
-        "I moved recurring resource behaviour into shared packages, leaving applications to describe their domain rather than reimplement forms and tables.",
-        "Added composition points for document, signing and financial workflows instead of forcing them into one generic screen model.",
+        "Recurring resource behaviour moved into shared packages, so applications describe their domain instead of reimplementing forms and tables.",
+        "Document, signing and financial workflows each got a screen built for their own needs, rather than being squeezed into one generic model.",
       ],
       quality: [
-        "Used strict typing, package boundaries and targeted Turborepo builds to expose the impact of shared-package changes before release.",
-        "Covered high-value workflows with Playwright and made loading, validation and backend failures explicit in business-critical interfaces.",
+        "Strict typing, package boundaries and targeted Turborepo builds surface the blast radius of a shared-package change before it ships.",
+        "Playwright smoke coverage runs across all 35 applications, with targeted specs for two-factor authentication, master-data flows, deep links and form field requests.",
       ],
       outcome:
-        "A new resource can adopt established forms, tables and actions through configuration, while specialised financial and document workflows extend the same foundation.",
+        "A new resource adopts established forms, tables and actions through configuration alone. Specialised financial and document workflows extend the same shared foundation rather than reimplementing it.",
     },
     sourceAccess: {
       visibility: "private",
@@ -105,26 +103,25 @@ export const projects: Project[] = [
     ],
     contribution: [
       { label: "Architecture", detail: "Designed a Turborepo workspace that separates the Next.js shell, design system, framework-independent tool logic and registry." },
-      { label: "Tool catalogue", detail: "Implemented tools with Canvas, Web Crypto, fflate, markdown-it and QR generation, including a unified image editor for compression, resizing, cropping and rotation." },
-      { label: "Testable logic", detail: "Kept tool algorithms outside React where practical, making conversion, parsing and file-processing behaviour directly testable." },
+      { label: "Tool catalogue", detail: "Implemented the tool catalogue on Canvas, Web Crypto, fflate, markdown-it and QR generation, keeping conversion, parsing and file-processing logic outside React so it's directly testable." },
       { label: "Discovery system", detail: "Built one registry for the catalogue, command palette, navigation, sitemap and metadata, plus an Emotion design system shared across the interfaces." },
       { label: "Privacy boundary", detail: "Isolated the accessibility checker in a token-authenticated, localhost-only Playwright/axe-core service while keeping ordinary file processing on-device." },
       { label: "AI-assisted delivery", detail: "I use the repository as a public example of issue-driven engineering with Codex and Claude, backed by ADRs, review and CI gates." },
     ],
     caseStudy: {
       challenge:
-        "Grow dozens of small tools without accumulating inconsistent interfaces, duplicated logic or unnecessary upload risk, while still supporting accessibility audits that require a controlled browser.",
+        "Dozens of small tools tend to accumulate inconsistent interfaces, duplicated logic and unnecessary upload risk — and the one tool that genuinely needs a server (the accessibility checker) still has to fit that same trust model.",
       decisions: [
-        "I separated pure tool logic from its Next.js presentation and made the registry the source of truth for discovery and metadata.",
-        "Chose workspace packages over runtime micro-frontends because individual tools do not need independent deployment.",
-        "Made local processing the default and isolated accessibility audits behind a narrow authenticated service.",
+        "Pure tool logic sits apart from its Next.js presentation, and the registry is the single source of truth for discovery and metadata.",
+        "Workspace packages won over runtime micro-frontends, since individual tools don't need independent deployment.",
+        "Local processing is the default; only the accessibility audit crosses the network, and it's confined behind a narrow authenticated service.",
       ],
       quality: [
-        "Covered tool logic, safety boundaries and browser behaviour with extensive Vitest and Playwright suites.",
-        "Kept the main branch deployable behind formatting, lint, type, test and production-build gates.",
+        "73 Vitest and Playwright files cover tool logic, safety boundaries and browser behaviour.",
+        "Formatting, lint, type, test and production-build gates keep main deployable at all times.",
       ],
       outcome:
-        "The result is a live, open-source product where new tools follow one documented delivery path and users can verify both the privacy model and implementation in public source code.",
+        "New tools follow one documented delivery path, and because the source is public, the privacy model isn't a claim you have to take on trust — it's readable.",
     },
     stack: [
       "Next.js 15",
@@ -163,26 +160,24 @@ export const projects: Project[] = [
       "The codebase is white-label by design: a single Next.js application powers tezaurus.lt and two sibling brands, with theming, analytics, push notifications and social integrations resolved per brand at build time. An in-house headless CMS owns editable content and exposes it through a typed Apollo GraphQL layer, while commerce and account state remain application concerns.",
     ],
     contribution: [
-      { label: "Multi-brand front end", detail: "I lead the Lithuanian/English Next.js front end across three brands, integrating CMS-managed content through Apollo GraphQL." },
-      { label: "White-label system", detail: "Designed the boundary so one component tree resolves brand-specific themes, analytics and integrations from configuration." },
+      { label: "Multi-brand front end", detail: "I lead the Lithuanian/English Next.js front end across three brands, resolving brand-specific themes, analytics and integrations from configuration so shared components never branch on the company they render." },
       { label: "Identity and forms", detail: "Delivered registration, account recovery and Dokobit e-identity sign-in, plus validated account, lead and checkout journeys." },
       { label: "Commerce and documents", detail: "Implemented subscriptions and orders with coupons, Braintree and invoice settlement, with React PDF documents and React Email messages matched to order state." },
-      { label: "Discovery and performance", detail: "Handled locale-aware metadata, per-brand analytics, image optimisation and bundle analysis for the multilingual content surface." },
     ],
     caseStudy: {
       challenge:
-        "Serve three distinct brands from one maintainable application while joining multilingual marketing content, authentication, subscriptions, documents and payments into a continuous self-service journey.",
+        "Three brands need to share one maintainable application, yet still weave multilingual marketing content, authentication, subscriptions, documents and payments into a single continuous self-service journey.",
       decisions: [
-        "I resolved brand identity at build time so shared components do not branch on the company they render.",
-        "Kept editorial content in the CMS while authentication, commerce state and payments remained application concerns.",
-        "Modelled checkout as explicit stages so card and invoice settlement could share one customer journey despite completing differently.",
+        "Brand identity resolves at build time, so shared components stay ignorant of which company they're rendering for.",
+        "Editorial content lives in the CMS; authentication, commerce state and payments stay application concerns rather than bleeding into content.",
+        "Checkout is modelled as explicit stages, letting card and invoice settlement share one customer journey despite completing differently.",
       ],
       quality: [
-        "Matched payment stages with documents and transactional email so the interface and customer communication describe the same state.",
-        "Kept the multilingual surface discoverable and performant through clean routing, structured metadata and image optimisation.",
+        "Payment stages line up with documents and transactional email, so the interface and the customer's inbox describe the same state.",
+        "Clean routing, structured metadata and image optimisation keep the multilingual surface discoverable and fast.",
       ],
       outcome:
-        "One front-end architecture supports three branded businesses, and customers can move from service discovery to identity, subscription, order, document and payment flows without leaving the product.",
+        "One front-end architecture carries three branded businesses. A customer can go from service discovery to identity, subscription, order, document and payment without ever leaving the product.",
     },
     sourceAccess: {
       visibility: "private",
@@ -224,28 +219,27 @@ export const projects: Project[] = [
     about: [
       "Fly fishing is one of my own interests, so I built Musės around the specific needs of fly tiers and specialist buyers. Customer shopping, seller operations, support and internal administration are delivered through dedicated applications with a shared technical foundation.",
       "The platform is an npm-workspaces monorepo spanning five applications and six shared packages. A Node.js/Strapi 5 API and PostgreSQL data model sit behind role-specific Next.js surfaces, while domain types, authentication, forms, internationalisation, themes and back-office patterns evolve through versioned shared packages.",
+      "The storefront is live and taking real seller applications, but it's still early: the catalogue and seller base are growing rather than at full scale, so the architecture below is proven in production, not yet under production-scale load.",
     ],
     contribution: [
       { label: "Marketplace foundation", detail: "Architected five applications—a storefront, seller, support and administration workspaces plus a Strapi 5 API—and six packages for shared domain and UI concerns." },
-      { label: "Payment and stock", detail: "Designed Stripe and inventory services around idempotency, deduplicated webhooks and replay-safe restoration to prevent retries from producing duplicate charges or inconsistent stock." },
-      { label: "Seller accounting", detail: "Modelled seller wallets as an append-only ledger and built payout, statement, reconciliation and dispute workflows." },
-      { label: "Access and abuse controls", detail: "Added OTP/2FA and layered support-form protection with Turnstile, upload controls and Redis-backed throttling and deduplication." },
-      { label: "Quality and operations", detail: "Covered core domain and cross-role journeys with Vitest and Playwright, then deployed all five services behind NGINX and PM2." },
+      { label: "Transactional integrity", detail: "Built Stripe and inventory services so a retried payment or a webhook delivered twice can never double-charge a customer or double-count stock, and modelled seller wallets as a running transaction history with payout, statement, reconciliation and dispute workflows." },
+      { label: "Access, quality and operations", detail: "Added OTP/2FA and Turnstile-protected, Redis-throttled support forms; covered core domain and cross-role journeys with Vitest and Playwright; deployed all five services behind NGINX and PM2." },
     ],
     caseStudy: {
       challenge:
-        "Build a multi-seller marketplace whose role-specific applications can evolve independently without weakening the transactional integrity of payments, stock and seller balances.",
+        "A multi-seller marketplace needs its role-specific applications to evolve independently, without ever letting that independence weaken the transactional integrity of payments, stock or seller balances.",
       decisions: [
-        "I separated applications by user role while centralising authentication, domain contracts, forms, localisation and visual foundations.",
-        "Treated payment and fulfilment as replayable events and derived seller balances from a ledger instead of mutable totals.",
-        "Kept rate limits, deduplication and valid-state transitions inside the applications rather than relying only on edge bot detection.",
+        "Applications split by user role; authentication, domain types, forms, localisation and visual foundations stay centralised.",
+        "Payment and fulfilment steps are written so re-running them causes no harm, and seller balances are calculated from the full transaction history rather than stored as a single number that gets overwritten.",
+        "Rate limits, repeat-submission checks and valid-state transitions live inside the applications instead of being left to edge bot detection alone.",
       ],
       quality: [
-        "Covered ledger invariants, webhook replay and outage scenarios with Vitest, then exercised high-value cross-role journeys in Playwright.",
-        "Added worker metrics, automatic stock restoration and contextual failures for support and finance users.",
+        "Vitest checks that the transaction history stays correct through webhook replays and outages; Playwright exercises the high-value cross-role journeys.",
+        "Worker metrics, automatic stock restoration and contextual failure messages are in place for support and finance users.",
       ],
       outcome:
-        "Storefront, seller, support and administration users get workflows shaped to their roles, while shared contracts and backend invariants keep checkout, inventory and seller accounting consistent across the product.",
+        "The marketplace is live and onboarding its first sellers. Storefront, seller, support and administration users already get workflows shaped to their roles, and the shared contracts and the ledger's built-in checks are built to hold as the catalogue and transaction volume grow — the open question now is real usage at scale, not the architecture.",
     },
     sourceAccess: {
       visibility: "private",
@@ -293,25 +287,23 @@ export const projects: Project[] = [
     ],
     contribution: [
       { label: "Customer journey", detail: "Rebuilt the customer-facing Next.js architecture and developed instant-quote, inventory and multi-step booking journeys with step-specific validation." },
-      { label: "Operational backend", detail: "Extended Strapi with issue and update models, public and internal endpoints, tracking tokens, organised uploads and transactional email." },
-      { label: "Payments and verification", detail: "Integrated Stripe deposits and Firebase phone verification behind server-owned routes with explicit retry and failure states." },
-      { label: "Support portal", detail: "Built customer reporting, tracking, evidence uploads and threaded conversations alongside staff assignment, status, notes and reply workflows." },
-      { label: "Abuse controls", detail: "Protected public writes with Turnstile, upload allow-lists, rate limits, deduplication and timeouts, and connected support actions to backend notifications." },
+      { label: "Backend, payments and verification", detail: "Extended Strapi with issue/update models, public and internal endpoints and tracking tokens, and integrated Stripe deposits and Firebase phone verification behind server-owned routes with explicit retry and failure states." },
+      { label: "Support portal", detail: "Built a separate portal for customer reporting, tracking, evidence uploads and threaded conversations, plus staff assignment and reply workflows — protected throughout by Turnstile, upload allow-lists, rate limits and repeat-submission checks." },
     ],
     caseStudy: {
       challenge:
-        "Improve a live, conversion-focused moving journey while adding the operational backbone needed to carry customer issues from public submission through staff ownership, conversation and resolution.",
+        "A live, conversion-focused moving journey needed the operational backbone to carry a customer issue all the way from public submission through staff ownership, conversation and resolution — without a rebuild that risked the conversion path itself.",
       decisions: [
-        "I separated the customer journey, API and support workspace while keeping business data and notification orchestration in the backend.",
-        "Split quotation and booking into independently validated steps, using a schema per step so users can progress without exposing irrelevant validation errors from later stages.",
-        "Modelled support as issues and threaded updates, separating public replies from internal notes and using tracking links instead of customer accounts.",
+        "The customer journey, API and support workspace stay separate, with business data and the logic that sends notifications living in the backend.",
+        "Quotation and booking split into independently validated steps, each with its own schema, so a user never sees a validation error from a stage they haven't reached yet.",
+        "Support is modelled as issues and threaded updates — public replies separated from internal notes — and tracking links stand in for customer accounts.",
       ],
       quality: [
-        "Kept payment, verification, upload and email failures actionable without discarding successfully saved work.",
-        "Added shared rate-limit state, security events and repeatable deployment for all three services.",
+        "Payment, verification, upload and email failures stay actionable and never discard work that already saved successfully.",
+        "Shared rate-limit state, security events and a repeatable deployment pipeline cover all three services.",
       ],
       outcome:
-        "Customers now move through quotation, booking and post-booking support in one coherent service, while staff get an auditable workspace for ownership and resolution. The system can evolve each surface independently without duplicating operational rules.",
+        "Customers move through quotation, booking and post-booking support in one coherent service, and staff get an auditable workspace for ownership and resolution — each of the three surfaces can now evolve on its own timeline.",
     },
     sourceAccess: {
       visibility: "private",
@@ -358,25 +350,24 @@ export const projects: Project[] = [
       "I develop both sides of the platform: the public Next.js website and its Node.js/Strapi backend. Clinic staff maintain services, diagnoses, categories, pricing and products in PostgreSQL-backed content models, and the front end turns that source into responsive pages, enquiry journeys and printable clinical product material.",
     ],
     contribution: [
-      { label: "Content model", detail: "Modelled services, products, diagnoses, reimbursement notes, reviews and pricing in Strapi and integrated them into responsive clinic and catalogue pages." },
-      { label: "Rendering strategy", detail: "Chose static generation, revalidation or request-time rendering according to each page's data needs." },
+      { label: "Content model", detail: "Modelled services, products, diagnoses, reimbursement-rate tables, reviews and pricing in Strapi, choosing static generation, revalidation or request-time rendering per page depending on how often its data changes." },
       { label: "PDF catalogue", detail: "Generated branded catalogues from live CMS data with React PDF, including embedded fonts, reimbursement tables, images and multi-page pagination." },
       { label: "Enquiries and delivery", detail: "Built validated enquiry forms and backend email delivery, covered the flow with focused tests and automated deployment of both applications." },
     ],
     caseStudy: {
       challenge:
-        "Make a detailed healthcare service and orthopaedic aid catalogue understandable to patients, editable by clinic staff and reliable in both web and print formats.",
+        "A detailed healthcare service and orthopaedic aid catalogue has to stay understandable to patients, editable by clinic staff who aren't developers, and reliable in both web and print.",
       decisions: [
-        "I used one Strapi model for the website and printable catalogue so clinic staff do not maintain the same product information twice.",
-        "Streamed the generated PDF from a server route rather than assembling large documents in the browser.",
-        "Persisted enquiries before sending clinic notifications, retaining a record if email delivery fails.",
+        "One Strapi model feeds the website and the printable catalogue, so clinic staff never maintain the same product information twice.",
+        "The generated PDF streams from a server route instead of being assembled in the browser.",
+        "Enquiries persist before the clinic notification goes out, so a failed email send never loses the submission.",
       ],
       quality: [
-        "Tested the enquiry flow and matched rendering strategy to how often each content surface changes.",
-        "Handled fonts, long medical tables, images and page breaks so generated catalogues remain legible in print.",
+        "The enquiry flow is under test, and each page's rendering strategy matches how often its underlying content actually changes.",
+        "Fonts, long medical tables, images and page breaks are handled explicitly so generated catalogues stay legible in print.",
       ],
       outcome:
-        "Clinic staff maintain one structured source for services and products; patients receive consistent information across the website, generated catalogue and enquiry process without parallel manual document upkeep.",
+        "Clinic staff maintain one structured source for services and products, and patients see the same information whether they're on the website, reading the generated catalogue, or following up on an enquiry.",
     },
     sourceAccess: {
       visibility: "private",
@@ -420,25 +411,24 @@ export const projects: Project[] = [
       "I develop both sides of the platform: a server-rendered Next.js website and its Node.js/Strapi backend. The broker controls listings, articles, testimonials and search metadata directly, while contextual contact and valuation journeys turn that content into structured leads.",
     ],
     contribution: [
-      { label: "Content model", detail: "Modelled properties, categories, articles, recommendations, galleries and SEO metadata in Strapi." },
-      { label: "Property discovery", detail: "Built server-rendered listing and editorial pages with property sorting, filtering and multilingual routing." },
+      { label: "Content model and discovery", detail: "Modelled properties, categories, articles, recommendations, galleries and SEO metadata in Strapi, and built server-rendered listing and editorial pages with sorting and filtering on top of it." },
       { label: "Adaptive enquiries", detail: "Created conditional contact and valuation forms whose fields adapt to the selected property type." },
       { label: "Backend delivery", detail: "Persisted enquiries through custom backend controllers, sent branded notifications and automated deployment of both applications." },
     ],
     caseStudy: {
       challenge:
-        "Balance a distinctive personal brand with current property inventory, broker-managed editorial content and lead capture detailed enough to support real valuation follow-up.",
+        "A distinctive personal brand has to sit alongside current property inventory, broker-managed editorial content and lead capture detailed enough to support real valuation follow-up.",
       decisions: [
-        "I put listings, articles and metadata in Strapi so the broker can update the site without a front-end release.",
-        "Used server rendering for current inventory and generated the sitemap from the same content source.",
-        "Centralised property-type dependencies in form schemas and persisted enquiries before sending notifications.",
+        "Listings, articles and metadata live in Strapi, so the broker updates the site without a front-end release.",
+        "Server rendering covers current inventory, and the sitemap generates from that same content source.",
+        "Property-type dependencies are centralised in form schemas, and enquiries persist before notifications go out.",
       ],
       quality: [
-        "Kept Lithuanian and English navigation, content and metadata aligned through locale-aware routing and CMS queries.",
-        "Used motion as optional visual polish and automated front-end/API deployment through GitHub Actions.",
+        "Routing runs on next-i18next, ready for additional locales; Lithuanian is the only one enabled in production today.",
+        "Motion is used as optional visual polish, and front-end/API deployment is automated through GitHub Actions.",
       ],
       outcome:
-        "The broker can keep inventory and articles current, while buyers and sellers get clear property discovery and enquiry paths.",
+        "The broker keeps inventory and articles current without developer involvement, and buyers and sellers get a clear path from discovery to enquiry.",
     },
     sourceAccess: {
       visibility: "private",

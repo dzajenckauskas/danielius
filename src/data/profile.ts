@@ -24,6 +24,7 @@ export type SkillGroupData = {
   label: string;
   description: string;
   items: string[];
+  resumeItems?: string[];
 };
 
 export const skillGroups: SkillGroupData[] = [
@@ -38,16 +39,19 @@ export const skillGroups: SkillGroupData[] = [
       "Domain Modelling",
       "Product Delivery",
     ],
+    resumeItems: ["Workflow Design", "Domain Modelling", "Product Delivery"],
   },
   {
     label: "Front-end Architecture",
     description: "Building typed foundations that stay coherent across applications and teams.",
     items: ["TypeScript", "React", "Next.js", "React Hook Form", "Yup", "Redux Toolkit", "Zustand", "Shared Packages", "Config-driven UI", "Monorepos"],
+    resumeItems: ["TypeScript", "React", "Next.js", "Shared Packages", "Config-driven UI", "Monorepos"],
   },
   {
     label: "API & Data Orchestration",
     description: "Coordinating data contracts, asynchronous states and recoverable integration flows.",
     items: ["Node.js", "Strapi", "PostgreSQL", "REST APIs", "GraphQL", "SWR", "Webhooks", "Type-safe Contracts"],
+    resumeItems: ["Node.js", "Strapi", "PostgreSQL", "REST APIs", "GraphQL", "Webhooks"],
   },
   {
     label: "Performance & Accessibility",
@@ -58,6 +62,7 @@ export const skillGroups: SkillGroupData[] = [
     label: "Reliability & Quality",
     description: "Making critical journeys testable, understandable and resilient when dependencies fail.",
     items: ["Playwright", "Vitest", "React Testing Library", "Error Handling", "CI/CD", "AI-assisted delivery · Codex · Claude"],
+    resumeItems: ["Playwright", "Vitest", "CI/CD", "AI-assisted delivery"],
   },
   {
     label: "Content & Delivery Systems",

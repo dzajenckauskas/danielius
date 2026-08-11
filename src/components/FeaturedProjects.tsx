@@ -6,7 +6,13 @@ import { ArrowUpRight, Github, LockKeyhole } from "lucide-react";
 import { SectionDoodle } from "@/components/SectionDoodle";
 import { projects } from "@/data/projects";
 
-const featuredProjects = projects.slice(0, 4);
+const featuredProjectSlugs = new Set<string>([
+  "lobasoft-enterprise-platform",
+  "toolkit",
+  "muses-fly-tying-market",
+  "deliver1",
+]);
+const featuredProjects = projects.filter((project) => featuredProjectSlugs.has(project.slug));
 
 export function FeaturedProjects() {
   const [activeIndex, setActiveIndex] = useState(0);

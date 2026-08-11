@@ -2,7 +2,7 @@
 
 # Danielius Zajenčkauskas
 
-### Product Engineer · React · Next.js · TypeScript
+### Product Engineer · React · Next.js · Node.js · TypeScript
 
 I'm a full-stack engineer with a front-end focus, building complex products from interface to infrastructure.
 
@@ -14,11 +14,11 @@ I'm a full-stack engineer with a front-end focus, building complex products from
 
 ## Hello
 
-I am a front-end engineer based in Vilnius, Lithuania, specialising in React architecture and complex product interfaces. I also build the Node.js/Strapi services, integrations and production systems needed to deliver complete products.
+Based in Vilnius, Lithuania, I specialise in React architecture and complex product interfaces while also building the Node.js/Strapi services, integrations and production systems needed to deliver complete products.
 
 Current work ranges from shared packages used by a **35-application enterprise platform** to an independently built **five-application marketplace**, alongside commercial products in healthcare, real estate and international services.
 
-Before moving into software engineering, I worked in graphic design. That background still shapes how I approach information hierarchy, responsive behaviour, accessibility and the small interaction details that make complex products feel clear.
+Before moving into software engineering, I worked in graphic design. That background still shapes how I approach information hierarchy, responsive behaviour, accessibility and the small interaction details that make demanding software easier to use.
 
 ## What I focus on
 
@@ -78,7 +78,7 @@ Branding, packaging, editorial and digital-design work that continues to inform 
 
 ### [Toolkit — privacy-conscious browser tools](https://toolkit.zajenckauskas.lt) · [source](https://github.com/dzajenckauskas/toolkit)
 
-An **open-source** hub of 49 privacy-conscious tools. Nearly all processing stays on-device; accessibility audits run through a narrow Playwright service. A registry-driven architecture and extensive unit/browser coverage make this my most complete **public** engineering sample.
+An **open-source** hub of 49 privacy-conscious tools. Nearly all processing stays on-device; accessibility audits run through a narrow Playwright service. A registry-driven architecture and 73 Vitest/Playwright test files make this my most complete **public** engineering sample.
 
 `Next.js` · `React` · `TypeScript (strict)` · `Turborepo` · `Emotion` · `Vitest` · `Playwright`
 
@@ -96,7 +96,7 @@ A 35-application enterprise ecosystem built on 12 shared packages and config-dri
 
 ### [Musės — Fly Tying Market](https://muses.lt)
 
-An independently developed five-application marketplace with shared domain packages, a Strapi/PostgreSQL backend, replay-safe Stripe and inventory workflows, seller-ledger accounting, and dedicated customer, seller, support and administration surfaces.
+An independently developed five-application marketplace, now live and in early access, with shared domain packages, a Strapi/PostgreSQL backend, Stripe and inventory workflows that stay correct even when a request is retried, seller accounting built from a running transaction history, and dedicated customer, seller, support and administration surfaces.
 
 `Next.js` · `React` · `TypeScript` · `Strapi` · `PostgreSQL` · `Stripe` · `Vitest` · `Playwright`
 

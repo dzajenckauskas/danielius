@@ -164,7 +164,7 @@ export default function Home() {
         <SectionDoodle type="speech" className="doodle-languages" />
         <Reveal className="home-info-heading thread-over">
           <p className="eyebrow">Perspective</p>
-          <h2>Fluent, and curious beyond code.</h2>
+          <h2>Fluent and curious beyond code.</h2>
           <p>Clear communication across teams, with interests that keep the work grounded and observant.</p>
         </Reveal>
         <div className="home-info-card-grid">
@@ -206,8 +206,8 @@ export default function Home() {
         <Reveal className="thread-over">
           <div className="cta-panel">
             <div className="cta-copy">
-              <p className="eyebrow">Available for selected work</p>
-              <h2>Let’s make complex products feel clear.</h2>
+              <p className="eyebrow">Get in touch</p>
+              <h2>Let’s build something useful and dependable.</h2>
               <p>
                 Open to thoughtful product engineering work where quality and maintainability matter.
               </p>

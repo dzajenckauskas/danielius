@@ -26,6 +26,18 @@ import {
 import { projects } from "@/data/projects";
 
 const publicPath = (...parts: string[]) => path.join(process.cwd(), "public", ...parts);
+const resumeCapabilities = skillGroups.filter((group) => group.resumeItems);
+const resumeProjectSlugs = [
+  "lobasoft-enterprise-platform",
+  "toolkit",
+  "muses-fly-tying-market",
+  "deliver1",
+  "tezaurus",
+];
+const resumeProjects = resumeProjectSlugs.flatMap((slug) => {
+  const project = projects.find((item) => item.slug === slug);
+  return project ? [project] : [];
+});
 
 Font.register({
   family: "Neris",
@@ -278,14 +290,14 @@ const styles = StyleSheet.create({
   projectEntry: {
     borderBottomWidth: 0.55,
     borderBottomColor: colors.border,
-    paddingTop: 6,
-    paddingBottom: 6,
+    paddingTop: 7,
+    paddingBottom: 7,
   },
   projectHeader: { flexDirection: "row", alignItems: "baseline", justifyContent: "space-between" },
-  projectName: { color: colors.text, fontSize: 9.3, fontWeight: 600, textDecoration: "none" },
-  projectMeta: { color: colors.subtle, fontSize: 6.4 },
-  projectSummary: { marginTop: 3, color: colors.muted, fontSize: 7.2, lineHeight: 1.36 },
-  projectEvidence: { marginTop: 3, color: colors.text, fontSize: 6.9, lineHeight: 1.34 },
+  projectName: { color: colors.text, fontSize: 10, fontWeight: 600, textDecoration: "none" },
+  projectMeta: { color: colors.subtle, fontSize: 6.8 },
+  projectSummary: { marginTop: 3, color: colors.muted, fontSize: 7.6, lineHeight: 1.4 },
+  projectEvidence: { marginTop: 3, color: colors.text, fontSize: 7.2, lineHeight: 1.38 },
   projectEvidenceLabel: { color: colors.inkStrong, fontWeight: 600 },
   projectDetails: {
     flexDirection: "row",
@@ -293,11 +305,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 3.5,
   },
-  projectStack: { color: colors.inkStrong, fontSize: 6.35 },
+  projectStack: { color: colors.inkStrong, fontSize: 6.6 },
   projectUrl: {
     marginLeft: 10,
     color: colors.inkStrong,
-    fontSize: 6.35,
+    fontSize: 6.6,
     fontWeight: 600,
     textDecoration: "none",
   },
@@ -571,10 +583,10 @@ function PageOne() {
         <View style={styles.sidebar}>
           <View style={styles.sidebarFirstSection}>
             <Text style={styles.sectionLabel}>Capabilities</Text>
-            {skillGroups.map((group) => (
+            {resumeCapabilities.map((group) => (
               <View key={group.label} style={styles.capability}>
                 <Text style={styles.capabilityTitle}>{group.label}</Text>
-                <Text style={styles.capabilityItems}>{group.items.join(" · ")}</Text>
+                <Text style={styles.capabilityItems}>{group.resumeItems?.join(" · ")}</Text>
               </View>
             ))}
           </View>
@@ -634,7 +646,7 @@ function PageOne() {
               </View>
               <View style={[styles.metric, styles.metricBorder]}>
                 <Text style={styles.metricValue}>7</Text>
-                <Text style={styles.metricLabel}>SELECTED CASE STUDIES</Text>
+                <Text style={styles.metricLabel}>PORTFOLIO CASE STUDIES</Text>
               </View>
             </View>
           </View>
@@ -671,7 +683,7 @@ function PageTwo() {
       </View>
 
       <View>
-        {projects.map((project) => (
+        {resumeProjects.map((project) => (
           <View key={project.slug} style={styles.projectEntry}>
             <View style={styles.projectHeader}>
               {project.url ? (
@@ -740,8 +752,8 @@ export function ResumeDocument() {
     <Document
       title={`${profile.name} — Resume`}
       author={profile.name}
-      subject="Front-end Engineer Resume"
-      keywords="Front-end Engineer, Product Engineering, React, Next.js, TypeScript, Accessibility, Web Performance"
+      subject="Product Engineer Resume"
+      keywords="Product Engineer, Full-stack Engineer, Front-end Engineer, React, Next.js, Node.js, TypeScript, Product Engineering"
     >
       <PageOne />
       <PageTwo />
