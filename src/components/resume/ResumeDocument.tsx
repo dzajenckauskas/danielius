@@ -23,7 +23,9 @@ import {
   profile,
   skillGroups,
 } from "@/data/profile";
+import { defaultDoodle } from "@/data/defaultDoodle";
 import { projects } from "@/data/projects";
+import { coverImageRect, PORTRAIT_IMAGE_ASPECT } from "@/lib/doodle-strokes";
 
 const publicPath = (...parts: string[]) => path.join(process.cwd(), "public", ...parts);
 const resumeCapabilities = skillGroups.filter((group) => group.resumeItems);
@@ -33,7 +35,41 @@ const resumeProjectSlugs = [
   "muses-fly-tying-market",
   "deliver1",
   "tezaurus",
+  "case1",
 ];
+// The hero's default doodle glasses, placed on the résumé photo. Strokes are anchored to the portrait image,
+// so the same cover maths as the hero keeps them on the face; widths scale from the hero's ~400px-wide portrait.
+const PHOTO_SIZE = 104;
+const photoImageRect = coverImageRect({
+  pageLeft: 0,
+  pageTop: 0,
+  frameWidth: PHOTO_SIZE,
+  frameHeight: PHOTO_SIZE,
+  imageAspect: PORTRAIT_IMAGE_ASPECT,
+  objectPositionY: 0.5,
+});
+const doodleStrokeScale = photoImageRect.displayWidth / 400;
+
+// The same smoothing the canvas uses: quadratic curves through each point to the midpoint of the next.
+function doodlePath(points: { x: number; y: number }[]) {
+  const { offsetX, offsetY, displayWidth, displayHeight } = photoImageRect;
+  const pts = points.map(({ x, y }) => ({
+    x: +(offsetX + x * displayWidth).toFixed(2),
+    y: +(offsetY + y * displayHeight).toFixed(2),
+  }));
+  const [start, ...rest] = pts;
+  if (!start) return "";
+  let d = `M ${start.x} ${start.y}`;
+  if (rest.length < 2) return rest.reduce((path, p) => `${path} L ${p.x} ${p.y}`, d);
+  for (let index = 1; index < pts.length - 1; index += 1) {
+    const current = pts[index];
+    const next = pts[index + 1];
+    d += ` Q ${current.x} ${current.y} ${+((current.x + next.x) / 2).toFixed(2)} ${+((current.y + next.y) / 2).toFixed(2)}`;
+  }
+  const end = pts.at(-1)!;
+  return `${d} L ${end.x} ${end.y}`;
+}
+
 const resumeProjects = resumeProjectSlugs.flatMap((slug) => {
   const project = projects.find((item) => item.slug === slug);
   return project ? [project] : [];
@@ -133,10 +169,18 @@ const styles = StyleSheet.create({
   },
   photo: {
     position: "relative",
-    width: 104,
-    height: 104,
+    width: PHOTO_SIZE,
+    height: PHOTO_SIZE,
     borderRadius: 6,
     objectFit: "cover",
+    objectPosition: "50% 50%",
+  },
+  photoDoodle: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: PHOTO_SIZE,
+    height: PHOTO_SIZE,
   },
   name: {
     fontSize: 23.5,
@@ -534,6 +578,19 @@ function PageOne() {
             {/* react-pdf's Image is not a DOM image and does not support alt. */}
             {/* eslint-disable-next-line jsx-a11y/alt-text */}
             <Image style={styles.photo} src={publicPath("avatar.png")} />
+            <Svg style={styles.photoDoodle} viewBox={`0 0 ${PHOTO_SIZE} ${PHOTO_SIZE}`}>
+              {defaultDoodle.map((stroke, index) => (
+                <Path
+                  key={index}
+                  d={doodlePath(stroke.points)}
+                  stroke={stroke.color}
+                  strokeWidth={stroke.width * doodleStrokeScale}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              ))}
+            </Svg>
             <Svg style={styles.portraitAtmosphere} viewBox="0 0 130 136">
               <Defs>
                 <RadialGradient id="portrait-sage" cx="50%" cy="50%" r="50%">
@@ -645,7 +702,7 @@ function PageOne() {
                 <Text style={styles.metricLabel}>SHARED PACKAGES</Text>
               </View>
               <View style={[styles.metric, styles.metricBorder]}>
-                <Text style={styles.metricValue}>7</Text>
+                <Text style={styles.metricValue}>{projects.length}</Text>
                 <Text style={styles.metricLabel}>PORTFOLIO CASE STUDIES</Text>
               </View>
             </View>
