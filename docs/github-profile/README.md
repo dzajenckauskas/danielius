@@ -108,7 +108,7 @@ Full-stack development across international-removals quotation and booking, a No
 
 ### [CASE1](https://zajenckauskas.lt/projects/case1)
 
-A website for a UK bespoke-crate workshop, with a 3D crate modelled entirely in TypeScript with AI assistance, coming apart board by board as you scroll, with adaptive quality and pre-rendered stills for slow devices, plus a multi-crate quote form with per-item photos.
+A bespoke-crate workshop's website, built in four days with Claude as a pair programmer. A crate modelled in code with Three.js comes apart board by board as you scroll; profiling took desktop Lighthouse from 73–86 to 99 and draw calls from about 400 to 110, with device tiers and pre-rendered stills keeping it smooth on old phones.
 
 `Next.js` · `React Three Fiber` · `Three.js` · `TypeScript` · `Zod` · `Nodemailer` · `Playwright`
 
