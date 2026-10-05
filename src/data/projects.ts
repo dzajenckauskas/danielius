@@ -470,9 +470,11 @@ export const projects: Project[] = [
     about: [
       "CASE1 is a UK workshop making made-to-measure wooden crates with fitted foam lining for antiques, furniture and art. The site has two jobs: show why a crate built for one piece protects it better than a generic box, and collect enough detail in the first message to quote from.",
       "The page is a Next.js application with a React Three Fiber scene at its centre. As the visitor scrolls, a crate comes apart step by step — lid, timber frame, plywood panels, foam lining, the piece inside — with procedurally generated wood, ply and porcelain textures. Below it, a quote form takes one or more crates with sizes, options and photos, and delivers the request to the team by email.",
+      "It was my first real 3D modelling project. Rather than learning a modelling package first, I modelled the crate in code with AI assistance: describing how a real shipping crate is put together, then iterating on dimensions, geometry, materials and lighting against reference photos of the workshop's crates until it read as the real thing.",
     ],
     contribution: [
-      { label: "3D crate story", detail: "Built the scroll-driven exploded view in React Three Fiber, with canvas-generated timber, ply and hand-painted porcelain textures, soft shadows and ambient occlusion, rendering frames only while the scene is actually moving." },
+      { label: "AI-assisted 3D modelling", detail: "Modelled the crate entirely in TypeScript with AI assistance — every board, batten, screw and foam layer from one dimension spec, a lathe-turned blue-and-white vase, and canvas-generated timber grain, ply edges, stencilled handling marks and porcelain glaze — refined in short visual iterations against photos of real crates." },
+      { label: "3D crate story", detail: "Built the scroll-driven exploded view in React Three Fiber, with soft shadows and ambient occlusion, rendering frames only while the scene is actually moving." },
       { label: "Adaptive performance", detail: "Compiled shaders off the main thread before the first frame, stepped quality down on slow devices, and swapped in pre-rendered stills matched to the live camera when even the lowest tier can't keep up — with posters and reduced-motion support so the story reads without WebGL." },
       { label: "Quote request", detail: "Built a multi-crate inquiry with per-item photos compressed in the browser, zod validation shared by client and server, and Nodemailer delivery that sets Reply-To to the customer and sends them a confirmation copy — protected by Turnstile, a honeypot and rate limiting." },
     ],
@@ -480,6 +482,7 @@ export const projects: Project[] = [
       challenge:
         "A craft product needs to explain itself visually on any device a customer might use — from a new desktop to an old phone in Low Power Mode — and the first inquiry has to carry enough detail to quote from without a back-and-forth.",
       decisions: [
+        "The crate is modelled in code from one dimension spec instead of an exported mesh, so geometry, textures and the exploded animation stay in sync, and AI-assisted iterations become small, reviewable diffs.",
         "The 3D scene is progressive enhancement: a static poster renders first, the live scene fades in only once its first frame is finished, and stills take over when frame rates fall well below battery-saver caps rather than at the first dropped frame.",
         "The form models an inquiry as a list of crates, each with its own sizes, options and photos, because customers rarely ship just one piece.",
         "Inquiries arrive as ordinary emails with Reply-To set to the customer, so the team quotes from the inbox they already use instead of a new back office.",
@@ -489,7 +492,7 @@ export const projects: Project[] = [
         "The deploy pipeline runs lint, both test suites and the build before shipping a standalone release over SSH to PM2, and doesn't deploy if any step fails.",
       ],
       outcome:
-        "The site is live: visitors get a clear picture of how their piece will be protected, whatever their device, and the workshop receives quote-ready requests with sizes and photos for every crate.",
+        "The site is live, and it proved AI assistance can take a first 3D project to a production-quality model: visitors get a clear picture of how their piece will be protected, whatever their device, and the workshop receives quote-ready requests with sizes and photos for every crate.",
     },
     sourceAccess: {
       visibility: "private",
