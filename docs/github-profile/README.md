@@ -108,7 +108,7 @@ Full-stack development across international-removals quotation and booking, a No
 
 ### [CASE1](https://zajenckauskas.lt/projects/case1)
 
-A bespoke-crate workshop's website, built in four days with Claude as a pair programmer. A crate modelled in code with Three.js comes apart board by board as you scroll; profiling took desktop Lighthouse from 73–86 to 99 and draw calls from about 400 to 110, with device tiers and pre-rendered stills keeping it smooth on old phones.
+A bespoke-crate workshop's website. A crate I modelled in code with Three.js comes apart board by board as you scroll; profiling took desktop Lighthouse from 73–86 to 99 and draw calls from about 400 to 110, with device tiers and pre-rendered stills keeping it smooth on old phones.
 
 `Next.js` · `React Three Fiber` · `Three.js` · `TypeScript` · `Zod` · `Nodemailer` · `Playwright`
 

@@ -470,7 +470,7 @@ export const projects: Project[] = [
     about: [
       "CASE1 is a UK workshop that builds made-to-measure wooden crates, with fitted foam lining, for antiques, furniture and art. The website has two jobs: show why a crate built around one piece protects it better than a generic box, and collect enough detail in the first message to quote from.",
       "The centrepiece is a crate that takes itself apart as you scroll. The lid lifts, the panels, battens and screws come away, the foam moves aside and the packed vase is revealed. Below it, a quick-quote form takes every crate a customer needs in one request.",
-      "The project gave me the chance to do real 3D modelling. Instead of modelling in Blender and exporting a mesh, I built the crate in code with Three.js, working with Claude as a pair programmer: describing how a real shipping crate goes together, then refining geometry, materials and lighting against the workshop's own photos until it read as the real thing. The site went from an empty Next.js app to a tested, continuously deployed production site in four days.",
+      "The project gave me the chance to do real 3D modelling. Instead of modelling in Blender and exporting a mesh, I built the crate in code with Three.js, using AI tools to speed up iteration: I worked out how a real shipping crate goes together, then refined its geometry, materials and lighting against the workshop's own photos until it read as the real thing.",
     ],
     contribution: [
       { label: "Modelling in code", detail: "Modelled every board, batten, countersunk screw and foam block on Three.js geometry from one dimension spec, plus a lathe-turned porcelain vase. All textures are generated rather than photographed: wood grain with growth rings, knots and end grain, layered ply edges, CASE1 stencils and a crackled glaze." },
@@ -492,7 +492,7 @@ export const projects: Project[] = [
         "Vitest and Playwright cover the quote form, spam checks, emails and the stills fallback against a production build, and every push to main is linted, tested and built before it deploys.",
       ],
       outcome:
-        "The site is live. Visitors see how their piece will be protected on whatever device they use, the workshop receives requests with sizes and photos for every crate, and the crate itself shows that modelling in code with AI assistance can reach a production-quality 3D result.",
+        "The site is live. Visitors see how their piece will be protected on whatever device they use, the workshop receives requests with sizes and photos for every crate, and the crate itself shows that a 3D model built entirely in code can hold up as a production centrepiece.",
     },
     sourceAccess: {
       visibility: "private",
