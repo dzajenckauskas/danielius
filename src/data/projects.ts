@@ -488,7 +488,7 @@ export const projects: Project[] = [
         "Requests arrive as ordinary emails addressed back to the customer, so the team quotes from the inbox they already use instead of learning a new back office.",
       ],
       quality: [
-        "Rendering bugs were traced to their cause rather than hidden: white outlines around the crate came down to how the canvas handled transparency, and dashed board edges on Retina screens to rendering at 1.75× and stretching to 2×.",
+        "I traced rendering bugs to their cause rather than hiding them: white outlines around the crate came down to how the canvas handled transparency, and dashed board edges on Retina screens to rendering at 1.75× and stretching to 2×.",
         "Vitest and Playwright cover the quote form, spam checks, emails and the stills fallback against a production build, and every push to main is linted, tested and built before it deploys.",
       ],
       outcome:
