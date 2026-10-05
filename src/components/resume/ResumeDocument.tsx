@@ -33,6 +33,7 @@ const resumeProjectSlugs = [
   "muses-fly-tying-market",
   "deliver1",
   "tezaurus",
+  "case1",
 ];
 const resumeProjects = resumeProjectSlugs.flatMap((slug) => {
   const project = projects.find((item) => item.slug === slug);
@@ -645,7 +646,7 @@ function PageOne() {
                 <Text style={styles.metricLabel}>SHARED PACKAGES</Text>
               </View>
               <View style={[styles.metric, styles.metricBorder]}>
-                <Text style={styles.metricValue}>7</Text>
+                <Text style={styles.metricValue}>{projects.length}</Text>
                 <Text style={styles.metricLabel}>PORTFOLIO CASE STUDIES</Text>
               </View>
             </View>

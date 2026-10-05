@@ -106,6 +106,12 @@ Full-stack development across international-removals quotation and booking, a No
 
 `Next.js` · `TypeScript` · `Strapi` · `Stripe` · `Firebase` · `PostgreSQL`
 
+### [CASE1](https://zajenckauskas.lt/projects/case1)
+
+A website for a UK bespoke-crate workshop, and my first 3D modelling project: a crate modelled entirely in TypeScript with AI assistance, coming apart board by board as you scroll, with adaptive quality and pre-rendered stills for slow devices, plus a multi-crate quote form with per-item photos.
+
+`Next.js` · `React Three Fiber` · `Three.js` · `TypeScript` · `Zod` · `Nodemailer` · `Playwright`
+
 The complete set of client work and technical case studies is available on my [portfolio](https://zajenckauskas.lt/projects).
 
 ## A note on source code

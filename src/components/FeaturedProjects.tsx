@@ -11,6 +11,7 @@ const featuredProjectSlugs = new Set<string>([
   "toolkit",
   "muses-fly-tying-market",
   "deliver1",
+  "case1",
 ]);
 const featuredProjects = projects.filter((project) => featuredProjectSlugs.has(project.slug));
 
