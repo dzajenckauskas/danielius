@@ -453,6 +453,66 @@ export const projects: Project[] = [
     ],
     accent: "sand",
   },
+  {
+    slug: "case1",
+    name: "CASE1",
+    domain: "case1.co.uk",
+    url: "https://case1.co.uk",
+    year: "2026",
+    period: "October 2026 – Present",
+    engagement: "Commercial client project",
+    location: "United Kingdom · Remote",
+    role: "Full-stack Developer",
+    summary:
+      "A website for a bespoke wooden-crate workshop, with a scroll-driven 3D crate and a multi-crate quote request.",
+    cardOutcome:
+      "Visitors see how a crate is built around their piece, then send exact sizes and photos for every item in one request.",
+    about: [
+      "CASE1 is a UK workshop making made-to-measure wooden crates with fitted foam lining for antiques, furniture and art. The site has two jobs: show why a crate built for one piece protects it better than a generic box, and collect enough detail in the first message to quote from.",
+      "The page is a Next.js application with a React Three Fiber scene at its centre. As the visitor scrolls, a crate comes apart step by step — lid, timber frame, plywood panels, foam lining, the piece inside — with procedurally generated wood, ply and porcelain textures. Below it, a quote form takes one or more crates with sizes, options and photos, and delivers the request to the team by email.",
+    ],
+    contribution: [
+      { label: "3D crate story", detail: "Built the scroll-driven exploded view in React Three Fiber, with canvas-generated timber, ply and hand-painted porcelain textures, soft shadows and ambient occlusion, rendering frames only while the scene is actually moving." },
+      { label: "Adaptive performance", detail: "Compiled shaders off the main thread before the first frame, stepped quality down on slow devices, and swapped in pre-rendered stills matched to the live camera when even the lowest tier can't keep up — with posters and reduced-motion support so the story reads without WebGL." },
+      { label: "Quote request", detail: "Built a multi-crate inquiry with per-item photos compressed in the browser, zod validation shared by client and server, and Nodemailer delivery that sets Reply-To to the customer and sends them a confirmation copy — protected by Turnstile, a honeypot and rate limiting." },
+    ],
+    caseStudy: {
+      challenge:
+        "A craft product needs to explain itself visually on any device a customer might use — from a new desktop to an old phone in Low Power Mode — and the first inquiry has to carry enough detail to quote from without a back-and-forth.",
+      decisions: [
+        "The 3D scene is progressive enhancement: a static poster renders first, the live scene fades in only once its first frame is finished, and stills take over when frame rates fall well below battery-saver caps rather than at the first dropped frame.",
+        "The form models an inquiry as a list of crates, each with its own sizes, options and photos, because customers rarely ship just one piece.",
+        "Inquiries arrive as ordinary emails with Reply-To set to the customer, so the team quotes from the inbox they already use instead of a new back office.",
+      ],
+      quality: [
+        "Vitest covers the inquiry API, validation, email rendering, spam checks and the crate's pixel logic; Playwright exercises the quote form and the stills fallback against a production build.",
+        "The deploy pipeline runs lint, both test suites and the build before shipping a standalone release over SSH to PM2, and doesn't deploy if any step fails.",
+      ],
+      outcome:
+        "The site is live: visitors get a clear picture of how their piece will be protected, whatever their device, and the workshop receives quote-ready requests with sizes and photos for every crate.",
+    },
+    sourceAccess: {
+      visibility: "private",
+      note: "Client source code is private. I can demonstrate the live site and walk through the 3D scene and its performance fallbacks in a technical session.",
+    },
+    stack: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "React Three Fiber",
+      "Three.js",
+      "Tailwind CSS v4",
+      "React Hook Form",
+      "Zod",
+      "Nodemailer",
+      "Cloudflare Turnstile",
+      "Vitest",
+      "Playwright",
+      "GitHub Actions",
+      "PM2 / NGINX",
+    ],
+    accent: "lilac",
+  },
 ];
 
 export function getProject(slug: string) {
