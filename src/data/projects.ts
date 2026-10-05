@@ -464,35 +464,35 @@ export const projects: Project[] = [
     location: "United Kingdom · Remote",
     role: "Full-stack Developer",
     summary:
-      "A bespoke-crate workshop's website, built in four days around a hand-coded 3D crate that comes apart as you scroll.",
+      "A website for a bespoke-crate workshop, built around a 3D crate that comes apart as you scroll.",
     cardOutcome:
-      "A crate modelled in code with Three.js runs smoothly from Retina desktops to old phones, and quote requests arrive ready to price.",
+      "A crate modelled in code runs smoothly from Retina desktops to old phones, and quote requests arrive ready to price.",
     about: [
-      "CASE1 is a UK workshop making made-to-measure wooden crates with fitted foam lining for antiques, furniture and art. The site has two jobs: show why a crate built around one piece protects it better than a generic box, and collect enough detail in the first message to quote from.",
-      "It gave me the chance to do real 3D modelling. Instead of modelling in Blender and exporting a mesh, I built the crate in code with Three.js, working with Claude as a pair programmer: describing how a real shipping crate goes together, then refining geometry, materials and lighting against the workshop's own crate photo until it read as the real thing. The site went from an empty Next.js app to a tested, continuously deployed production site in four days and eleven pull requests.",
-      "The 3D work came in two halves. The first two days were about making the crate believable; the last two were about making it fast and correct on every screen, which turned out to be the harder problem.",
+      "CASE1 is a UK workshop that builds made-to-measure wooden crates, with fitted foam lining, for antiques, furniture and art. The website has two jobs: show why a crate built around one piece protects it better than a generic box, and collect enough detail in the first message to quote from.",
+      "The centrepiece is a crate that takes itself apart as you scroll. The lid lifts, the panels, battens and screws come away, the foam moves aside and the packed vase is revealed. Below it, a quick-quote form takes every crate a customer needs in one request.",
+      "The project gave me the chance to do real 3D modelling. Instead of modelling in Blender and exporting a mesh, I built the crate in code with Three.js, working with Claude as a pair programmer: describing how a real shipping crate goes together, then refining geometry, materials and lighting against the workshop's own photos until it read as the real thing. The site went from an empty Next.js app to a tested, continuously deployed production site in four days.",
     ],
     contribution: [
-      { label: "Modelling in code", detail: "Built every board, batten, countersunk screw and foam block from one dimension spec on Three.js geometry, plus a lathe-turned porcelain vase with a real inner wall. Wood grain with growth rings, knots, latewood sheen and end grain is generated in a web worker; layered ply edges, CASE1 stencils and a crackled famille-rose glaze are drawn on canvas, with no image textures at all." },
-      { label: "Scroll story", detail: "Turned the crate into a pinned five-step story — the lid lifts, panels, battens and screws come apart, the foam moves aside and the vase is revealed — with frames rendered only while the scene moves, and the stage warming toward the brand pink with each step so progress reads on phones." },
-      { label: "Performance on every device", detail: "Profiled at 4× CPU throttling and split the scene's start-up into short tasks, taking desktop Lighthouse from 73–86 to 99. Cut draw calls from about 400 to 110 per frame, brought the high tier from 21 ms to 14 ms a frame, and added device tiers that step down one level at a time — ending in pre-rendered stills from the same camera for phones that still can't hold 20 fps." },
-      { label: "Quote request", detail: "A quick-quote form in the hero takes several crates with sizes, options and up to three photos each, compressed in the browser so they fit as email attachments. The team gets a branded email with Reply-To set to the customer; spam is stopped by Turnstile, a honeypot, a minimum fill time and per-IP rate limiting." },
+      { label: "Modelling in code", detail: "Modelled every board, batten, countersunk screw and foam block on Three.js geometry from one dimension spec, plus a lathe-turned porcelain vase. All textures are generated rather than photographed: wood grain with growth rings, knots and end grain, layered ply edges, CASE1 stencils and a crackled glaze." },
+      { label: "Scroll story", detail: "Turned the model into a pinned five-step story that reassembles when you scroll back. Frames render only while something moves, and the stage warms toward the brand pink with each step so progress still reads on a phone." },
+      { label: "Performance on every device", detail: "Profiled the scene with the CPU throttled 4× and split its start-up into short tasks, taking desktop Lighthouse from 73–86 to 99. Cut draw calls from about 400 to 110 a frame, and added quality tiers that step down one level at a time, ending in pre-rendered stills for phones that can't keep up." },
+      { label: "Quote request", detail: "Built a quick-quote form that takes several crates with sizes, options and up to three photos each, compressed in the browser to fit as email attachments. The team gets a branded email they can reply to directly, behind Turnstile, a honeypot and rate limiting." },
     ],
     caseStudy: {
       challenge:
-        "A realistic, scroll-driven 3D scene had to look right and stay smooth on everything from a Retina desktop to an iPhone in Low Power Mode to an old Android phone — without ever delaying the headline or the quote form, which is what actually earns the workshop its business.",
+        "A realistic 3D scene had to look right and stay smooth on everything from a Retina desktop to an iPhone in Low Power Mode to an old Android phone, without ever slowing down the headline or the quote form, which are what actually win the workshop its work.",
       decisions: [
-        "The crate is modelled in code rather than exported from a modelling tool, so geometry, textures and the exploded animation share one spec, and every change is a small, reviewable diff.",
-        "The 3D scene is progressive enhancement: the server-rendered headline stays the largest paint, a GPU-rendered poster shows first, and the live scene cross-fades in only once its first frame is finished.",
-        "Quality tiers trust measured frame times over what devices report, because iPhones cap their reported core count and phones claim desktop CPUs. Stills take over below 20 fps, well under the 30 fps cap battery saver modes impose, so a fast phone in Low Power Mode keeps the live scene.",
-        "Inquiries arrive as ordinary emails with Reply-To set to the customer, so the team quotes from the inbox they already use instead of a new back office.",
+        "The crate lives in code rather than in an exported model, so geometry, textures and the animation share one spec, and every refinement is a small, reviewable change.",
+        "The 3D scene is an enhancement, not a dependency: the headline renders from the server, a still poster of the crate shows first, and the live scene fades in only once its first frame is ready.",
+        "Quality is set by measured frame rate rather than what a device claims, because iPhones under-report their cores and phones report desktop-class CPUs. Stills take over below 20 fps, well under the 30 fps cap of battery-saver modes, so a fast phone in Low Power Mode keeps the live scene.",
+        "Requests arrive as ordinary emails addressed back to the customer, so the team quotes from the inbox they already use instead of learning a new back office.",
       ],
       quality: [
-        "Real rendering bugs were traced to their cause rather than masked: white outlines around the crate on a tinted stage came down to how the canvas encoded alpha, and dashed board edges on Retina screens came from rendering at 1.75× and stretching to 2×.",
-        "Vitest covers the inquiry API, validation, email escaping, Turnstile, the rate limiter and the device rules; Playwright drives the quote form and the stills fallback against a production build. Deploys run lint, both suites and the build before an atomic release over SSH to PM2.",
+        "Rendering bugs were traced to their cause rather than hidden: white outlines around the crate came down to how the canvas handled transparency, and dashed board edges on Retina screens to rendering at 1.75× and stretching to 2×.",
+        "Vitest and Playwright cover the quote form, spam checks, emails and the stills fallback against a production build, and every push to main is linted, tested and built before it deploys.",
       ],
       outcome:
-        "The site is live after four days of work. Visitors see how their piece will be protected, whatever their device, the workshop receives quote-ready requests with sizes and photos for every crate, and the project showed that modelling in code with AI assistance can reach a production-quality 3D result.",
+        "The site is live. Visitors see how their piece will be protected on whatever device they use, the workshop receives requests with sizes and photos for every crate, and the crate itself shows that modelling in code with AI assistance can reach a production-quality 3D result.",
     },
     sourceAccess: {
       visibility: "private",
