@@ -29,6 +29,69 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "case1",
+    name: "CASE1",
+    domain: "case1.co.uk",
+    url: "https://case1.co.uk",
+    year: "2026",
+    period: "October 2026 – Present",
+    engagement: "Commercial client project",
+    location: "United Kingdom · Remote",
+    role: "Full-stack Developer",
+    summary:
+      "A website for a bespoke-crate workshop, built around a 3D crate that comes apart as you scroll.",
+    cardOutcome:
+      "A crate modelled in code runs smoothly from Retina desktops to old phones, and quote requests arrive ready to price.",
+    about: [
+      "CASE1 is a UK workshop that builds made-to-measure wooden crates, with fitted foam lining, for antiques, furniture and art. The website has two jobs: show why a crate built around one piece protects it better than a generic box, and collect enough detail in the first message to quote from.",
+      "The centrepiece is a crate that takes itself apart as you scroll. The lid lifts, the panels, battens and screws come away, the foam moves aside and the packed vase is revealed. Below it, a quick-quote form takes every crate a customer needs in one request.",
+      "The project gave me the chance to do real 3D modelling. Instead of modelling in Blender and exporting a mesh, I built the crate in code with Three.js, using AI tools to speed up iteration: I worked out how a real shipping crate goes together, then refined its geometry, materials and lighting against the workshop's own photos until it read as the real thing.",
+    ],
+    contribution: [
+      { label: "Modelling in code", detail: "Modelled every board, batten, countersunk screw and foam block on Three.js geometry from one dimension spec, plus a lathe-turned porcelain vase. All textures are generated rather than photographed: wood grain with growth rings, knots and end grain, layered ply edges, CASE1 stencils and a crackled glaze." },
+      { label: "Scroll story", detail: "Turned the model into a pinned five-step story that reassembles when you scroll back. Frames render only while something moves, and the stage warms toward the brand pink with each step so progress still reads on a phone." },
+      { label: "Performance on every device", detail: "Profiled the scene with the CPU throttled 4× and split its start-up into short tasks, taking desktop Lighthouse from 73–86 to 99. Cut draw calls from about 400 to 110 a frame, and added quality tiers that step down one level at a time, ending in pre-rendered stills for phones that can't keep up." },
+      { label: "Quote request", detail: "Built a quick-quote form that takes several crates with sizes, options and up to three photos each, compressed in the browser to fit as email attachments. The team gets a branded email they can reply to directly, behind Turnstile, a honeypot and rate limiting." },
+    ],
+    caseStudy: {
+      challenge:
+        "A realistic 3D scene had to look right and stay smooth on everything from a Retina desktop to an iPhone in Low Power Mode to an old Android phone, without ever slowing down the headline or the quote form, which are what actually win the workshop its work.",
+      decisions: [
+        "The crate lives in code rather than in an exported model, so geometry, textures and the animation share one spec, and every refinement is a small, reviewable change.",
+        "The 3D scene is an enhancement, not a dependency: the headline renders from the server, a still poster of the crate shows first, and the live scene fades in only once its first frame is ready.",
+        "Quality is set by measured frame rate rather than what a device claims, because iPhones under-report their cores and phones report desktop-class CPUs. Stills take over below 20 fps, well under the 30 fps cap of battery-saver modes, so a fast phone in Low Power Mode keeps the live scene.",
+        "Requests arrive as ordinary emails addressed back to the customer, so the team quotes from the inbox they already use instead of learning a new back office.",
+      ],
+      quality: [
+        "I traced rendering bugs to their cause rather than hiding them: white outlines around the crate came down to how the canvas handled transparency, and dashed board edges on Retina screens to rendering at 1.75× and stretching to 2×.",
+        "Vitest and Playwright cover the quote form, spam checks, emails and the stills fallback against a production build, and every push to main is linted, tested and built before it deploys.",
+      ],
+      outcome:
+        "The site is live. Visitors see how their piece will be protected on whatever device they use, the workshop receives requests with sizes and photos for every crate, and the crate itself shows that a 3D model built entirely in code can hold up as a production centrepiece.",
+    },
+    sourceAccess: {
+      visibility: "private",
+      note: "Client source code is private. I can demonstrate the live site and walk through the 3D scene and its performance fallbacks in a technical session.",
+    },
+    stack: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "React Three Fiber",
+      "Three.js",
+      "Tailwind CSS v4",
+      "React Hook Form",
+      "Zod",
+      "Nodemailer",
+      "Cloudflare Turnstile",
+      "Vitest",
+      "Playwright",
+      "GitHub Actions",
+      "PM2 / NGINX",
+    ],
+    accent: "lilac",
+  },
+  {
     slug: "lobasoft-enterprise-platform",
     name: "Lobasoft Enterprise Platform",
     domain: "Private commercial platform",
@@ -81,6 +144,131 @@ export const projects: Project[] = [
       "Playwright",
     ],
     accent: "sage",
+  },
+  {
+    slug: "deliver1",
+    name: "Deliver1",
+    domain: "deliver1.co.uk",
+    url: "https://deliver1.co.uk",
+    year: "2024",
+    period: "March 2024 – Present",
+    engagement: "Commercial client project",
+    location: "United Kingdom · Remote",
+    role: "Full-stack Developer",
+    summary:
+      "An international-removals platform with instant quotes and multi-step booking across road, sea and air.",
+    cardOutcome:
+      "Customers move from quotation and booking into tracked support, while staff manage ownership and resolution in one workspace.",
+    about: [
+      "Deliver1 turns a complex international-moving service into a clear digital journey. Visitors can understand available transport options, request an estimate and progress through structured relocation workflows.",
+      "The product is a three-part system: a customer-facing Next.js experience, a Node.js/Strapi API for content and operational data, and a dedicated support portal for customers and staff. I develop across all three, modernising a live conversion journey while building the backend workflows and support tooling around it.",
+    ],
+    contribution: [
+      { label: "Customer journey", detail: "Rebuilt the customer-facing Next.js architecture and developed instant-quote, inventory and multi-step booking journeys with step-specific validation." },
+      { label: "Backend, payments and verification", detail: "Extended Strapi with issue/update models, public and internal endpoints and tracking tokens, and integrated Stripe deposits and Firebase phone verification behind server-owned routes with explicit retry and failure states." },
+      { label: "Support portal", detail: "Built a separate portal for customer reporting, tracking, evidence uploads and threaded conversations, plus staff assignment and reply workflows — protected throughout by Turnstile, upload allow-lists, rate limits and repeat-submission checks." },
+    ],
+    caseStudy: {
+      challenge:
+        "A live, conversion-focused moving journey needed the operational backbone to carry a customer issue all the way from public submission through staff ownership, conversation and resolution — without a rebuild that risked the conversion path itself.",
+      decisions: [
+        "The customer journey, API and support workspace stay separate, with business data and the logic that sends notifications living in the backend.",
+        "Quotation and booking split into independently validated steps, each with its own schema, so a user never sees a validation error from a stage they haven't reached yet.",
+        "Support is modelled as issues and threaded updates — public replies separated from internal notes — and tracking links stand in for customer accounts.",
+      ],
+      quality: [
+        "Payment, verification, upload and email failures stay actionable and never discard work that already saved successfully.",
+        "Shared rate-limit state, security events and a repeatable deployment pipeline cover all three services.",
+      ],
+      outcome:
+        "Customers move through quotation, booking and post-booking support in one coherent service, and staff get an auditable workspace for ownership and resolution — each of the three surfaces can now evolve on its own timeline.",
+    },
+    sourceAccess: {
+      visibility: "private",
+      note: "Client source code is private. I can discuss the architecture and demonstrate public workflows; repository access requires the client's permission.",
+    },
+    stack: [
+      "Next.js 15 / 16",
+      "React 18 / 19",
+      "TypeScript",
+      "Strapi",
+      "Material UI",
+      "Emotion",
+      "React Hook Form",
+      "Yup",
+      "SWR",
+      "Node.js",
+      "Stripe",
+      "PostgreSQL",
+      "Firebase",
+      "Nodemailer",
+      "Cloudflare Turnstile",
+      "Upstash Redis",
+      "GitHub Actions",
+      "PM2 / NGINX",
+    ],
+    accent: "blue",
+  },
+  {
+    slug: "opklinika",
+    name: "Ortopedijos Paslaugų Klinika",
+    domain: "opklinika.lt",
+    url: "https://www.opklinika.lt",
+    year: "2023",
+    period: "March 2023 – Present",
+    engagement: "Commercial client project",
+    location: "Vilnius, Lithuania",
+    role: "Full-stack Developer",
+    summary:
+      "A healthcare platform for an orthopaedic clinic — services and an orthopaedic aid catalogue with generated PDFs.",
+    cardOutcome:
+      "One managed catalogue supplies patient-facing pages and printable clinical material without duplicate product maintenance.",
+    about: [
+      "Ortopedijos Paslaugų Klinika makes specialist orthopaedic services and technical products easier to understand and navigate. The website combines clinic information, consultations, rehabilitation services and a structured catalogue of orthopaedic aids.",
+      "I develop both sides of the platform: the public Next.js website and its Node.js/Strapi backend. Clinic staff maintain services, diagnoses, categories, pricing and products in PostgreSQL-backed content models, and the front end turns that source into responsive pages, enquiry journeys and printable clinical product material.",
+    ],
+    contribution: [
+      { label: "Content model", detail: "Modelled services, products, diagnoses, reimbursement-rate tables, reviews and pricing in Strapi, choosing static generation, revalidation or request-time rendering per page depending on how often its data changes." },
+      { label: "PDF catalogue", detail: "Generated branded catalogues from live CMS data with React PDF, including embedded fonts, reimbursement tables, images and multi-page pagination." },
+      { label: "Enquiries and delivery", detail: "Built validated enquiry forms and backend email delivery, covered the flow with focused tests and automated deployment of both applications." },
+    ],
+    caseStudy: {
+      challenge:
+        "A detailed healthcare service and orthopaedic aid catalogue has to stay understandable to patients, editable by clinic staff who aren't developers, and reliable in both web and print.",
+      decisions: [
+        "One Strapi model feeds the website and the printable catalogue, so clinic staff never maintain the same product information twice.",
+        "The generated PDF streams from a server route instead of being assembled in the browser.",
+        "Enquiries persist before the clinic notification goes out, so a failed email send never loses the submission.",
+      ],
+      quality: [
+        "The enquiry flow is under test, and each page's rendering strategy matches how often its underlying content actually changes.",
+        "Fonts, long medical tables, images and page breaks are handled explicitly so generated catalogues stay legible in print.",
+      ],
+      outcome:
+        "Clinic staff maintain one structured source for services and products, and patients see the same information whether they're on the website, reading the generated catalogue, or following up on an enquiry.",
+    },
+    sourceAccess: {
+      visibility: "private",
+      note: "Client source code is private. I can demonstrate the public product and explain the React PDF and Strapi architecture in a technical walkthrough.",
+    },
+    stack: [
+      "Next.js 15",
+      "React 18",
+      "TypeScript",
+      "Node.js",
+      "Strapi",
+      "Material UI",
+      "Emotion",
+      "PostgreSQL",
+      "React PDF",
+      "React Hook Form / Yup",
+      "Nodemailer",
+      "Vitest",
+      "React Testing Library",
+      "GitHub Actions",
+      "PM2 / NGINX",
+    ],
+    accent: "rose",
   },
   {
     slug: "toolkit",
@@ -267,131 +455,7 @@ export const projects: Project[] = [
     ],
     accent: "lilac",
   },
-  {
-    slug: "deliver1",
-    name: "Deliver1",
-    domain: "deliver1.co.uk",
-    url: "https://deliver1.co.uk",
-    year: "2024",
-    period: "March 2024 – Present",
-    engagement: "Commercial client project",
-    location: "United Kingdom · Remote",
-    role: "Full-stack Developer",
-    summary:
-      "An international-removals platform with instant quotes and multi-step booking across road, sea and air.",
-    cardOutcome:
-      "Customers move from quotation and booking into tracked support, while staff manage ownership and resolution in one workspace.",
-    about: [
-      "Deliver1 turns a complex international-moving service into a clear digital journey. Visitors can understand available transport options, request an estimate and progress through structured relocation workflows.",
-      "The product is a three-part system: a customer-facing Next.js experience, a Node.js/Strapi API for content and operational data, and a dedicated support portal for customers and staff. I develop across all three, modernising a live conversion journey while building the backend workflows and support tooling around it.",
-    ],
-    contribution: [
-      { label: "Customer journey", detail: "Rebuilt the customer-facing Next.js architecture and developed instant-quote, inventory and multi-step booking journeys with step-specific validation." },
-      { label: "Backend, payments and verification", detail: "Extended Strapi with issue/update models, public and internal endpoints and tracking tokens, and integrated Stripe deposits and Firebase phone verification behind server-owned routes with explicit retry and failure states." },
-      { label: "Support portal", detail: "Built a separate portal for customer reporting, tracking, evidence uploads and threaded conversations, plus staff assignment and reply workflows — protected throughout by Turnstile, upload allow-lists, rate limits and repeat-submission checks." },
-    ],
-    caseStudy: {
-      challenge:
-        "A live, conversion-focused moving journey needed the operational backbone to carry a customer issue all the way from public submission through staff ownership, conversation and resolution — without a rebuild that risked the conversion path itself.",
-      decisions: [
-        "The customer journey, API and support workspace stay separate, with business data and the logic that sends notifications living in the backend.",
-        "Quotation and booking split into independently validated steps, each with its own schema, so a user never sees a validation error from a stage they haven't reached yet.",
-        "Support is modelled as issues and threaded updates — public replies separated from internal notes — and tracking links stand in for customer accounts.",
-      ],
-      quality: [
-        "Payment, verification, upload and email failures stay actionable and never discard work that already saved successfully.",
-        "Shared rate-limit state, security events and a repeatable deployment pipeline cover all three services.",
-      ],
-      outcome:
-        "Customers move through quotation, booking and post-booking support in one coherent service, and staff get an auditable workspace for ownership and resolution — each of the three surfaces can now evolve on its own timeline.",
-    },
-    sourceAccess: {
-      visibility: "private",
-      note: "Client source code is private. I can discuss the architecture and demonstrate public workflows; repository access requires the client's permission.",
-    },
-    stack: [
-      "Next.js 15 / 16",
-      "React 18 / 19",
-      "TypeScript",
-      "Strapi",
-      "Material UI",
-      "Emotion",
-      "React Hook Form",
-      "Yup",
-      "SWR",
-      "Node.js",
-      "Stripe",
-      "PostgreSQL",
-      "Firebase",
-      "Nodemailer",
-      "Cloudflare Turnstile",
-      "Upstash Redis",
-      "GitHub Actions",
-      "PM2 / NGINX",
-    ],
-    accent: "blue",
-  },
-  {
-    slug: "opklinika",
-    name: "Ortopedijos Paslaugų Klinika",
-    domain: "opklinika.lt",
-    url: "https://www.opklinika.lt",
-    year: "2023",
-    period: "March 2023 – Present",
-    engagement: "Commercial client project",
-    location: "Vilnius, Lithuania",
-    role: "Full-stack Developer",
-    summary:
-      "A healthcare platform for an orthopaedic clinic — services and an orthopaedic aid catalogue with generated PDFs.",
-    cardOutcome:
-      "One managed catalogue supplies patient-facing pages and printable clinical material without duplicate product maintenance.",
-    about: [
-      "Ortopedijos Paslaugų Klinika makes specialist orthopaedic services and technical products easier to understand and navigate. The website combines clinic information, consultations, rehabilitation services and a structured catalogue of orthopaedic aids.",
-      "I develop both sides of the platform: the public Next.js website and its Node.js/Strapi backend. Clinic staff maintain services, diagnoses, categories, pricing and products in PostgreSQL-backed content models, and the front end turns that source into responsive pages, enquiry journeys and printable clinical product material.",
-    ],
-    contribution: [
-      { label: "Content model", detail: "Modelled services, products, diagnoses, reimbursement-rate tables, reviews and pricing in Strapi, choosing static generation, revalidation or request-time rendering per page depending on how often its data changes." },
-      { label: "PDF catalogue", detail: "Generated branded catalogues from live CMS data with React PDF, including embedded fonts, reimbursement tables, images and multi-page pagination." },
-      { label: "Enquiries and delivery", detail: "Built validated enquiry forms and backend email delivery, covered the flow with focused tests and automated deployment of both applications." },
-    ],
-    caseStudy: {
-      challenge:
-        "A detailed healthcare service and orthopaedic aid catalogue has to stay understandable to patients, editable by clinic staff who aren't developers, and reliable in both web and print.",
-      decisions: [
-        "One Strapi model feeds the website and the printable catalogue, so clinic staff never maintain the same product information twice.",
-        "The generated PDF streams from a server route instead of being assembled in the browser.",
-        "Enquiries persist before the clinic notification goes out, so a failed email send never loses the submission.",
-      ],
-      quality: [
-        "The enquiry flow is under test, and each page's rendering strategy matches how often its underlying content actually changes.",
-        "Fonts, long medical tables, images and page breaks are handled explicitly so generated catalogues stay legible in print.",
-      ],
-      outcome:
-        "Clinic staff maintain one structured source for services and products, and patients see the same information whether they're on the website, reading the generated catalogue, or following up on an enquiry.",
-    },
-    sourceAccess: {
-      visibility: "private",
-      note: "Client source code is private. I can demonstrate the public product and explain the React PDF and Strapi architecture in a technical walkthrough.",
-    },
-    stack: [
-      "Next.js 15",
-      "React 18",
-      "TypeScript",
-      "Node.js",
-      "Strapi",
-      "Material UI",
-      "Emotion",
-      "PostgreSQL",
-      "React PDF",
-      "React Hook Form / Yup",
-      "Nodemailer",
-      "Vitest",
-      "React Testing Library",
-      "GitHub Actions",
-      "PM2 / NGINX",
-    ],
-    accent: "rose",
-  },
+  /* Noreikis is hidden for now.
   {
     slug: "noreikis",
     name: "Noreikis",
@@ -453,69 +517,7 @@ export const projects: Project[] = [
     ],
     accent: "sand",
   },
-  {
-    slug: "case1",
-    name: "CASE1",
-    domain: "case1.co.uk",
-    url: "https://case1.co.uk",
-    year: "2026",
-    period: "October 2026 – Present",
-    engagement: "Commercial client project",
-    location: "United Kingdom · Remote",
-    role: "Full-stack Developer",
-    summary:
-      "A website for a bespoke-crate workshop, built around a 3D crate that comes apart as you scroll.",
-    cardOutcome:
-      "A crate modelled in code runs smoothly from Retina desktops to old phones, and quote requests arrive ready to price.",
-    about: [
-      "CASE1 is a UK workshop that builds made-to-measure wooden crates, with fitted foam lining, for antiques, furniture and art. The website has two jobs: show why a crate built around one piece protects it better than a generic box, and collect enough detail in the first message to quote from.",
-      "The centrepiece is a crate that takes itself apart as you scroll. The lid lifts, the panels, battens and screws come away, the foam moves aside and the packed vase is revealed. Below it, a quick-quote form takes every crate a customer needs in one request.",
-      "The project gave me the chance to do real 3D modelling. Instead of modelling in Blender and exporting a mesh, I built the crate in code with Three.js, using AI tools to speed up iteration: I worked out how a real shipping crate goes together, then refined its geometry, materials and lighting against the workshop's own photos until it read as the real thing.",
-    ],
-    contribution: [
-      { label: "Modelling in code", detail: "Modelled every board, batten, countersunk screw and foam block on Three.js geometry from one dimension spec, plus a lathe-turned porcelain vase. All textures are generated rather than photographed: wood grain with growth rings, knots and end grain, layered ply edges, CASE1 stencils and a crackled glaze." },
-      { label: "Scroll story", detail: "Turned the model into a pinned five-step story that reassembles when you scroll back. Frames render only while something moves, and the stage warms toward the brand pink with each step so progress still reads on a phone." },
-      { label: "Performance on every device", detail: "Profiled the scene with the CPU throttled 4× and split its start-up into short tasks, taking desktop Lighthouse from 73–86 to 99. Cut draw calls from about 400 to 110 a frame, and added quality tiers that step down one level at a time, ending in pre-rendered stills for phones that can't keep up." },
-      { label: "Quote request", detail: "Built a quick-quote form that takes several crates with sizes, options and up to three photos each, compressed in the browser to fit as email attachments. The team gets a branded email they can reply to directly, behind Turnstile, a honeypot and rate limiting." },
-    ],
-    caseStudy: {
-      challenge:
-        "A realistic 3D scene had to look right and stay smooth on everything from a Retina desktop to an iPhone in Low Power Mode to an old Android phone, without ever slowing down the headline or the quote form, which are what actually win the workshop its work.",
-      decisions: [
-        "The crate lives in code rather than in an exported model, so geometry, textures and the animation share one spec, and every refinement is a small, reviewable change.",
-        "The 3D scene is an enhancement, not a dependency: the headline renders from the server, a still poster of the crate shows first, and the live scene fades in only once its first frame is ready.",
-        "Quality is set by measured frame rate rather than what a device claims, because iPhones under-report their cores and phones report desktop-class CPUs. Stills take over below 20 fps, well under the 30 fps cap of battery-saver modes, so a fast phone in Low Power Mode keeps the live scene.",
-        "Requests arrive as ordinary emails addressed back to the customer, so the team quotes from the inbox they already use instead of learning a new back office.",
-      ],
-      quality: [
-        "I traced rendering bugs to their cause rather than hiding them: white outlines around the crate came down to how the canvas handled transparency, and dashed board edges on Retina screens to rendering at 1.75× and stretching to 2×.",
-        "Vitest and Playwright cover the quote form, spam checks, emails and the stills fallback against a production build, and every push to main is linted, tested and built before it deploys.",
-      ],
-      outcome:
-        "The site is live. Visitors see how their piece will be protected on whatever device they use, the workshop receives requests with sizes and photos for every crate, and the crate itself shows that a 3D model built entirely in code can hold up as a production centrepiece.",
-    },
-    sourceAccess: {
-      visibility: "private",
-      note: "Client source code is private. I can demonstrate the live site and walk through the 3D scene and its performance fallbacks in a technical session.",
-    },
-    stack: [
-      "Next.js 16",
-      "React 19",
-      "TypeScript",
-      "React Three Fiber",
-      "Three.js",
-      "Tailwind CSS v4",
-      "React Hook Form",
-      "Zod",
-      "Nodemailer",
-      "Cloudflare Turnstile",
-      "Vitest",
-      "Playwright",
-      "GitHub Actions",
-      "PM2 / NGINX",
-    ],
-    accent: "lilac",
-  },
+  */
 ];
 
 export function getProject(slug: string) {
